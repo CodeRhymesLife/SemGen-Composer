@@ -1,3 +1,5 @@
+import java.awt.Frame;
+
 import javax.swing.JFrame;
 
 /**
@@ -20,7 +22,7 @@ public class Program {
 		
 		// Create our frame and set defaults
 		ComposerJFrame frame = new ComposerJFrame();
-		frame.setSize(300, 200);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
