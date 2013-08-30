@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ModelFileFilter extends FileFilter {
 	// Array of supported model types
-	public final static String[] SupportedModelTypes = new String[] {"owl"};
+	public final static String[] SupportedModelTypes = new String[] {"cellml", "mod", "owl", "sbml", "xml"};
 	
 	// Description shown in file chooser
 	// "SemGen Model (*.supportedType1, *.supportedType2, etc...)"
