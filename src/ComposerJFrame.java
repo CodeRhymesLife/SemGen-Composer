@@ -1,10 +1,6 @@
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -17,7 +13,7 @@ import javax.swing.JPanel;
  */
 public class ComposerJFrame extends JFrame {
 	// Title for frame
-	private final String Title = "SemGen Composer";
+	private final static String Title = "SemGen Composer";
 	
 	// Containing panel
 	private static JPanel _panel;
@@ -29,9 +25,12 @@ public class ComposerJFrame extends JFrame {
 	 * @throws HeadlessException
 	 */
 	public ComposerJFrame() throws HeadlessException {
+		// Set the title
+		super(Title);
+		
+		// Setup the UI components
 		createPanel();
 		createAddModelButton();
-		this.setTitle(Title);
 	}
 	
 	/*
@@ -43,20 +42,10 @@ public class ComposerJFrame extends JFrame {
 	}
 	
 	/*
-	 * Create the add model button, hook up events, and add it to the panel
+	 * Create the add model button and add it to the panel
 	 */
 	private void createAddModelButton(){
-		_addModelButton = new JButton("Add Model");
-		
-		// Listen for button events
-		_addModelButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent event){
-				// throw an exception until we implement adding a model
-				throw new UnsupportedOperationException("Add Model");
-			}
-		});
-		
+		_addModelButton = new AddModelButton(this);
 		_panel.add(_addModelButton);
 	}
 }
