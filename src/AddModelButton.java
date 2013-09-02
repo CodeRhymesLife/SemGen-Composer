@@ -55,7 +55,10 @@ public class AddModelButton extends JButton {
 		// Set styles
 		this.setContentAreaFilled(false);
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		removeBorder();
+		this.setBorder(null);
+		
+		// Align everything from the left
+		this.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		// Text shows to the right of the image
 	    this.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -115,7 +118,6 @@ public class AddModelButton extends JButton {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				addModelButton.setText(Caption);
-				addBorder();
 			}
 
 			/*
@@ -126,7 +128,6 @@ public class AddModelButton extends JButton {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				addModelButton.setText("");
-				removeBorder();
 			}
 
 			@Override
@@ -137,20 +138,6 @@ public class AddModelButton extends JButton {
 			public void mouseReleased(MouseEvent arg0) {
 			}
 		});
-	}
-	
-	/*
-	 * Adds border
-	 */
-	private void addBorder(){
-		this.setBorder(BorderFactory.createLineBorder(BorderColor));
-	}
-	
-	/*
-	 * Removes border
-	 */
-	private void removeBorder(){
-		this.setBorder(BorderFactory.createEmptyBorder());
 	}
 }
 

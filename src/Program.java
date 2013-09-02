@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Frame;
 
 import javax.swing.JFrame;
@@ -25,8 +24,7 @@ public class Program {
 		ComposerJFrame frame = new ComposerJFrame();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+		frame.createAndShowUI();
 	}
 
 }
