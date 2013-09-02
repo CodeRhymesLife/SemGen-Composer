@@ -1,4 +1,7 @@
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.HeadlessException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,7 +22,7 @@ public class ComposerJFrame extends JFrame {
 	private static JPanel _panel;
 	
 	// Add model button
-	private static JButton _addModelButton;
+	private static Component _addModelButton;
 	
 	/**
 	 * @throws HeadlessException
@@ -27,6 +30,8 @@ public class ComposerJFrame extends JFrame {
 	public ComposerJFrame() throws HeadlessException {
 		// Set the title
 		super(Title);
+		
+		this.setBackground(Color.WHITE);
 		
 		// Setup the UI components
 		createPanel();
@@ -38,6 +43,7 @@ public class ComposerJFrame extends JFrame {
 	 */
 	private void createPanel(){
 		_panel = new JPanel();
+		_panel.setBackground(Color.WHITE);
 		this.add(_panel);
 	}
 	
