@@ -12,4 +12,12 @@ public class AddModelButtonTest {
 	public void Constructor_CreateButton_VerifyExceptionThrownWhenParentNull() {
 		new AddModelButton(null);
 	}
+	
+	@Test
+	public void Constructor_CreateButton_VerifyCaption() {
+		AddModelButton button = new AddModelButton(new JPanel());
+
+		assertEquals("Verify model button caption set properly in the constructor",
+				AddModelButton.Caption, button.getText());
+	}
 }

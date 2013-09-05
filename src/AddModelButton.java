@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -15,7 +17,7 @@ import javax.swing.SwingConstants;
 /*
  * Button used to add models to the composer
  */
-public class AddModelButton extends JButton {
+public class AddModelButton extends JButton implements ActionListener {
 	// Image path
 	public final static String GreenPlusPath = "images/GreenPlus.png";
 	
@@ -38,11 +40,13 @@ public class AddModelButton extends JButton {
 	private JFileChooser _fileChooser;
 	
 	public AddModelButton(Component fileChooserParent){
-		setupUI();
+		super(Caption);
 		
+		setupUI();
 		createFileChooser(fileChooserParent);
 		
-		listenForMouseEvents();
+		// Listen for click events
+		this.addActionListener(this);
 	}
 	
 	/*
@@ -85,59 +89,22 @@ public class AddModelButton extends JButton {
 	}
 
 	/*
-	 * Listen and handle mouse events
+	 * Called when the button is clicked. Opens file chooser.
+	 * TODO: Execute callback with file info
+	 * 
+	 * (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	private void listenForMouseEvents(){
-		final JButton addModelButton = this;
-		this.addMouseListener(new MouseListener() {
-			
-			/*
-			 * Called when the button is clicked. Opens file chooser.
-			 * TODO: Execute callback with file info
-			 * 
-			 * (non-Javadoc)
-			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-			 */
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				int returnVal = _fileChooser.showOpenDialog(_fileChooserParent);
-				
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-		            File file = _fileChooser.getSelectedFile();
-		            
-		            // File handling coming soon
-		            throw new UnsupportedOperationException("Add Model");
-		        }
-			}
-
-			/*
-			 * Show the caption when you hover over the button
-			 * (non-Javadoc)
-			 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-			 */
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				addModelButton.setText(Caption);
-			}
-
-			/*
-			 * Hide the caption when you leave the button
-			 * (non-Javadoc)
-			 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-			 */
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				addModelButton.setText("");
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-			}
-		});
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		int returnVal = _fileChooser.showOpenDialog(_fileChooserParent);
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = _fileChooser.getSelectedFile();
+            
+            // File handling coming soon
+            throw new UnsupportedOperationException("Add Model");
+        }
 	}
 }
 
