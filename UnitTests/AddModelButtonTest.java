@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class AddModelButtonTest {
 	
-	@Test (expected = Exception.class)
+	@Test (expected = NullPointerException.class)
 	public void Constructor_CreateButton_VerifyExceptionThrownWhenParentNull() {
 		new AddModelButton(null);
 	}

@@ -7,7 +7,7 @@ import javax.swing.JFrame;
  */
 
 /**
- * @author Ryan
+ * @author rjames
  *
  */
 public class Program {

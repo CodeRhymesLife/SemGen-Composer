@@ -16,7 +16,7 @@ public class MergedModelPropertyTest {
 	 * Setup properties
 	 */
 	@Before
-	public void setUpBeforeTest() {
+	public void setUp() {
 		_property1 = new ModelProperty("prop 1 test name", "prop 1 test var name", "prop 1 test equation");
 		_property2 = new ModelProperty("prop 2 test name", "prop 2 test var name", "prop 2 test equation");
 		

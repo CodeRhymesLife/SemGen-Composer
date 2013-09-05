@@ -11,7 +11,7 @@ public class ModelPropertyTest {
 	private ModelProperty _modelProperty;
 	
 	@Before
-	public void setUpBeforeTest(){
+	public void setUp(){
 		_modelProperty = new ModelProperty(_name, _variableName, _equation);
 	}
 	
