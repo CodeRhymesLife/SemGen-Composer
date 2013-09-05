@@ -14,13 +14,19 @@ public class Model {
 	
 	/*
 	 * Get model name
+	 * 
+	 * Returns:
+	 * Model name
 	 */
 	public String getName(){
 		return null;
 	}
 	
 	/*
-	 * Add property to model
+	 * Add property to model.
+	 * 
+	 * Returns:
+	 * True if model was successfully added. False otherwise
 	 */
 	public boolean addProperty(IModelProperty property){
 		return false;
@@ -28,6 +34,9 @@ public class Model {
 	
 	/*
 	 * Remove the model property from this model
+	 * 
+	 * Returns:
+	 * True if model was successfully removed. False otherwise
 	 */
 	public boolean removeProperty(IModelProperty property){
 		return false;

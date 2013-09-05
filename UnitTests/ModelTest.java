@@ -5,39 +5,51 @@ import org.junit.Test;
 
 
 public class ModelTest {
-
+	private String _name;
+	private IModelProperty[] _properties;
+	private Model _model;
+	
 	@Before
 	public void setUp() throws Exception {
+		_name = "test model name";
+		_properties = new ModelProperty[1];
+		_properties[0] = new ModelProperty("test name", "test var name", "test equation");
+		
+		_model = new Model(_name, _properties);
 	}
 
 	@Test (expected = NullPointerException.class)
 	public void Constructor_NullName_VerifyExceptionThrow() {
-		fail("Not yet implemented");
+		new Model(null, new ModelProperty[1]);
 	}
 
 	@Test (expected = NullPointerException.class)
 	public void Constructor_NullProperties_VerifyExceptionThrow() {
-		fail("Not yet implemented");
+		new Model("some name", null);
 	}
 	
 	@Test
 	public void getName_getName_VerifyCorrectNameRetrieved() {
-		fail("Not yet implemented");
+		assertEquals("Verify name is the same name that we gave the model",
+				_name, _model.getName());
 	}
 	
 	@Test
 	public void addProperty_Null_VerifyFalse() {
-		fail("Not yet implemented");
+		assertFalse("Verify we can't add null properties",
+				_model.addProperty(null));
 	}
 	
 	@Test
 	public void addProperty_AlreadyInModel_VerifyFalse() {
-		fail("Not yet implemented");
+		assertFalse("Verify properties that are already in the model are not added again",
+				_model.addProperty(_properties[0]));
 	}
 	
 	@Test
-	public void addProperty_NewProperty_VerifyFalse() {
-		fail("Not yet implemented");
+	public void addProperty_NewProperty_VerifyTrue() {
+		assertTrue("Verify a new property is added to the model successfully",
+				_model.addProperty(new ModelProperty("test", "test", "test")));
 	}
 	
 	@Test (expected = NullPointerException.class)
