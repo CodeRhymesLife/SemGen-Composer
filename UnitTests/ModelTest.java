@@ -1,32 +1,39 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class ModelTest {
 	private String _name;
-	private IModelProperty[] _properties;
+	private ArrayList<IModelProperty> _properties;
 	private TestModelActionListener _actionListener;
 	private Model _model;
 	
 	@Before
 	public void setUp() throws Exception {
 		_name = "test model name";
-		_properties = new ModelProperty[1];
-		_properties[0] = new ModelProperty("test name", "test var name", "test equation");
+		_properties = new ArrayList<IModelProperty>();
+		_properties.add(new ModelProperty("test name", "test var name", "test equation"));
+		_actionListener = new TestModelActionListener();
 		
 		_model = new Model(_name, _properties);
 	}
 
 	@Test (expected = NullPointerException.class)
 	public void Constructor_NullName_VerifyExceptionThrow() {
-		new Model(null, new ModelProperty[1]);
+		new Model(null, _properties);
 	}
-
-	@Test (expected = NullPointerException.class)
-	public void Constructor_NullProperties_VerifyExceptionThrow() {
-		new Model("some name", null);
+	
+	@Test
+	public void Constructor_NullProperties_VerifyNoExceptionThrow() {
+		new Model(_name);
+		new Model(_name, null);
+		
+		assertTrue("Verify passing in null properties doesnt throw an exception",
+				true);
 	}
 	
 	@Test
@@ -44,7 +51,7 @@ public class ModelTest {
 	@Test
 	public void addProperty_AlreadyInModel_VerifyFalse() {
 		assertFalse("Verify properties that are already in the model are not added again",
-				_model.addProperty(_properties[0]));
+				_model.addProperty(_properties.get(0)));
 	}
 	
 	@Test
@@ -78,6 +85,24 @@ public class ModelTest {
 		assertSame("Verify the listener was called with the correct property after the property was added to the model",
 				property,
 				_actionListener.LastAddedProperty);
+	}
+	
+	@Test
+	public void addModelActionListener_ValidListener_VerifyListenerCalledWhenPropertyRemoved() {
+		// Add property
+		IModelProperty property = new ModelProperty("test", "test", "test");
+		_model.addProperty(property);
+		
+		// Add listener
+		_model.addModelActionListener(_actionListener);
+		
+		// Remove property
+		_model.removeProperty(property);
+		
+		// Verify listener received a callback
+		assertSame("Verify the listener was called with the correct property after the property was removed to the model",
+				property,
+				_actionListener.LastRemovedProperty);
 	}
 	
 	@Test
