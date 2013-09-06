@@ -55,12 +55,12 @@ public class ModelTest {
 	
 	@Test
 	public void addModelActionListener_Null_VerifyFalse() {
-		assertTrue("Verify false is returned when addModelActionListener is called with null",
+		assertFalse("Verify false is returned when addModelActionListener is called with null",
 				_model.addModelActionListener(null));
 	}
 	
 	@Test
-	public void addModelActionListener_ValidListener_VerifyListenerAdded() {
+	public void addModelActionListener_ValidListener_VerifyTrue() {
 		assertTrue("Verify true is returned when addModelActionListener is called with a valid listener",
 				_model.addModelActionListener(_actionListener));
 	}
@@ -82,23 +82,40 @@ public class ModelTest {
 	
 	@Test
 	public void removeModelActionListener_Null_VerifyFalse() {
-		assertTrue("Verify false is returned when removeModelActionListener is called with null",
+		assertFalse("Verify false is returned when removeModelActionListener is called with null",
 				_model.removeModelActionListener(null));
 	}
 	
 	@Test
 	public void removeModelActionListener_ExistingListener_VerifyTrue() {
-		fail("Not yet implemented");
+		// Add listener
+		_model.addModelActionListener(_actionListener);
+		
+		assertTrue("Verify true returned when removeModelActionListener is called with an existing listener",
+				_model.removeModelActionListener(_actionListener));
 	}
 	
 	@Test
 	public void removeModelActionListener_NonExistingListener_VerifyFalse() {
-		fail("Not yet implemented");
+		assertFalse("Verify false returned when removeModelActionListener is called with a non-existent listener",
+				_model.removeModelActionListener(new TestModelActionListener()));
 	}
 	
 	@Test
 	public void removeModelActionListener_ExistingListener_VerifyListenerNotCalledWhenPropertyRemoved() {
-		fail("Not yet implemented");
+		// Add listener
+		_model.addModelActionListener(_actionListener);
+		
+		// Remove listener
+		_model.removeModelActionListener(_actionListener);
+		
+		// Add property
+		IModelProperty property = new ModelProperty("test", "test", "test");
+		_model.addProperty(property);
+		
+		// Verify listener not called with property
+		assertNull("Verify the listener was not called after it was removed",
+				_actionListener.LastAddedProperty);
 	}
 	
 	/*
