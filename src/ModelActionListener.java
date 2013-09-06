@@ -6,11 +6,11 @@ public interface ModelActionListener {
 	 * Called when a property is added
 	 * to a model
 	 */
-	void addedProperty();
+	void propertyAdded(IModelProperty property);
 	
 	/*
 	 * Called when a property is removed
 	 * from a model
 	 */
-	void removedProperty();
+	void propertyRemoved(IModelProperty property);
 }

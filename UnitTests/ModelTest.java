@@ -7,6 +7,7 @@ import org.junit.Test;
 public class ModelTest {
 	private String _name;
 	private IModelProperty[] _properties;
+	private TestModelActionListener _actionListener;
 	private Model _model;
 	
 	@Before
@@ -52,23 +53,71 @@ public class ModelTest {
 				_model.addProperty(new ModelProperty("test", "test", "test")));
 	}
 	
-	@Test (expected = NullPointerException.class)
-	public void addModelActionListener_Null_VerifyExceptionThrown() {
-		fail("Not yet implemented");
+	@Test
+	public void addModelActionListener_Null_VerifyFalse() {
+		assertTrue("Verify false is returned when addModelActionListener is called with null",
+				_model.addModelActionListener(null));
 	}
 	
 	@Test
 	public void addModelActionListener_ValidListener_VerifyListenerAdded() {
-		fail("Not yet implemented");
+		assertTrue("Verify true is returned when addModelActionListener is called with a valid listener",
+				_model.addModelActionListener(_actionListener));
 	}
 	
-	@Test (expected = NullPointerException.class)
-	public void removeModelActionListener_Null_VerifyExceptionThrow() {
+	@Test
+	public void addModelActionListener_ValidListener_VerifyListenerCalledWhenPropertyAdded() {
+		// Add listener
+		_model.addModelActionListener(_actionListener);
+		
+		// Add property
+		IModelProperty property = new ModelProperty("test", "test", "test");
+		_model.addProperty(property);
+		
+		// Verify listener received a callback
+		assertSame("Verify the listener was called with the correct property after the property was added to the model",
+				property,
+				_actionListener.LastAddedProperty);
+	}
+	
+	@Test
+	public void removeModelActionListener_Null_VerifyFalse() {
+		assertTrue("Verify false is returned when removeModelActionListener is called with null",
+				_model.removeModelActionListener(null));
+	}
+	
+	@Test
+	public void removeModelActionListener_ExistingListener_VerifyTrue() {
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void removeModelActionListener_ValidListener_VerifyListenerRemoved() {
+	public void removeModelActionListener_NonExistingListener_VerifyFalse() {
 		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void removeModelActionListener_ExistingListener_VerifyListenerNotCalledWhenPropertyRemoved() {
+		fail("Not yet implemented");
+	}
+	
+	/*
+	 * Model action listener used for unit tests
+	 */
+	private class TestModelActionListener implements ModelActionListener{
+
+		public IModelProperty LastAddedProperty;
+		public IModelProperty LastRemovedProperty;
+		
+		@Override
+		public void propertyAdded(IModelProperty property) {
+			LastAddedProperty = property;
+		}
+
+		@Override
+		public void propertyRemoved(IModelProperty property) {
+			LastRemovedProperty = property;
+		}
+		
 	}
 }

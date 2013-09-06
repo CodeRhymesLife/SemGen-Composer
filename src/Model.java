@@ -45,14 +45,14 @@ public class Model {
 	/*
 	 * Add listener for model actions
 	 */
-	public void addModelActionListener(ModelActionListener listener){
-		
+	public boolean addModelActionListener(ModelActionListener listener){
+		return false;
 	}
 	
 	/*
 	 * Remove listener for model actions
 	 */
-	public void removeModelActionListener(ModelActionListener listener){
-		
+	public boolean removeModelActionListener(ModelActionListener listener){
+		return false;
 	}
 }
