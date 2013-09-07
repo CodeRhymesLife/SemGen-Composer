@@ -1,7 +1,6 @@
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -18,19 +17,19 @@ public class ModelRepositoryTest {
 	}
 
 	@Test
-	public void addModel_NullModel_VerifyFalse() {
+	public void addModel_NullModel_VerifyModelNotAdded() {
 		assertFalse("Verify null not added to model repository",
 				_repository.addModel(null));
 	}
 	
 	@Test
-	public void addModel_ValidModel_VerifyTrue() {
+	public void addModel_ValidModel_VerifyModelAdded() {
 		assertTrue("Verify valid model successfully added to repository",
 				_repository.addModel(_model));
 	}
 	
 	@Test
-	public void addModel_ModelAlreadyInRepository_VerifyFalse() {
+	public void addModel_ModelAlreadyInRepository_VerifyModelNotAdded() {
 		// Add model
 		_repository.addModel(_model);
 		
@@ -52,13 +51,13 @@ public class ModelRepositoryTest {
 	}
 	
 	@Test
-	public void removeModel_Null_VerifyFalse() {
+	public void removeModel_Null_VerifyModelNotAdded() {
 		assertFalse("Verify null models cannot be removed",
 				_repository.removeModel(null));
 	}
 	
 	@Test
-	public void removeModel_ExistingModel_VerifyTrue() {
+	public void removeModel_ExistingModel_VerifyModelRemoved() {
 		// Add model
 		_repository.addModel(_model);
 		
@@ -67,7 +66,7 @@ public class ModelRepositoryTest {
 	}
 	
 	@Test
-	public void removeModel_ModelNotInRepository_VerifyFalse() {
+	public void removeModel_ModelNotInRepository_VerifyModelNotRemoved() {
 		assertFalse("Verify models that are not in the repository are not removed",
 				_repository.removeModel(_model));
 	}
