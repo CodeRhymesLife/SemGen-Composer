@@ -31,7 +31,7 @@ public class Model {
 			throw new NullPointerException("name");
 		
 		_name = name;
-		_properties = new ArrayList<IModelProperty>();
+		_properties = new ArrayList<>();
 		_listeners = new ArrayList<>();
 		
 		// Save properties if there are any

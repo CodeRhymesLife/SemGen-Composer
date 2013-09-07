@@ -159,7 +159,6 @@ public class ModelTest {
 		@Override
 		public void propertyRemoved(IModelProperty property) {
 			LastRemovedProperty = property;
-		}
-		
+		}		
 	}
 }
