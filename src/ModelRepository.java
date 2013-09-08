@@ -101,8 +101,10 @@ public class ModelRepository {
 			switch(action){
 				case ModelAdded:
 					listener.modelAdded(model);
+					break;
 				case ModelRemoved:
 					listener.modelRemoved(model);
+					break;
 			}
 		}
 	}

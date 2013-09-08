@@ -60,16 +60,28 @@ public class ModelRepositoryTest {
 	}
 	
 	@Test
-	public void addModel_ValidModel_VerifyListenerCalledWhenModelAdded() {
+	public void addModel_ValidModel_VerifyAddedModelListenerCalledWhenModelAdded() {
 		// Add listener
 		_repository.addModelRepositoryActionListener(_listener);
 		
 		// Add Model
 		_repository.addModel(_model);
 		
-		assertSame("Verify the listener was called with the correct model",
+		assertSame("Verify the added model listener was called with the correct model",
 				_model,
 				_listener.LastAddedModel);
+	}
+	
+	@Test
+	public void addModel_ValidModel_VerifyRemovedModelListenerNotCalledWhenModelAdded() {
+		// Add listener
+		_repository.addModelRepositoryActionListener(_listener);
+		
+		// Add Model
+		_repository.addModel(_model);
+		
+		assertNull("Verify the removed model listener was not called",
+				_listener.LastRemovedModel);
 	}
 	
 	@Test
@@ -94,7 +106,7 @@ public class ModelRepositoryTest {
 	}
 	
 	@Test
-	public void removeModel_ExistingModel_VerifyListenerCalledWhenModelRemoved() {
+	public void removeModel_ExistingModel_VerifyRemovedModelListenerCalledWhenModelRemoved() {
 		// Add model
 		_repository.addModel(_model);
 		
@@ -107,6 +119,21 @@ public class ModelRepositoryTest {
 		assertSame("Verify listener called with correct model when model removed",
 				_model,
 				_listener.LastRemovedModel);
+	}
+	
+	@Test
+	public void removeModel_ExistingModel_VerifyAddedModelListenerNotCalledWhenModelRemoved() {
+		// Add model
+		_repository.addModel(_model);
+		
+		// Add listener
+		_repository.addModelRepositoryActionListener(_listener);
+		
+		// Remove model
+		_repository.removeModel(_model);
+
+		assertNull("Verify listener called with correct model when model removed",
+				_listener.LastAddedModel);
 	}
 	
 	@Test
