@@ -20,28 +20,35 @@ public class ComposerJFrame extends JFrame {
 	private final static String Title = "SemGen Composer";
 	
 	// Add model button
-	private static Component _addModelButton;
+	private AddModelButton _addModelButton;
 	
 	/**
 	 * @throws HeadlessException
 	 */
-	public ComposerJFrame() throws HeadlessException {
+	public ComposerJFrame(SemGen semGen) throws HeadlessException {
 		// Set the title
 		super(Title);
+		
+		listForSemGenChanges(semGen);
+	}
+	
+	/*
+	 * Get the add model button
+	 */
+	public AddModelButton getAddModelButton(){
+		return _addModelButton;
 	}
 	
 	/*
 	 * Setup and show ui
 	 */
-	public void createAndShowUI(){
+	public void createUI(){
 		this.setLayout(null);
 		
 		Container pane = this.getContentPane();
 		pane.setBackground(Color.WHITE);
 		
 		createAddModelButton(pane);
-		
-		this.setVisible(true);
 	}
 	
 	/*
@@ -55,5 +62,23 @@ public class ComposerJFrame extends JFrame {
 		Insets insets = pane.getInsets();
 		Dimension size = _addModelButton.getPreferredSize();
 		_addModelButton.setBounds(insets.left + 10, insets.top, size.width, size.height);
+	}
+	
+	/*
+	 * Listen and handle changes in SemGen
+	 */
+	private void listForSemGenChanges(SemGen semGen){
+		semGen.getModelRepository().addModelRepositoryActionListener(new ModelRepositoryActionListener() {
+			
+			@Override
+			public void modelRemoved(Model model) {
+				throw new UnsupportedOperationException("Composer remove model");
+			}
+			
+			@Override
+			public void modelAdded(Model model) {
+				throw new UnsupportedOperationException("Composer add model");
+			}
+		});
 	}
 }

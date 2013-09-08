@@ -39,6 +39,9 @@ public class AddModelButton extends JButton implements ActionListener {
 	// Used to choose model files
 	private JFileChooser _fileChooser;
 	
+	// Listens for file chosen action
+	private AddModelButtonActionListener _fileChosenListener;
+	
 	public AddModelButton(Component fileChooserParent){
 		super(Caption);
 		
@@ -74,6 +77,15 @@ public class AddModelButton extends JButton implements ActionListener {
 	}
 	
 	/*
+	 * Set the action listener that is called when
+	 * a model file is chosen.
+	 */
+	public void setAddModelButtonActionListener(AddModelButtonActionListener listener){
+		if(listener != null)
+			_fileChosenListener = listener;
+	}
+	
+	/*
 	 * Create the file chooser
 	 */
 	private void createFileChooser(Component parent){
@@ -102,8 +114,9 @@ public class AddModelButton extends JButton implements ActionListener {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = _fileChooser.getSelectedFile();
             
-            // File handling coming soon
-            throw new UnsupportedOperationException("Add Model");
+            // Inform our listener that a file has been chosen
+            if(_fileChosenListener != null)
+            	_fileChosenListener.modelFileChosen(file);
         }
 	}
 }
