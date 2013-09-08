@@ -17,14 +17,36 @@ public class ModelRepositoryTest {
 	}
 
 	@Test
+	public void hasModel_NullModel_VerifyFalse() {
+		assertFalse("Verify null is not in the repository",
+				_repository.hasModel(null));
+	}
+	
+	@Test
+	public void hasModel_ModelInRepository_VerifyTrue() {
+		assertFalse("Verify model not found",
+				_repository.hasModel("model not in repository"));
+	}
+	
+	@Test
+	public void hasModel_ModelNotInRepository_VerifyTrue() {
+		// Add model
+		_repository.addModel(_model);
+		
+		assertTrue("Verify model found",
+				_repository.hasModel(_model.getName()));
+	}
+	
+	@Test
 	public void addModel_NullModel_VerifyModelNotAdded() {
-		assertFalse("Verify null not added to model repository",
+		assertNull("Verify null not added to model repository",
 				_repository.addModel(null));
 	}
 	
 	@Test
 	public void addModel_ValidModel_VerifyModelAdded() {
-		assertTrue("Verify valid model successfully added to repository",
+		assertSame("Verify valid model successfully added to repository",
+				_model,
 				_repository.addModel(_model));
 	}
 	
@@ -33,7 +55,7 @@ public class ModelRepositoryTest {
 		// Add model
 		_repository.addModel(_model);
 		
-		assertFalse("Verify models are not added if they already exist in the repository",
+		assertNull("Verify models are not added if they already exist in the repository",
 				_repository.addModel(_model));
 	}
 	
@@ -112,24 +134,5 @@ public class ModelRepositoryTest {
 		
 		assertTrue("Verify existing listener removed from repository",
 				_repository.removeModelRepositoryActionListener(_listener));
-	}
-	
-	/*
-	 * Model repository action listener used for unit tests
-	 */
-	private class TestModelRepositoryActionListener implements ModelRepositoryActionListener{
-
-		public Model LastAddedModel;
-		public Model LastRemovedModel;
-
-		@Override
-		public void modelAdded(Model model) {
-			LastAddedModel = model;
-		}
-
-		@Override
-		public void modelRemoved(Model model) {
-			LastRemovedModel = model;
-		}
 	}
 }

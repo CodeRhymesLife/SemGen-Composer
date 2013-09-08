@@ -28,16 +28,35 @@ public class ModelRepository {
 	}
 	
 	/*
+	 * Tells whether the given model is in the repository
+	 */
+	public boolean hasModel(String modelName){
+		// Check to see if this model is in
+		// the repository
+		// TODO: This is slow, lookout for perf issues
+		for(Iterator<Model> i = _models.iterator(); i.hasNext(); ) {
+			Model model = i.next();
+			
+			// Do we have this model?
+			if(model.getName().equals(modelName))
+				return true;
+		}
+		
+		// We didnt find the model
+		return false;
+	}
+	
+	/*
 	 * Adds model to repository
 	 */
-	public boolean addModel(Model model){
+	public Model addModel(Model model){
 		if(model == null ||
 		_models.contains(model) ||
 		!_models.add(model))
-			return false;
+			return null;
 		
 		InformListenersAboutModelAction(ModelRepositoryAction.ModelAdded, model);
-		return true;
+		return model;
 	}
 	
 	/*
