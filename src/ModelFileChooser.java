@@ -5,6 +5,9 @@ import javax.swing.JFileChooser;
  */
 public class ModelFileChooser extends JFileChooser {
 	public ModelFileChooser(){
+		// Set the default path the to user's dir
+		super(System.getProperty("user.dir"));
+		
 		this.setMultiSelectionEnabled(false);
 		
 		// Only accept files of specific types
