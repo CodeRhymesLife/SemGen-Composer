@@ -29,9 +29,6 @@ public class Program {
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// Create the ui elements
-		frame.createUI();
-		
 		// Listen for the new model file chosen action
 		frame.getAddModelButton().setAddModelButtonActionListener(new AddModelButtonActionListener() {
 			

@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,7 +22,7 @@ import javax.swing.SwingConstants;
  */
 public class AddModelButton extends JButton implements ActionListener {
 	// Image path
-	public final static String GreenPlusPath = "images/GreenPlus.png";
+	public final static String GreenPlusPath = SemGemConstants.ImagesDir + "GreenPlus.png";
 	
 	// Button caption
 	public final static String Caption = "Add Model";
@@ -44,8 +47,8 @@ public class AddModelButton extends JButton implements ActionListener {
 	
 	public AddModelButton(Component fileChooserParent){
 		super(Caption);
-		
 		setupUI();
+		
 		createFileChooser(fileChooserParent);
 		
 		// Listen for click events
@@ -69,6 +72,29 @@ public class AddModelButton extends JButton implements ActionListener {
 		
 		// Text shows to the right of the image
 	    this.setHorizontalTextPosition(SwingConstants.RIGHT);
+	    
+	    // set size
+	    sizeToFit();
+	}
+	
+	/*
+	 * Adjust size based on image and text
+	 */
+	private void sizeToFit(){
+		Icon plusImage = this.getIcon();
+		FontMetrics metrics = getFontMetrics(getFont()); 
+		
+		// Text width + image width
+        int width = metrics.stringWidth(getText()) + plusImage.getIconWidth();
+        
+        // Text height + image height
+        int height = metrics.getHeight() + plusImage.getIconHeight();
+        
+        // Set size
+        Dimension newDimension =  new Dimension(width,height);
+        setPreferredSize(newDimension);
+        setBounds(new Rectangle(
+                       getLocation(), getPreferredSize()));
 	}
 	
 	@Override

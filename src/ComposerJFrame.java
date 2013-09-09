@@ -1,11 +1,10 @@
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.HeadlessException;
-import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
 
 /**
  * 
@@ -22,12 +21,18 @@ public class ComposerJFrame extends JFrame {
 	// Add model button
 	private AddModelButton _addModelButton;
 	
-	/**
-	 * @throws HeadlessException
-	 */
-	public ComposerJFrame(SemGen semGen) throws HeadlessException {
+	public ComposerJFrame(SemGen semGen){
 		// Set the title
 		super(Title);
+		
+		Container pane = getContentPane();
+		
+		// This panel accepts absolutely positioned elements
+		pane.setLayout(null);
+		
+		pane.setBackground(Color.WHITE);
+		
+		createAddModelButton();
 		
 		listForSemGenChanges(semGen);
 	}
@@ -40,34 +45,19 @@ public class ComposerJFrame extends JFrame {
 	}
 	
 	/*
-	 * Setup and show ui
-	 */
-	public void createUI(){
-		this.setLayout(null);
-		
-		Container pane = this.getContentPane();
-		pane.setBackground(Color.WHITE);
-		
-		createAddModelButton(pane);
-	}
-	
-	/*
 	 * Create the add model button and add it to the panel
 	 */
-	private void createAddModelButton(Container pane){
+	private void createAddModelButton(){
 		_addModelButton = new AddModelButton(this);
-		pane.add(_addModelButton);
-		
-		// Place in the upper left corner
-		Insets insets = pane.getInsets();
-		Dimension size = _addModelButton.getPreferredSize();
-		_addModelButton.setBounds(insets.left + 10, insets.top, size.width, size.height);
+		_addModelButton.setVerticalAlignment(SwingConstants.TOP);
+		this.getContentPane().add(_addModelButton);
 	}
 	
 	/*
 	 * Listen and handle changes in SemGen
 	 */
 	private void listForSemGenChanges(SemGen semGen){
+		final ComposerJFrame thisFrame = this;
 		semGen.getModelRepository().addModelRepositoryActionListener(new ModelRepositoryActionListener() {
 			
 			@Override
@@ -77,7 +67,28 @@ public class ComposerJFrame extends JFrame {
 			
 			@Override
 			public void modelAdded(Model model) {
-				throw new UnsupportedOperationException("Composer add model");
+				// Place model component on frame
+				// this is all temp code and needs to be replaced with some kind
+				// of smart layout class/logic
+				ModelComponent modelComponent = new ModelComponent(model);
+				modelComponent.setLocation(this.getModelPosition(modelComponent));
+				modelComponent.setBounds(new Rectangle( modelComponent.getLocation(),
+						modelComponent.getPreferredSize()));
+				
+				// Repaint frame
+				Container pane = thisFrame.getContentPane();
+				pane.add(modelComponent);
+				pane.validate();
+				pane.repaint();
+			}
+			
+			// Temp code until we have a layout solution. If you really want the number
+			// of models get them from the repository
+			private int numModels = 0;
+			private Point getModelPosition(ModelComponent component){
+				numModels++;
+				return new Point(50 + numModels * component.getWidth() + numModels * 60,
+						60 + component.getHeight());
 			}
 		});
 	}
