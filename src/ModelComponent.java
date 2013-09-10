@@ -1,10 +1,14 @@
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -15,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.Icon;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -31,12 +37,22 @@ public class ModelComponent extends JPanel {
 	// Box representing model
 	private ModelBox _modelBox;
 	
+	// Flyout for all models
+	// Decalred here because static vars cant be decalred
+	// on inner classes unless initialized with const
+	private static ModelFlyout Flyout = null;
+	
 	/**
 	 * Create the panel.
 	 * @throws IOException 
 	 * @throws MalformedURLException 
 	 */
 	public ModelComponent(Model model) {
+		// Initialize flyout
+		if(Flyout == null){
+			Flyout = new ModelFlyout();
+		}
+		
 		setBackground(Color.WHITE);
 		
 		// Create and add label
@@ -47,6 +63,9 @@ public class ModelComponent extends JPanel {
 		this.add(_modelBox);
 		
 		this.setSize(getPreferredSize());
+		
+		setBounds(new Rectangle(
+                getLocation(), getPreferredSize()));
 	}
 	
 	@Override
@@ -57,7 +76,7 @@ public class ModelComponent extends JPanel {
 	/*
 	 * Part of Model ui that you move and click
 	 */
-	private class ModelBox extends JPanel{
+	private class ModelBox extends JPanel {
 		private static final int Width = 150;
 		private static final int Height = 100;
 		private static final int BorderArc = 20;
@@ -69,17 +88,9 @@ public class ModelComponent extends JPanel {
 		private ImageComponent _grip;
 		
 		public ModelBox(){
-			this.setBackground(Color.WHITE);
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+			setupUI();
 			
-			// Set layout so grip is centered
-			this.setLayout(new GridBagLayout());
-			
-			// Create and add grip component
-			_grip = new ImageComponent(GripImagePath, 50, 30);
-			this.add(_grip);
-			
-			this.setSize(getPreferredSize());
+			Flyout.RegisterModelBox(this);
 		}
 		
 		@Override
@@ -98,5 +109,78 @@ public class ModelComponent extends JPanel {
 	         g.setColor(getForeground());
 	         g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, BorderArc, BorderArc);
 	    }
+		
+		/*
+		 * Setup the ui
+		 */
+		private void setupUI(){
+			this.setBackground(Color.WHITE);
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+			
+			// Set layout so grip is centered
+			this.setLayout(new GridBagLayout());
+			
+			this.setSize(getPreferredSize());
+			
+			// Create and add grip component
+			_grip = new ImageComponent(GripImagePath, 50, 30);
+			this.add(_grip);
+		}
+	}
+	
+	/*
+	 * Flyout for models
+	 */
+	private class ModelFlyout extends FlyoutComponent implements MouseListener {
+		
+		public ModelFlyout(){
+			Container composerPane = ComposerJFrame.getInstance().getContentPane();
+			
+			// Add to composer pane
+			composerPane.add(this);
+			
+			// Listen for mouse events on the composer content area
+			composerPane.addMouseListener(this);
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent arg0) {}
+		
+		@Override
+		public void mousePressed(MouseEvent arg0) {}
+		
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+		
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+		
+		/*
+		 * If a model box was clicked we will show the flyout around that model box.
+		 * Otherwise make sure the flyout is closed
+		 * 
+		 * (non-Javadoc)
+		 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			Component target = arg0.getComponent();
+			
+			// If a model box was not clicked close this flyout
+			if(target.getClass() != ModelBox.class)
+				this.setVisible(false);
+			
+			// Otherwise open the flyout around the model box
+			else
+				this.showAroundComponent(target);
+		}
+		
+		/*
+		 * Registers a model box with this flyout
+		 */
+		private void RegisterModelBox(ModelBox modelBox){
+			// Listen for mouse eventes
+			modelBox.addMouseListener(this);
+		}
 	}
 }
