@@ -21,11 +21,8 @@ public class Program {
 		ComposerExceptionHandler globalExceptionHandler = new ComposerExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler(globalExceptionHandler);
 		
-		// Create SemGen
-		final SemGen semGen = new SemGen();
-		
 		// Create our frame and set defaults
-		ComposerJFrame frame = new ComposerJFrame(semGen);
+		ComposerJFrame frame = ComposerJFrame.getInstance();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -41,7 +38,7 @@ public class Program {
 			@Override
 			public void modelFileChosen(File file) {
 				try{
-					semGen.addModelFromFile(file);
+					SemGen.getInstance().addModelFromFile(file);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

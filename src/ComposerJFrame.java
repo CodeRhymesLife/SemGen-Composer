@@ -15,6 +15,9 @@ import javax.swing.SwingConstants;
  *
  */
 public class ComposerJFrame extends JFrame {
+	// Instance of singleton
+	private static final ComposerJFrame Instance = new ComposerJFrame(SemGen.getInstance());
+	
 	// Title for frame
 	private final static String Title = "SemGen Composer";
 	
@@ -35,6 +38,10 @@ public class ComposerJFrame extends JFrame {
 		createAddModelButton();
 		
 		listForSemGenChanges(semGen);
+	}
+	
+	public static ComposerJFrame getInstance(){
+		return Instance;
 	}
 	
 	/*

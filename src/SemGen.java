@@ -14,8 +14,18 @@ public class SemGen {
 	// Model repository
 	private ModelRepository _repository;
 	
+	// SemGen instance
+	private static final SemGen Instance = new SemGen();
+	
 	public SemGen(){
 		_repository = new ModelRepository();
+	}
+	
+	/*
+	 * Get instance of singleton
+	 */
+	public static SemGen getInstance(){
+		return Instance;
 	}
 	
 	/*
