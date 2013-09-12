@@ -7,17 +7,30 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 
 public class FlyoutComponent extends JPanel {
+	private JPanel _contentPanel;
+	private TriangleComponent _triangle;
+	
 	/**
 	 * Create the panel.
 	 */
 	public FlyoutComponent() {
-		this.setBackground(Color.BLACK);
+		// Create content panel
+		_contentPanel = new JPanel();
+		_contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		_contentPanel.setPreferredSize(new Dimension(100, 100));
+		this.add(_contentPanel);
+		
+		// Create triangel component
+		_triangle = new TriangleComponent();
+		this.add(_triangle);
+		
 		this.setSize(getPreferredSize());
 		
 		// Flyouts are invisible by default. Call showAroundComponent
@@ -27,7 +40,8 @@ public class FlyoutComponent extends JPanel {
 	
 	@Override
 	public Dimension getPreferredSize(){
-		return new Dimension(100, 100);
+		return new Dimension(_contentPanel.getWidth() + _triangle.getWidth(),
+				_contentPanel.getHeight() + _triangle.getHeight());
 	}
 	
 	/*
@@ -42,8 +56,15 @@ public class FlyoutComponent extends JPanel {
 		
 		this.setVisible(true);
 	}
-
+	
 	private class TriangleComponent extends JComponent{
+		private static final int Height = 50;
+		private static final int Width = 50;
+		
+		public TriangleComponent(){
+			this.setBackground(Color.WHITE);
+		}
+		
 		/* 
 		 * Paint triangle
 		 * 
@@ -64,6 +85,11 @@ public class FlyoutComponent extends JPanel {
 			Polygon triangle = new Polygon(xs, ys, xs.length);
 
 			g.fillPolygon(triangle);
+		}
+		
+		@Override
+		public Dimension getPreferredSize(){
+			return new Dimension(Width, Height);
 		}
 	}
 }
