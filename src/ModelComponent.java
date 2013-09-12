@@ -172,7 +172,7 @@ public class ModelComponent extends JPanel {
 			
 			// Otherwise open the flyout around the model box
 			else
-				this.showAroundComponent(target);
+				this.showAroundComponent(target, FlyoutPosition.Left);
 		}
 		
 		/*
