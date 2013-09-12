@@ -52,6 +52,13 @@ public class ComposerJFrame extends JFrame {
 	}
 	
 	/*
+	 * Show more info about the given model
+	 */
+	public void ShowMoreInfo(Model model){
+		throw new UnsupportedOperationException("More Info");
+	}
+	
+	/*
 	 * Create the add model button and add it to the panel
 	 */
 	private void createAddModelButton(){

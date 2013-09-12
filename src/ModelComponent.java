@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
@@ -12,15 +14,21 @@ import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.Icon;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -31,16 +39,20 @@ import java.awt.Shape;
  * Represents model on composer
  */
 public class ModelComponent extends JPanel {
+
+	// Flyout for all models
+	// Decalred here because static vars cant be decalred
+	// on inner classes unless initialized with const
+	private static ModelFlyout Flyout = null;
+
+	// Model associated with this model componenet
+	private Model _model;
+	
 	// Title
 	private JLabel _lblTitle;
 	
 	// Box representing model
 	private ModelBox _modelBox;
-	
-	// Flyout for all models
-	// Decalred here because static vars cant be decalred
-	// on inner classes unless initialized with const
-	private static ModelFlyout Flyout = null;
 	
 	/**
 	 * Create the panel.
@@ -48,6 +60,8 @@ public class ModelComponent extends JPanel {
 	 * @throws MalformedURLException 
 	 */
 	public ModelComponent(Model model) {
+		_model = model;
+		
 		// Initialize flyout
 		if(Flyout == null){
 			Flyout = new ModelFlyout();
@@ -132,12 +146,14 @@ public class ModelComponent extends JPanel {
 	 * Flyout for models
 	 */
 	private class ModelFlyout extends FlyoutComponent implements MouseListener {
-		
 		public ModelFlyout(){
 			Container composerPane = ComposerJFrame.getInstance().getContentPane();
 			
 			// Add to composer pane
 			composerPane.add(this);
+			
+			// Setup content panel
+			this.setupContentPanel();
 			
 			// Listen for mouse events on the composer content area
 			composerPane.addMouseListener(this);
@@ -181,6 +197,94 @@ public class ModelComponent extends JPanel {
 		private void RegisterModelBox(ModelBox modelBox){
 			// Listen for mouse eventes
 			modelBox.addMouseListener(this);
+		}
+		
+		/*
+		 * Setup the content panel
+		 */
+		private void setupContentPanel(){
+			JPanel contentPanel = this.getContentPanel();
+			
+			// Stack the buttons
+			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+			
+			// Add buttons
+			this.addCommandButtons(contentPanel);
+			
+			// Size the content around the buttons
+			contentPanel.setSize(contentPanel.getPreferredSize());
+		}
+		
+		/*
+		 * Add each command button to the content panel
+		 */
+		private void addCommandButtons(JPanel contentPanel){			
+			// Annotate
+			contentPanel.add(createActionButton("Annotate",
+			new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					SemGen.getInstance().Annotate(_model);
+				}
+			}));
+			
+			// Encode
+			contentPanel.add(createActionButton("Encode",
+			new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					SemGen.getInstance().Encode(_model);
+				}
+			}));
+			
+			// Extract
+			contentPanel.add(createActionButton("Extract",
+			new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					SemGen.getInstance().Extract(_model);
+				}
+			}));
+			
+			// Merge
+			contentPanel.add(createActionButton("Merge",
+			new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					throw new UnsupportedOperationException("Merge flyout");
+				}
+			}));
+			
+			// More Info
+			contentPanel.add(createActionButton("More Info",
+			new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ComposerJFrame.getInstance().ShowMoreInfo(_model);
+				}
+			}));
+		}
+		
+		/*
+		 * Creates a new button that executes the given action when
+		 * the button is clicked
+		 */
+		private JButton createActionButton(String title, ActionListener listener){
+			JButton button = new JButton(title);
+			
+			// Setup ui
+			button.setHorizontalAlignment(SwingConstants.CENTER);
+			button.setContentAreaFilled(false);
+			button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			
+			button.addActionListener(listener);
+			return button;
 		}
 	}
 }

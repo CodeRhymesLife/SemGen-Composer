@@ -41,6 +41,13 @@ public class FlyoutComponent extends JPanel {
 	}
 	
 	/*
+	 * Gets the content panel
+	 */
+	protected JPanel getContentPanel(){
+		return _contentPanel;
+	}
+	
+	/*
 	 * Get the flyout's preferred size which is based on
 	 * the content panel's size and the triangle's height
 	 * 
@@ -65,6 +72,9 @@ public class FlyoutComponent extends JPanel {
 		
 		// Ensure the triangle is facing in the correct direction
 		_triangle.setDirection(direction);
+		
+		// Set the flyout's size
+		this.setSize(this.getPreferredSize());
 		
 		// Set the location of the flyout and each component
 		this.setFlyoutLocationAroundComponent(component, direction);
@@ -157,9 +167,7 @@ public class FlyoutComponent extends JPanel {
 		_contentPanel = new JPanel();
 		_contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		_contentPanel.setBackground(Color.WHITE);
-		_contentPanel.setPreferredSize(new Dimension(200, 200));
-		_contentPanel.setSize(_contentPanel.getPreferredSize());
-		
+
 		// Give the triangle enough room to move around the outsize of the content panel
 		_contentPanel.setLocation(new Point(this.getContentPanelOffset(), this.getContentPanelOffset()));
 		

@@ -36,6 +36,34 @@ public class SemGen {
 	}
 	
 	/*
+	 * Annotate the given model
+	 */
+	public void Annotate(Model model){
+		throw new UnsupportedOperationException("Annotate");
+	}
+	
+	/*
+	 * Encode the given model
+	 */
+	public void Encode(Model model){
+		throw new UnsupportedOperationException("Encode");
+	}
+	
+	/*
+	 * Extract the given model
+	 */
+	public void Extract(Model model){
+		throw new UnsupportedOperationException("Extract");
+	}
+	
+	/*
+	 * Merge the given models
+	 */
+	public void Merge(Model model1, Model model2){
+		throw new UnsupportedOperationException("Merge");
+	}
+	
+	/*
 	 * Add model from file.
 	 * If parsing errors are encountered this function will
 	 * throw specific exceptions
