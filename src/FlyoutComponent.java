@@ -24,6 +24,9 @@ public class FlyoutComponent extends JPanel {
 		// Absolute positioning
 		this.setLayout(null);
 		
+		// Make this transparent
+		setOpaque(false);
+		
 		// Create triangle component
 		_triangle = new TriangleComponent();
 		this.add(_triangle);
@@ -153,7 +156,8 @@ public class FlyoutComponent extends JPanel {
 		// Create content panel
 		_contentPanel = new JPanel();
 		_contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		_contentPanel.setPreferredSize(new Dimension(100, 100));
+		_contentPanel.setBackground(Color.WHITE);
+		_contentPanel.setPreferredSize(new Dimension(200, 200));
 		_contentPanel.setSize(_contentPanel.getPreferredSize());
 		
 		// Give the triangle enough room to move around the outsize of the content panel
