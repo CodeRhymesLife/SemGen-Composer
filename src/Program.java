@@ -48,6 +48,10 @@ public class Program {
 		
 		// Show frame
 		frame.setVisible(true);
+		
+		// Test code.
+		// TODO: Remove before launch.
+		SemGen.getInstance().getModelRepository().addModel(new Model("Initial Model"));
 	}
 
 }

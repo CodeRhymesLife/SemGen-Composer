@@ -73,6 +73,9 @@ public class FlyoutComponent extends JPanel {
 		// Ensure the triangle is facing in the correct direction
 		_triangle.setDirection(direction);
 		
+		// Set the content panel's size
+		_contentPanel.setSize(_contentPanel.getPreferredSize());
+
 		// Set the flyout's size
 		this.setSize(this.getPreferredSize());
 		
