@@ -28,6 +28,17 @@ public class ModelRepository {
 	}
 	
 	/*
+	 * Gets a list of models that are in the repository
+	 * 
+	 * NOTE: To ensure encapsulation this function returns
+	 * a copy of the internal list. Use sparingly.
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Model> getModels(){
+		return (ArrayList<Model>) _models.clone();
+	}
+	
+	/*
 	 * Tells whether the given model is in the repository
 	 */
 	public boolean hasModel(String modelName){

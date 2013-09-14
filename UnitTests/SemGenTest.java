@@ -25,6 +25,33 @@ public class SemGenTest {
 	}
 
 	@Test
+	public void isMergeable_NullModel1_VerifyFalse() {
+		assertFalse("Verify a null model is not mergeable",
+				SemGen.isMergeable(null, new Model("test model")));
+	}
+	
+	@Test
+	public void isMergeable_NullModel2_VerifyFalse() {
+		assertFalse("Verify a null model is not mergeable",
+				SemGen.isMergeable(new Model("test model"), null));
+	}
+	
+	@Test
+	public void isMergeable_SameModel_VerifyFalse() {
+		Model model = new Model("test model");
+		assertFalse("Verify a model is not mergeable with itself",
+				SemGen.isMergeable(model, model));
+	}
+	
+	@Test
+	public void isMergeable_DifferentModels_VerifyTrue() {
+		Model model1 = new Model("test model 1");
+		Model model2 = new Model("test model 2");
+		assertTrue("Verify a different models are mergeable",
+				SemGen.isMergeable(model1, model2));
+	}
+	
+	@Test
 	public void addModelFromFile_ValidModelFile_VerifyModelCreated() throws Exception {
 		File validModelFile = FileHelper.getInstance().GetFile(this, FileHelper.ValidModelFileName);
 		

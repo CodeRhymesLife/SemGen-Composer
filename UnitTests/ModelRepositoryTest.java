@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,6 +37,45 @@ public class ModelRepositoryTest {
 		
 		assertTrue("Verify model found",
 				_repository.hasModel(_model.getName()));
+	}
+	
+	@Test
+	public void getModels_NoModels_VerifyEmptyList() {
+		assertEquals("Verify the model repository has 0 models",
+				0,
+				_repository.getModels().size());
+	}
+	
+	@Test
+	public void getModels_ModelInRepository_VerifyListContainsModel() {
+		// Add model
+		_repository.addModel(_model);
+		
+		assertEquals("Verify the model repository has 1 model",
+				1,
+				_repository.getModels().size());
+		
+		assertEquals("Verify model in repository",
+				_model,
+				_repository.getModels().get(0));
+	}
+	
+	@Test
+	public void getModels_ModifyList_VerifyListInRepositoryNotChanged() {
+		// Add model
+		_repository.addModel(_model);
+		
+		// Remove the model from the list
+		ArrayList<Model> models = _repository.getModels();
+		models.clear();
+		
+		assertEquals("Verify all models were removed from the list we retrieved",
+				0,
+				models.size());
+		
+		assertEquals("Verify the model repository list was unchanged",
+				1,
+				_repository.getModels().size());
 	}
 	
 	@Test

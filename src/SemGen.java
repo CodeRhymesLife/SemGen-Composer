@@ -29,6 +29,18 @@ public class SemGen {
 	}
 	
 	/*
+	 * Tells whether the given models are mergeable
+	 */
+	public static boolean isMergeable(Model model1, Model model2){
+		if(model1 == null ||
+			model2 == null ||
+			model1 == model2)
+			return false;
+		
+		return true;
+	}
+	
+	/*
 	 * Get model repository
 	 */
 	public ModelRepository getModelRepository(){

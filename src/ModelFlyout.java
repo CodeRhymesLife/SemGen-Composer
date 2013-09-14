@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,6 +25,9 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 	
 	// Shows mergeable models
 	private JPanel _mergeableModelsPanel;
+	
+	// Button list of mergeable models
+	private JPanel _mergeableModelButtonsListPanel;
 	
 	// Currently selected model box
 	private ModelBox _currentModelBox;
@@ -123,11 +127,29 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 			}
 		}));
 		
+		// Add mergeable model buttons panel
+		this.setupMergeableModelButtonsListPanel();
+		_mergeableModelsPanel.add(_mergeableModelButtonsListPanel);		
+		
 		// Ensure the button's panel is the same size as the command button panel
 		// so the flyout doenst dynamically change size when we show the mergeable
 		// panel
 		_mergeableModelsPanel.setPreferredSize(_commandButtonPanel.getSize());
 		_mergeableModelsPanel.setSize(_mergeableModelsPanel.getPreferredSize());
+	}
+	
+	/*
+	 * Setup panel that lists the mergeable models
+	 */
+	private void setupMergeableModelButtonsListPanel(){
+		// Add mergeable model buttons
+		_mergeableModelButtonsListPanel = new JPanel();
+
+		// Make this panel transparent
+		_mergeableModelButtonsListPanel.setOpaque(false);
+		
+		// Stack the buttons
+		_mergeableModelButtonsListPanel.setLayout(new BoxLayout(_mergeableModelButtonsListPanel, BoxLayout.Y_AXIS));
 	}
 	
 	/*
@@ -207,19 +229,55 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 	}
 	
 	/*
-	 * Show the mergeable models panel
-	 */
-	private void showMergeableModelsPanel(){
-		_commandButtonPanel.setVisible(false);
-		_mergeableModelsPanel.setVisible(true);
-	}
-	
-	/*
 	 * Show the command buttons panel
 	 */
 	private void showCommandButtonPanel(){
 		_mergeableModelsPanel.setVisible(false);
 		_commandButtonPanel.setVisible(true);
+	}
+	
+	/*
+	 * Show the mergeable models panel
+	 */
+	private void showMergeableModelsPanel(){
+		_commandButtonPanel.setVisible(false);
+		
+		this.buildMergeableModelButtonsListPanel();
+		
+		_mergeableModelsPanel.setVisible(true);
+	}
+	
+	/*
+	 * Creates a button for each model that mergeable
+	 * and adds it to the mergeable model button list panel
+	 */
+	private void buildMergeableModelButtonsListPanel(){
+		// Empty the container
+		_mergeableModelButtonsListPanel.removeAll();
+		
+		// Loop through each model is the repository and add it to the panel if
+		// the flyout model can merge with it
+		Model flyoutModel = this._currentModelBox.getModel();
+		for(Iterator<Model> i = SemGen.getInstance().getModelRepository().getModels().iterator(); i.hasNext(); ) {
+			Model mergeableModel = i.next();
+			
+			// If the flyout model can merge with the model in the repository
+			// add it to the panel
+			if(SemGen.isMergeable(flyoutModel, mergeableModel))
+				// TODO: Create a button class that can take a model and fire the
+				// SemGen merge models function
+				_mergeableModelButtonsListPanel.add(createActionButton(mergeableModel.getName(),
+						new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								//SemGen.getInstance().Merge(flyoutModel, mergeableModel);
+								throw new UnsupportedOperationException("Merge models");
+							}
+						}));
+		}
+		
+		_mergeableModelButtonsListPanel.setSize(_mergeableModelButtonsListPanel.getPreferredSize());
 	}
 	
 	/*
