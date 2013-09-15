@@ -257,6 +257,7 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 		
 		// Loop through each model is the repository and add it to the panel if
 		// the flyout model can merge with it
+		final ModelFlyout thisFlyout = this;
 		Model flyoutModel = this._currentModelBox.getModel();
 		for(Iterator<Model> i = SemGen.getInstance().getModelRepository().getModels().iterator(); i.hasNext(); ) {
 			Model mergeableModel = i.next();
@@ -264,15 +265,13 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 			// If the flyout model can merge with the model in the repository
 			// add it to the panel
 			if(SemGen.isMergeable(flyoutModel, mergeableModel))
-				// TODO: Create a button class that can take a model and fire the
-				// SemGen merge models function
+				// When this button is clicked it will merge the two model
 				_mergeableModelButtonsListPanel.add(createActionButton(mergeableModel.getName(),
-						new ActionListener() {
+						new ModelActionListener(mergeableModel) {
 							
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								//SemGen.getInstance().Merge(flyoutModel, mergeableModel);
-								throw new UnsupportedOperationException("Merge models");
+								SemGen.getInstance().Merge(thisFlyout._currentModelBox.getModel(), this.getSavedModel());
 							}
 						}));
 		}
