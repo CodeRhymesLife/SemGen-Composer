@@ -17,5 +17,22 @@ public class MergedModel extends Model {
 		
 		if(sourceModel2 == null)
 			throw new NullPointerException("sourceModel2");
+		
+		_sourceModel1 = sourceModel1;
+		_sourceModel2 = sourceModel2;
+	}
+	
+	/*
+	 * Gets source model 1
+	 */
+	public Model getSourceModel1(){
+		return _sourceModel1;
+	}
+	
+	/*
+	 * Gets source model 2
+	 */
+	public Model getSourceModel2(){
+		return _sourceModel2;
 	}
 }

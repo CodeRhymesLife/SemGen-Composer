@@ -37,6 +37,24 @@ public class SemGen {
 			model1 == model2)
 			return false;
 		
+		// If model 1 is a mergeable model check whether
+		// its sources are mergeable with model 2
+		if(model1 instanceof MergedModel){
+			MergedModel mergedModel = (MergedModel)model1;
+			if(!isMergeable(mergedModel.getSourceModel1(), model2) ||
+			!isMergeable(mergedModel.getSourceModel2(), model2))
+				return false;
+		}
+		
+		// If model 2 is a mergeable model check whether
+		// its sources are mergeable with model 1
+		if(model2 instanceof MergedModel){
+			MergedModel mergedModel = (MergedModel)model2;
+			if(!isMergeable(model1, mergedModel.getSourceModel1()) ||
+			!isMergeable(model1, mergedModel.getSourceModel2()))
+				return false;
+		}
+		
 		return true;
 	}
 	
