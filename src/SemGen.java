@@ -72,7 +72,12 @@ public class SemGen {
 	 * Merge the given models
 	 */
 	public void Merge(Model model1, Model model2){
-		throw new UnsupportedOperationException("Merge");
+		if(!isMergeable(model1, model2))
+			// TODO: Add error handling
+			return;
+		
+		String name = String.format("%s %s", model1.getName(), model2.getName());
+		_repository.addModel(new MergedModel(name, model1, model2));
 	}
 	
 	/*
