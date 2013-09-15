@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ModelTest {
 	private String _name;
 	private ArrayList<IModelProperty> _properties;
-	private TestModelActionListener _actionListener;
+	private TestModelListener _actionListener;
 	private Model _model;
 	
 	@Before
@@ -17,7 +17,7 @@ public class ModelTest {
 		_name = "test model name";
 		_properties = new ArrayList<IModelProperty>();
 		_properties.add(new ModelProperty("test name", "test var name", "test equation"));
-		_actionListener = new TestModelActionListener();
+		_actionListener = new TestModelListener();
 		
 		_model = new Model(_name, _properties);
 	}
@@ -61,21 +61,21 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void addModelActionListener_Null_VerifyFalse() {
-		assertFalse("Verify false is returned when addModelActionListener is called with null",
-				_model.addModelActionListener(null));
+	public void addModelListener_Null_VerifyFalse() {
+		assertFalse("Verify false is returned when addModelListener is called with null",
+				_model.addModelListener(null));
 	}
 	
 	@Test
-	public void addModelActionListener_ValidListener_VerifyTrue() {
-		assertTrue("Verify true is returned when addModelActionListener is called with a valid listener",
-				_model.addModelActionListener(_actionListener));
+	public void addModelListener_ValidListener_VerifyTrue() {
+		assertTrue("Verify true is returned when addModelListener is called with a valid listener",
+				_model.addModelListener(_actionListener));
 	}
 	
 	@Test
-	public void addModelActionListener_ValidListener_VerifyListenerCalledWhenPropertyAdded() {
+	public void addModelListener_ValidListener_VerifyListenerCalledWhenPropertyAdded() {
 		// Add listener
-		_model.addModelActionListener(_actionListener);
+		_model.addModelListener(_actionListener);
 		
 		// Add property
 		IModelProperty property = new ModelProperty("test", "test", "test");
@@ -88,13 +88,13 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void addModelActionListener_ValidListener_VerifyListenerCalledWhenPropertyRemoved() {
+	public void addModelListener_ValidListener_VerifyListenerCalledWhenPropertyRemoved() {
 		// Add property
 		IModelProperty property = new ModelProperty("test", "test", "test");
 		_model.addProperty(property);
 		
 		// Add listener
-		_model.addModelActionListener(_actionListener);
+		_model.addModelListener(_actionListener);
 		
 		// Remove property
 		_model.removeProperty(property);
@@ -106,33 +106,33 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void removeModelActionListener_Null_VerifyFalse() {
-		assertFalse("Verify false is returned when removeModelActionListener is called with null",
-				_model.removeModelActionListener(null));
+	public void removeModelListener_Null_VerifyFalse() {
+		assertFalse("Verify false is returned when removeModelListener is called with null",
+				_model.removeModelListener(null));
 	}
 	
 	@Test
-	public void removeModelActionListener_ExistingListener_VerifyTrue() {
+	public void removeModelListener_ExistingListener_VerifyTrue() {
 		// Add listener
-		_model.addModelActionListener(_actionListener);
+		_model.addModelListener(_actionListener);
 		
-		assertTrue("Verify true returned when removeModelActionListener is called with an existing listener",
-				_model.removeModelActionListener(_actionListener));
+		assertTrue("Verify true returned when removeModelListener is called with an existing listener",
+				_model.removeModelListener(_actionListener));
 	}
 	
 	@Test
-	public void removeModelActionListener_NonExistingListener_VerifyFalse() {
-		assertFalse("Verify false returned when removeModelActionListener is called with a non-existent listener",
-				_model.removeModelActionListener(new TestModelActionListener()));
+	public void removeModelListener_NonExistingListener_VerifyFalse() {
+		assertFalse("Verify false returned when removeModelListener is called with a non-existent listener",
+				_model.removeModelListener(new TestModelListener()));
 	}
 	
 	@Test
-	public void removeModelActionListener_ExistingListener_VerifyListenerNotCalledWhenPropertyRemoved() {
+	public void removeModelListener_ExistingListener_VerifyListenerNotCalledWhenPropertyRemoved() {
 		// Add listener
-		_model.addModelActionListener(_actionListener);
+		_model.addModelListener(_actionListener);
 		
 		// Remove listener
-		_model.removeModelActionListener(_actionListener);
+		_model.removeModelListener(_actionListener);
 		
 		// Add property
 		IModelProperty property = new ModelProperty("test", "test", "test");
@@ -146,7 +146,7 @@ public class ModelTest {
 	/*
 	 * Model action listener used for unit tests
 	 */
-	private class TestModelActionListener implements ModelActionListener{
+	private class TestModelListener implements ModelListener{
 
 		public IModelProperty LastAddedProperty;
 		public IModelProperty LastRemovedProperty;

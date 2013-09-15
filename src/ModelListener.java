@@ -1,7 +1,7 @@
 /*
  * Listens for model events
  */
-public interface ModelActionListener {
+public interface ModelListener {
 	/*
 	 * Called when a property is added
 	 * to a model

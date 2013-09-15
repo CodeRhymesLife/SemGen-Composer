@@ -20,7 +20,7 @@ public class Model {
 	private ArrayList<IModelProperty> _properties;
 	
 	// Listeners for model actions
-	private ArrayList<ModelActionListener> _listeners;
+	private ArrayList<ModelListener> _listeners;
 	
 	public Model(String name){
 		this(name, null);
@@ -82,7 +82,7 @@ public class Model {
 	/*
 	 * Add listener for model actions
 	 */
-	public boolean addModelActionListener(ModelActionListener listener){
+	public boolean addModelListener(ModelListener listener){
 		if(listener == null)
 			return false;
 		
@@ -92,7 +92,7 @@ public class Model {
 	/*
 	 * Remove listener for model actions
 	 */
-	public boolean removeModelActionListener(ModelActionListener listener){
+	public boolean removeModelListener(ModelListener listener){
 		if(listener == null)
 			return false;
 		
@@ -103,8 +103,8 @@ public class Model {
 	 * Inform each listener about the model action
 	 */
 	private void InformListenersAboutModelAction(ModelAction action, IModelProperty property){
-		for(Iterator<ModelActionListener> i = _listeners.iterator(); i.hasNext(); ) {
-			ModelActionListener listener = i.next();
+		for(Iterator<ModelListener> i = _listeners.iterator(); i.hasNext(); ) {
+			ModelListener listener = i.next();
 			
 			switch(action){
 				case PropertyAdded:
