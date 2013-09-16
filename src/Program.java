@@ -51,7 +51,8 @@ public class Program {
 		
 		// Test code.
 		// TODO: Remove before launch.
-		SemGen.getInstance().getModelRepository().addModel(new Model("Initial Model"));
+		SemGen.getInstance().getModelRepository().addModel(new Model("First Model"));
+		SemGen.getInstance().getModelRepository().addModel(new Model("Second Model"));
 	}
 
 }
