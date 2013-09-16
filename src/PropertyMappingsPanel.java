@@ -1,3 +1,4 @@
+import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
@@ -7,6 +8,9 @@ import java.awt.Graphics;
 
 import javax.swing.BoxLayout;
 import java.awt.Component;
+import javax.swing.JButton;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 
 public class PropertyMappingsPanel extends JPanel {
@@ -18,6 +22,8 @@ public class PropertyMappingsPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public PropertyMappingsPanel() {
+		setBackground(Color.WHITE);
+		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JLabel lblModelName = new JLabel("Model Name");
@@ -28,13 +34,34 @@ public class PropertyMappingsPanel extends JPanel {
 		JLabel lblPropertyMappings = new JLabel("Property Mappings");
 		lblPropertyMappings.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lblPropertyMappings);
-
-		this.setSize(this.getPreferredSize());
-	}
-
-	@Override
-	public Dimension getPreferredSize(){
-		return new Dimension(Width, Height);
+		
+		JPanel propertiesPanel = new JPanel();
+		propertiesPanel.setBackground(Color.WHITE);
+		add(propertiesPanel);
+		
+		Component aboveButtonGap = Box.createRigidArea(new Dimension(0,20));
+		add(aboveButtonGap);
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setOpaque(false);
+		add(buttonsPanel);
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+		
+		JButton btnAddNew = new JButton("Add New");
+		btnAddNew.setBackground(new Color(102, 204, 0));
+		buttonsPanel.add(btnAddNew);
+		
+		Component betweenButtonGap = Box.createRigidArea(new Dimension(40,0));
+		buttonsPanel.add(betweenButtonGap);
+		
+		JButton btnDone = new JButton("Done");
+		btnDone.setBackground(Color.WHITE);
+		buttonsPanel.add(btnDone);
+		
+		Component belowButtonGap = Box.createRigidArea(new Dimension(0,20));
+		add(belowButtonGap);
+		
+		this.setSize(new Dimension(Width, Height));
 	}
 	
 	/*
