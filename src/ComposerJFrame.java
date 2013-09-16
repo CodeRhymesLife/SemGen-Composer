@@ -24,6 +24,9 @@ public class ComposerJFrame extends JFrame {
 	// Add model button
 	private AddModelButton _addModelButton;
 	
+	// Property mappings panel
+	private PropertyMappingsPanel _propertyMappingsPanel;
+	
 	public ComposerJFrame(SemGen semGen){
 		// Set the title
 		super(Title);
@@ -35,7 +38,8 @@ public class ComposerJFrame extends JFrame {
 		
 		pane.setBackground(Color.WHITE);
 		
-		createAddModelButton();
+		addAddModelButton();
+		addPropertyMappingsPanel();
 		
 		listForSemGenChanges(semGen);
 	}
@@ -61,10 +65,20 @@ public class ComposerJFrame extends JFrame {
 	/*
 	 * Create the add model button and add it to the panel
 	 */
-	private void createAddModelButton(){
+	private void addAddModelButton(){
 		_addModelButton = new AddModelButton(this);
 		_addModelButton.setVerticalAlignment(SwingConstants.TOP);
 		this.getContentPane().add(_addModelButton);
+	}
+	
+	/*
+	 * Add property mappins panel
+	 */
+	private void addPropertyMappingsPanel(){
+		// Add property mappings panel
+		_propertyMappingsPanel = new PropertyMappingsPanel();
+		_propertyMappingsPanel.setVisible(false);
+		this.getContentPane().add(_propertyMappingsPanel);
 	}
 	
 	/*
@@ -92,6 +106,18 @@ public class ComposerJFrame extends JFrame {
 				// Repaint frame
 				Container pane = thisFrame.getContentPane();
 				pane.add(modelComponent);
+				
+				// If a new merged model was added
+				// show it's property mappings
+				if(model instanceof MergedModel){
+					// Align and show the panel
+					int x = (pane.getWidth() - _propertyMappingsPanel.getWidth()) / 2;
+					int y = 100;
+					_propertyMappingsPanel.setLocation(new Point(x, y));
+					_propertyMappingsPanel.setVisible(true);
+				}
+				
+				// Repaint
 				pane.validate();
 				pane.repaint();
 			}

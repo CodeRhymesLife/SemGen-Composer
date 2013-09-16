@@ -45,7 +45,7 @@ public class ModelBox extends JPanel {
 	}
 	
 	/*
-	 * Draw rounded rectangles
+	 * Draw a rounded rectangle
 	 * 
 	 * (non-Javadoc)
 	 * @see javax.swing.JComponent#paintBorder(java.awt.Graphics)
