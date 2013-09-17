@@ -7,9 +7,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.BoxLayout;
+
 import java.awt.Component;
+
 import javax.swing.JButton;
+
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.border.LineBorder;
@@ -21,6 +25,7 @@ public class PropertyMappingsPanel extends JPanel {
 	private static final int BorderArc = 20;
 	private JButton _btnDone;
 	private JLabel _lblModelName;
+	private JPanel _propertiesPanel;
 	
 	/**
 	 * Create the panel.
@@ -39,9 +44,9 @@ public class PropertyMappingsPanel extends JPanel {
 		lblPropertyMappings.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lblPropertyMappings);
 		
-		JPanel propertiesPanel = new JPanel();
-		propertiesPanel.setBackground(Color.WHITE);
-		add(propertiesPanel);
+		_propertiesPanel = new JPanel();
+		_propertiesPanel.setBackground(Color.WHITE);
+		add(_propertiesPanel);
 		
 		Component aboveButtonGap = Box.createRigidArea(new Dimension(0,20));
 		add(aboveButtonGap);
@@ -66,6 +71,16 @@ public class PropertyMappingsPanel extends JPanel {
 		add(belowButtonGap);
 		
 		this.setSize(new Dimension(Width, Height));
+		
+		// Add listeners
+		final PropertyMappingsPanel thisPanel = this;
+		btnAddNew.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				thisPanel.addProperty();
+			}
+		});
 	}
 	
 	/*
@@ -80,6 +95,16 @@ public class PropertyMappingsPanel extends JPanel {
 	 */
 	public void setModel(Model model){
 		_lblModelName.setText(model.getName());
+	}
+	
+	/*
+	 * Add UI for a new property mapping
+	 */
+	private void addProperty(){
+		PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
+		_propertiesPanel.add(propertyMappingComponent);
+		_propertiesPanel.validate();
+		_propertiesPanel.repaint();
 	}
 	
 	/*
