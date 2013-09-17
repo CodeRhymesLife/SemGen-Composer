@@ -10,6 +10,8 @@ import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+
 import javax.swing.border.LineBorder;
 
 
@@ -17,6 +19,7 @@ public class PropertyMappingsPanel extends JPanel {
 	public static final int Height = 500;
 	public static final int Width = 600;
 	private static final int BorderArc = 20;
+	private JButton _btnDone;
 	
 	/**
 	 * Create the panel.
@@ -54,9 +57,9 @@ public class PropertyMappingsPanel extends JPanel {
 		Component betweenButtonGap = Box.createRigidArea(new Dimension(40,0));
 		buttonsPanel.add(betweenButtonGap);
 		
-		JButton btnDone = new JButton("Done");
-		btnDone.setBackground(Color.WHITE);
-		buttonsPanel.add(btnDone);
+		_btnDone = new JButton("Done");
+		_btnDone.setBackground(Color.WHITE);
+		buttonsPanel.add(_btnDone);
 		
 		Component belowButtonGap = Box.createRigidArea(new Dimension(0,20));
 		add(belowButtonGap);
@@ -75,4 +78,11 @@ public class PropertyMappingsPanel extends JPanel {
          g.setColor(getForeground());
          g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, BorderArc, BorderArc);
     }
+	
+	/*
+	 * Add close action listener
+	 */
+	public void addCloseActionListener(ActionListener listener){
+		_btnDone.addActionListener(listener);
+	}
 }

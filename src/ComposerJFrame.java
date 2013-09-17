@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
@@ -77,6 +79,15 @@ public class ComposerJFrame extends JFrame {
 	private void addPropertyMappingsPanel(){
 		// Add property mappings panel
 		_propertyMappingsPanel = new PropertyMappingsPanel();
+		
+		// Hide the property mappings panel when close is clicked
+		_propertyMappingsPanel.addCloseActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				_propertyMappingsPanel.setVisible(false);
+			}
+		});
 		_propertyMappingsPanel.setVisible(false);
 		this.getContentPane().add(_propertyMappingsPanel);
 	}
