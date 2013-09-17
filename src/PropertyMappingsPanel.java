@@ -20,6 +20,7 @@ public class PropertyMappingsPanel extends JPanel {
 	public static final int Width = 600;
 	private static final int BorderArc = 20;
 	private JButton _btnDone;
+	private JLabel _lblModelName;
 	
 	/**
 	 * Create the panel.
@@ -29,10 +30,10 @@ public class PropertyMappingsPanel extends JPanel {
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JLabel lblModelName = new JLabel("Model Name");
-		lblModelName.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblModelName.setFont(new Font("Calibri", Font.PLAIN, 24));
-		add(lblModelName);
+		_lblModelName = new JLabel("Model Name");
+		_lblModelName.setAlignmentX(Component.CENTER_ALIGNMENT);
+		_lblModelName.setFont(new Font("Calibri", Font.PLAIN, 24));
+		add(_lblModelName);
 		
 		JLabel lblPropertyMappings = new JLabel("Property Mappings");
 		lblPropertyMappings.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -72,6 +73,13 @@ public class PropertyMappingsPanel extends JPanel {
 	 */
 	public void addCloseActionListener(ActionListener listener){
 		_btnDone.addActionListener(listener);
+	}
+	
+	/*
+	 * Set a new model in the property mappings panel
+	 */
+	public void setModel(Model model){
+		_lblModelName.setText(model.getName());
 	}
 	
 	/*

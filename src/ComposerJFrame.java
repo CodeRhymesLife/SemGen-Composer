@@ -121,6 +121,9 @@ public class ComposerJFrame extends JFrame {
 				// If a new merged model was added
 				// show it's property mappings
 				if(model instanceof MergedModel){
+					// Set the added model on the property mappings panel
+					_propertyMappingsPanel.setModel(model);
+					
 					// Align and show the panel
 					int x = (pane.getWidth() - _propertyMappingsPanel.getWidth()) / 2;
 					int y = 100;
