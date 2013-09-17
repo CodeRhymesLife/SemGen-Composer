@@ -68,6 +68,13 @@ public class PropertyMappingsPanel extends JPanel {
 	}
 	
 	/*
+	 * Add close action listener
+	 */
+	public void addCloseActionListener(ActionListener listener){
+		_btnDone.addActionListener(listener);
+	}
+	
+	/*
 	 * Draw a rounded rectangle
 	 * 
 	 * (non-Javadoc)
@@ -78,11 +85,4 @@ public class PropertyMappingsPanel extends JPanel {
          g.setColor(getForeground());
          g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, BorderArc, BorderArc);
     }
-	
-	/*
-	 * Add close action listener
-	 */
-	public void addCloseActionListener(ActionListener listener){
-		_btnDone.addActionListener(listener);
-	}
 }
