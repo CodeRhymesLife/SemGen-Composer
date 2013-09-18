@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.border.LineBorder;
 
@@ -95,6 +96,20 @@ public class PropertyMappingsPanel extends JPanel {
 	 */
 	public void setModel(Model model){
 		_lblModelName.setText(model.getName());
+		
+		// Add a property mapping component for each property
+		for(Iterator<IModelProperty> i = model.getProperties().iterator(); i.hasNext(); ) {
+			IModelProperty property = i.next();
+			
+			// If this is a merged property add a component for it
+			if(property instanceof MergedModelProperty){
+				PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
+				_propertiesPanel.add(propertyMappingComponent);
+			}
+		}
+		
+		_propertiesPanel.validate();
+		_propertiesPanel.repaint();
 	}
 	
 	/*

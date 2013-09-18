@@ -95,7 +95,11 @@ public class SemGen {
 			return;
 		
 		String name = String.format("%s %s", model1.getName(), model2.getName());
-		_repository.addModel(new MergedModel(name, model1, model2));
+		
+		// Get auto mapped properties
+		ArrayList<IModelProperty> autoMappedProperties = getAutoMappedProperties(model1, model2);
+		
+		_repository.addModel(new MergedModel(name, autoMappedProperties, model1, model2));
 	}
 	
 	/*
@@ -133,5 +137,24 @@ public class SemGen {
 		modelProperties.add(new ModelProperty("Property 5", "P5", "mx + 5"));
 		
 		return new Model(name, modelProperties);
+	}
+	
+	/*
+	 * Get list of automapped properties to add to new merged models
+	 */
+	private ArrayList<IModelProperty> getAutoMappedProperties(Model model1, Model model2){
+		ArrayList<IModelProperty> mergedProperties = new ArrayList<IModelProperty>();
+		
+		// Test code
+		// TODO: Write real logic
+		// TODO: Add unit tests
+		ArrayList<IModelProperty> model1Properties = model1.getProperties();
+		ArrayList<IModelProperty> model2Properties = model2.getProperties();
+		int maxPropertiesToMap = Math.min(2, Math.min(model1Properties.size(), model2Properties.size()));
+		for(int i = 0; i < maxPropertiesToMap; i++){
+			mergedProperties.add(new MergedModelProperty(model1Properties.get(i), model2Properties.get(i)));
+		}
+		
+		return mergedProperties;
 	}
 }
