@@ -1,5 +1,6 @@
 import java.awt.Frame;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -51,8 +52,21 @@ public class Program {
 		
 		// Test code.
 		// TODO: Remove before launch.
-		SemGen.getInstance().getModelRepository().addModel(new Model("First Model"));
-		SemGen.getInstance().getModelRepository().addModel(new Model("Second Model"));
+		SemGen.getInstance().getModelRepository().addModel(new Model("First Model", getDummyProperties(3)));
+		SemGen.getInstance().getModelRepository().addModel(new Model("Second Model", getDummyProperties(5)));
 	}
 
+	/*
+	 * Gets dummy properties to add.
+	 * 
+	 * TODO: Remove this code before ship
+	 */
+	private static ArrayList<IModelProperty> getDummyProperties(int num){
+		ArrayList<IModelProperty> properties = new ArrayList<IModelProperty>();
+		for(int i = 0; i < num; i++){
+			properties.add(new ModelProperty("Property " + i, "Var" + i, "mx + " + i));
+		}
+		
+		return properties;
+	}
 }
