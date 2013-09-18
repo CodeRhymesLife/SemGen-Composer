@@ -50,6 +50,17 @@ public class Model {
 	}
 	
 	/*
+	 * Gets a list of model properties that are in this model
+	 * 
+	 * NOTE: To ensure encapsulation this function returns
+	 * a copy of the internal list. Use sparingly.
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<IModelProperty> getProperties(){
+		return (ArrayList<IModelProperty>) _properties.clone();
+	}
+	
+	/*
 	 * Add property to model.
 	 * 
 	 * Returns:

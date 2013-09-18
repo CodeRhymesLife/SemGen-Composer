@@ -43,6 +43,39 @@ public class ModelTest {
 	}
 	
 	@Test
+	public void getProperties_NoProperties_VerifyEmptyList() {
+		assertEquals("Verify the model has 0 properties",
+				0,
+				(new Model("new test model")).getProperties().size());
+	}
+	
+	@Test
+	public void getProperties_PropertyInModel_VerifyListContainsModel() {
+		assertEquals("Verify the model has 1 property",
+				1,
+				_model.getProperties().size());
+		
+		assertEquals("Verify model in repository",
+				_properties.get(0),
+				_model.getProperties().get(0));
+	}
+	
+	@Test
+	public void getProperties_ModifyList_VerifyListInModelNotChanged() {
+		// Remove the property from the list
+		ArrayList<IModelProperty> properties = _model.getProperties();
+		properties.clear();
+		
+		assertEquals("Verify all properties were removed from the list we retrieved",
+				0,
+				properties.size());
+		
+		assertEquals("Verify the model's property list was unchanged",
+				1,
+				_model.getProperties().size());
+	}
+	
+	@Test
 	public void addProperty_Null_VerifyFalse() {
 		assertFalse("Verify we can't add null properties",
 				_model.addProperty(null));
