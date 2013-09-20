@@ -84,7 +84,7 @@ public class ModelTableDataModel extends AbstractTableModel{
 			case CodeWord:
 				return property.getVariableName();
 			case Equation:
-				property.getEquation();
+				return property.getEquation();
 		}
 		
 		assert(false);
