@@ -1,3 +1,4 @@
+package semGen.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -18,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 
 import semGen.SemGemConstants;
+import semGen.models.ui.ModelFileChooser;
 
 /*
  * Button used to add models to the composer

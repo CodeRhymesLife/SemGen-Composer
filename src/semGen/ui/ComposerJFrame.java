@@ -1,3 +1,4 @@
+package semGen.ui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Point;
@@ -12,6 +13,8 @@ import semGen.SemGen;
 import semGen.models.MergedModel;
 import semGen.models.Model;
 import semGen.models.ModelRepositoryActionListener;
+import semGen.models.properties.ui.PropertyMappingsPanel;
+import semGen.models.ui.ModelComponent;
 
 /**
  * 

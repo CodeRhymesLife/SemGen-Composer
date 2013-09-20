@@ -1,3 +1,4 @@
+package semGen.models.ui;
 import javax.swing.JFileChooser;
 
 /*

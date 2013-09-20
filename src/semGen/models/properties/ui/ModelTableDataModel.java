@@ -1,3 +1,4 @@
+package semGen.models.properties.ui;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;

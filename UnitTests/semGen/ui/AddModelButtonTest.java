@@ -1,9 +1,12 @@
+package semGen.ui;
 
 import static org.junit.Assert.*;
 
 import javax.swing.JPanel;
 
 import org.junit.Test;
+
+import semGen.ui.AddModelButton;
 
 
 public class AddModelButtonTest {

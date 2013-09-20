@@ -1,3 +1,4 @@
+package semGen.models.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -17,6 +18,9 @@ import javax.swing.SwingConstants;
 
 import semGen.SemGen;
 import semGen.models.Model;
+import semGen.ui.ComposerJFrame;
+import ui.FlyoutComponent;
+import ui.FlyoutPosition;
 
 
 /*

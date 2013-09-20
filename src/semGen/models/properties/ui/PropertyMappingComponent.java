@@ -1,6 +1,10 @@
+package semGen.models.properties.ui;
 import javax.swing.JPanel;
 
 import semGen.models.properties.IModelProperty;
+import semGen.ui.ComposerJFrame;
+import ui.FlyoutComponent;
+import ui.FlyoutPosition;
 
 import java.awt.Component;
 import java.awt.Color;

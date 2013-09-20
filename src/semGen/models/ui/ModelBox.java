@@ -1,3 +1,4 @@
+package semGen.models.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,6 +10,7 @@ import javax.swing.SwingUtilities;
 
 import semGen.SemGemConstants;
 import semGen.models.Model;
+import ui.ImageComponent;
 
 
 /*

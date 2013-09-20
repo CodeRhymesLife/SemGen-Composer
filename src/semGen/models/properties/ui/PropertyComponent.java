@@ -1,3 +1,4 @@
+package semGen.models.properties.ui;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;

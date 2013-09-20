@@ -1,3 +1,4 @@
+package semGen.models.properties.ui;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;

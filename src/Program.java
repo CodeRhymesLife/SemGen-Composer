@@ -8,6 +8,8 @@ import semGen.SemGen;
 import semGen.models.Model;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.ModelProperty;
+import semGen.ui.AddModelButtonActionListener;
+import semGen.ui.ComposerJFrame;
 
 /**
  * 
