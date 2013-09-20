@@ -21,6 +21,10 @@ import java.util.Iterator;
 
 import javax.swing.border.LineBorder;
 
+import semGen.models.MergedModel;
+import semGen.models.properties.IModelProperty;
+import semGen.models.properties.MergedModelProperty;
+
 
 public class PropertyMappingsPanel extends JPanel {
 	public static final int Height = 500;

@@ -1,3 +1,6 @@
+package semGen.models;
+import semGen.models.properties.IModelProperty;
+
 /*
  * Listens for model events
  */

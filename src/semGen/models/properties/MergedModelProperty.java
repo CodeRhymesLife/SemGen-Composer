@@ -1,3 +1,4 @@
+package semGen.models.properties;
 import java.security.InvalidParameterException;
 
 /**

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
+import semGen.models.properties.IModelProperty;
+
 
 public class ModelPropertyListPanel extends JPanel {
 	private JTextField _textFilter;

@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import semGen.models.properties.IModelProperty;
+
 
 public class ModelTableDataModel extends AbstractTableModel{
 	private static final String Name = "Name";

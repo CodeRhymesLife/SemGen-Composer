@@ -6,6 +6,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import semGen.models.MergedModel;
+import semGen.models.Model;
+import semGen.models.properties.IModelProperty;
+
 
 public class MergedModelTest {
 	private Model _sourceModel1;

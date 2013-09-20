@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.models.Model;
+import semGen.models.ModelListener;
+import semGen.models.properties.IModelProperty;
+import semGen.models.properties.ModelProperty;
+
 
 public class ModelTest {
 	private String _name;

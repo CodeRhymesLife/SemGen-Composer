@@ -1,3 +1,6 @@
+import semGen.models.Model;
+import semGen.models.ModelRepositoryActionListener;
+
 
 /*
  * Model repository action listener used for unit tests

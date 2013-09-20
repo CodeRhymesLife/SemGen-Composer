@@ -1,3 +1,4 @@
+package semGen.models;
 /*
  * Listens for model repository actions
  */

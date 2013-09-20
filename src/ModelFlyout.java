@@ -15,6 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import semGen.SemGen;
+import semGen.models.Model;
+
 
 /*
  * Flyout for models

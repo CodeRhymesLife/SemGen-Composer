@@ -17,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 
+import semGen.SemGemConstants;
+
 /*
  * Button used to add models to the composer
  */

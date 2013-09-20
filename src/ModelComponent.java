@@ -25,6 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.Icon;
 
+import semGen.models.Model;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;

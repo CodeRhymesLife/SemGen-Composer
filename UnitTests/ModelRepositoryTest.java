@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.models.Model;
+import semGen.models.ModelRepository;
+
 
 public class ModelRepositoryTest {
 	private Model _model;

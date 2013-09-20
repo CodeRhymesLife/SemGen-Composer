@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import semGen.SemGen;
+import semGen.models.Model;
+import semGen.models.properties.IModelProperty;
+import semGen.models.properties.ModelProperty;
+
 /**
  * 
  */

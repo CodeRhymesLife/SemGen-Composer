@@ -1,4 +1,7 @@
+package semGen.models;
 import java.util.Collection;
+
+import semGen.models.properties.IModelProperty;
 
 
 public class MergedModel extends Model {

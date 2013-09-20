@@ -7,6 +7,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import semGen.SemGemConstants;
+import semGen.models.Model;
+
 
 /*
  * Part of Model ui that you move and click

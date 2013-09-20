@@ -1,8 +1,11 @@
+package semGen.models;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
+
+import semGen.models.properties.IModelProperty;
 
 /**
  * Holds information about a model.

@@ -5,6 +5,10 @@ import java.security.InvalidParameterException;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.models.properties.IModelProperty;
+import semGen.models.properties.MergedModelProperty;
+import semGen.models.properties.ModelProperty;
+
 
 public class MergedModelPropertyTest {
 	private static IModelProperty _property1;

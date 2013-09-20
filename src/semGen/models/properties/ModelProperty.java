@@ -1,3 +1,4 @@
+package semGen.models.properties;
 /**
  * Property for models. Exposes information about
  * a property on a model

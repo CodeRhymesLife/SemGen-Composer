@@ -1,3 +1,4 @@
+package semGen.models.properties;
 /*
  * Interface for model properties
  */

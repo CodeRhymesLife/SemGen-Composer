@@ -8,6 +8,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
+import semGen.SemGen;
+import semGen.models.MergedModel;
+import semGen.models.Model;
+import semGen.models.ModelRepositoryActionListener;
+
 /**
  * 
  */

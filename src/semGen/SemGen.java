@@ -1,3 +1,4 @@
+package semGen;
 import java.awt.Frame;
 import java.io.File;
 import java.util.ArrayList;
@@ -5,6 +6,13 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import org.apache.commons.io.FilenameUtils;
+
+import semGen.models.MergedModel;
+import semGen.models.Model;
+import semGen.models.ModelRepository;
+import semGen.models.properties.IModelProperty;
+import semGen.models.properties.MergedModelProperty;
+import semGen.models.properties.ModelProperty;
 
 
 /*

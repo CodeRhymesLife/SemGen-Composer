@@ -7,6 +7,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.SemGen;
+import semGen.models.MergedModel;
+import semGen.models.Model;
+
 
 public class SemGenTest {
 	private TestModelRepositoryActionListener _listener;

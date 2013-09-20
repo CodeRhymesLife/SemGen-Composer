@@ -3,6 +3,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.models.properties.ModelProperty;
+
 
 public class ModelPropertyTest {
 	private final String _name = "TestName";

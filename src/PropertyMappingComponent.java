@@ -1,5 +1,7 @@
 import javax.swing.JPanel;
 
+import semGen.models.properties.IModelProperty;
+
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Container;
