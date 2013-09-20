@@ -2,6 +2,7 @@ import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,10 +29,12 @@ public class PropertyMappingsPanel extends JPanel {
 	private JLabel _lblModelName;
 	private JPanel _propertiesPanel;
 	
+	private FlyoutComponent _propertiesFlyout;
+	
 	/**
 	 * Create the panel.
 	 */
-	public PropertyMappingsPanel() {
+	public PropertyMappingsPanel(Container parent) {
 		setBackground(Color.WHITE);
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -82,6 +85,15 @@ public class PropertyMappingsPanel extends JPanel {
 				thisPanel.addProperty();
 			}
 		});
+		
+		// Create flyout
+		// Parent can be null if window builder is viewing this
+		if(parent != null)
+		{
+			_propertiesFlyout = new FlyoutComponent();
+			_propertiesFlyout.getContentPanel().add(new ModelPropertyListPanel());
+			parent.add(_propertiesFlyout);
+		}
 	}
 	
 	/*
@@ -113,16 +125,6 @@ public class PropertyMappingsPanel extends JPanel {
 	}
 	
 	/*
-	 * Add UI for a new property mapping
-	 */
-	private void addProperty(){
-		PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
-		_propertiesPanel.add(propertyMappingComponent);
-		_propertiesPanel.validate();
-		_propertiesPanel.repaint();
-	}
-	
-	/*
 	 * Draw a rounded rectangle
 	 * 
 	 * (non-Javadoc)
@@ -133,4 +135,16 @@ public class PropertyMappingsPanel extends JPanel {
          g.setColor(getForeground());
          g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, BorderArc, BorderArc);
     }
+
+	/*
+	 * Add UI for a new property mapping
+	 */
+	private void addProperty(){
+		PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
+		_propertiesPanel.add(propertyMappingComponent);
+		_propertiesPanel.validate();
+		_propertiesPanel.repaint();
+		
+		_propertiesFlyout.showAroundComponent(propertyMappingComponent, FlyoutPosition.Left);
+	}
 }

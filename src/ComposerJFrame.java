@@ -78,7 +78,7 @@ public class ComposerJFrame extends JFrame {
 	 */
 	private void addPropertyMappingsPanel(){
 		// Add property mappings panel
-		_propertyMappingsPanel = new PropertyMappingsPanel();
+		_propertyMappingsPanel = new PropertyMappingsPanel(this.getContentPane());
 		
 		// Hide the property mappings panel when close is clicked
 		_propertyMappingsPanel.addCloseActionListener(new ActionListener() {
