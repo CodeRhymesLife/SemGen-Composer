@@ -1,3 +1,4 @@
+package semGen;
 import static org.junit.Assert.*;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import semGen.SemGen;
 import semGen.models.MergedModel;
 import semGen.models.Model;
+import semGen.models.TestModelRepositoryActionListener;
 
 
 public class SemGenTest {

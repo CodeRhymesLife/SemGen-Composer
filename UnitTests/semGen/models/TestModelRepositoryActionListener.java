@@ -1,3 +1,4 @@
+package semGen.models;
 import semGen.models.Model;
 import semGen.models.ModelRepositoryActionListener;
 
@@ -5,7 +6,7 @@ import semGen.models.ModelRepositoryActionListener;
 /*
  * Model repository action listener used for unit tests
  */
-class TestModelRepositoryActionListener implements ModelRepositoryActionListener{
+public class TestModelRepositoryActionListener implements ModelRepositoryActionListener{
 
 	public Model LastAddedModel;
 	public Model LastRemovedModel;

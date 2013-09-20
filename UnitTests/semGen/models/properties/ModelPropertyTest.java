@@ -1,3 +1,4 @@
+package semGen.models.properties;
 import static org.junit.Assert.*;
 
 import org.junit.Before;

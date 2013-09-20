@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import semGen.FileHelper;
+
 
 public class ModelFileFilterTest {
 
