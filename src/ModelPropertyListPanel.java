@@ -6,7 +6,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.AbstractTableModel;
+
 import java.awt.Component;
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 
 
@@ -16,6 +19,8 @@ public class ModelPropertyListPanel extends JPanel {
 	private JPanel panelFilterContainer;
 	private JLabel lblFilter;
 
+	private ModelTableDataModel _dataModel;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -32,13 +37,18 @@ public class ModelPropertyListPanel extends JPanel {
 		_textFilter = new JTextField();
 		panelFilterContainer.add(_textFilter);
 		
-		String[] columnNames = {"Name",
-                "Code Word",
-                "Equation"};
-		table = new JTable(new Object[][]{}, columnNames);
+		_dataModel = new ModelTableDataModel();
+		table = new JTable(_dataModel);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		add(scrollPane);
+	}
+	
+	/*
+	 * Set properties in table
+	 */
+	public void setTableProperties(ArrayList<IModelProperty> properties){
+		_dataModel.setProperties(properties);
 	}
 }

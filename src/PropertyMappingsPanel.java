@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.border.LineBorder;
@@ -29,12 +30,12 @@ public class PropertyMappingsPanel extends JPanel {
 	private JLabel _lblModelName;
 	private JPanel _propertiesPanel;
 	
-	private FlyoutComponent _propertiesFlyout;
-	
+	// Current model
+	private MergedModel _model;
 	/**
 	 * Create the panel.
 	 */
-	public PropertyMappingsPanel(Container parent) {
+	public PropertyMappingsPanel() {
 		setBackground(Color.WHITE);
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -85,15 +86,6 @@ public class PropertyMappingsPanel extends JPanel {
 				thisPanel.addProperty();
 			}
 		});
-		
-		// Create flyout
-		// Parent can be null if window builder is viewing this
-		if(parent != null)
-		{
-			_propertiesFlyout = new FlyoutComponent();
-			_propertiesFlyout.getContentPanel().add(new ModelPropertyListPanel());
-			parent.add(_propertiesFlyout);
-		}
 	}
 	
 	/*
@@ -106,11 +98,15 @@ public class PropertyMappingsPanel extends JPanel {
 	/*
 	 * Set a new model in the property mappings panel
 	 */
-	public void setModel(Model model){
-		_lblModelName.setText(model.getName());
+	public void setModel(MergedModel model){
+		// Save the model
+		assert(_model != null);
+		_model = model;
+		
+		_lblModelName.setText(_model.getName());
 		
 		// Add a property mapping component for each property
-		for(Iterator<IModelProperty> i = model.getProperties().iterator(); i.hasNext(); ) {
+		for(Iterator<IModelProperty> i = _model.getProperties().iterator(); i.hasNext(); ) {
 			IModelProperty property = i.next();
 			
 			// If this is a merged property add a component for it
@@ -145,6 +141,6 @@ public class PropertyMappingsPanel extends JPanel {
 		_propertiesPanel.validate();
 		_propertiesPanel.repaint();
 		
-		_propertiesFlyout.showAroundComponent(propertyMappingComponent, FlyoutPosition.Left);
+		propertyMappingComponent.createPropertyMapping(_model.getSourceModel1().getProperties(), _model.getSourceModel2().getProperties());
 	}
 }

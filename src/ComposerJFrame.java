@@ -78,7 +78,7 @@ public class ComposerJFrame extends JFrame {
 	 */
 	private void addPropertyMappingsPanel(){
 		// Add property mappings panel
-		_propertyMappingsPanel = new PropertyMappingsPanel(this.getContentPane());
+		_propertyMappingsPanel = new PropertyMappingsPanel();
 		
 		// Hide the property mappings panel when close is clicked
 		_propertyMappingsPanel.addCloseActionListener(new ActionListener() {
@@ -122,7 +122,7 @@ public class ComposerJFrame extends JFrame {
 				// show it's property mappings
 				if(model instanceof MergedModel){
 					// Set the added model on the property mappings panel
-					_propertyMappingsPanel.setModel(model);
+					_propertyMappingsPanel.setModel((MergedModel)model);
 					
 					// Align and show the panel
 					int x = (pane.getWidth() - _propertyMappingsPanel.getWidth()) / 2;
