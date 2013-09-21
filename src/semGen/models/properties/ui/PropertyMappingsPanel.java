@@ -141,11 +141,7 @@ public class PropertyMappingsPanel extends JPanel {
 	 * Add UI for a new property mapping
 	 */
 	private void addProperty(){
-		PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
-		_propertiesPanel.add(propertyMappingComponent);
-		_propertiesPanel.validate();
-		_propertiesPanel.repaint();
-		
-		propertyMappingComponent.createPropertyMapping(_model.getSourceModel1().getProperties(), _model.getSourceModel2().getProperties());
+		PropertyMappingCreator mappingCreator = new PropertyMappingCreator(_model);
+		mappingCreator.create(_propertiesPanel);
 	}
 }

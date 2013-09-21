@@ -6,9 +6,15 @@ import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -18,11 +24,9 @@ import semGen.models.properties.IModelProperty;
 
 public class ModelPropertyListPanel extends JPanel {
 	private JTextField _textFilter;
-	private JTable table;
+	private ModelPropertiesTable _table;
 	private JPanel panelFilterContainer;
 	private JLabel lblFilter;
-
-	private ModelTableDataModel _dataModel;
 	
 	/**
 	 * Create the panel.
@@ -40,18 +44,18 @@ public class ModelPropertyListPanel extends JPanel {
 		_textFilter = new JTextField();
 		panelFilterContainer.add(_textFilter);
 		
-		_dataModel = new ModelTableDataModel();
-		table = new JTable(_dataModel);
+		_table = new ModelPropertiesTable();
+		_table.setCellSelectionEnabled(false);
 		
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
+		JScrollPane scrollPane = new JScrollPane(_table);
+		_table.setFillsViewportHeight(true);
 		add(scrollPane);
 	}
 	
 	/*
 	 * Set properties in table
 	 */
-	public void setTableProperties(ArrayList<IModelProperty> properties){
-		_dataModel.setProperties(properties);
-	}
+	public ModelPropertiesTable getTable(){
+		return _table;
+	}	
 }

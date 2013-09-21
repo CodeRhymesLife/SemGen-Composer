@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import semGen.models.properties.IModelProperty;
 
 
-public class ModelTableDataModel extends AbstractTableModel{
+public class ModelTableDataModel extends AbstractTableModel {
 	private static final String Name = "Name";
 	private static final String CodeWord = "Code Word";
 	private static final String Equation = "Equation";
@@ -92,5 +92,12 @@ public class ModelTableDataModel extends AbstractTableModel{
 		
 		assert(false);
 		return null;
+	}
+	
+	/*
+	 * Gets the property at the given row
+	 */
+	public IModelProperty getPropertyAt(int row){
+		return _properties.get(row);
 	}
 }
