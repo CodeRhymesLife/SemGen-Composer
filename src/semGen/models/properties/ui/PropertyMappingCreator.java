@@ -26,18 +26,14 @@ public class PropertyMappingCreator {
 	private MergedModel _mergedModel;
 	
 	// Property selection listeners
-	private ModelPropertySelectedListener _model1Listener;
-	private ModelPropertySelectedListener _model2Listener;
+	private ModelPropertySelectedListener _model1PropertySelectionListener;
+	private ModelPropertySelectedListener _model2PropertySelectionListener;
 	
 	public PropertyMappingCreator(MergedModel mergedModel){
 		if(mergedModel == null)
 			throw new NullPointerException("mergedModel");
 		
 		_mergedModel = mergedModel;
-		
-		// Create property selection listeners
-		_model1Listener = new ModelPropertySelectedListener(this);
-		_model2Listener = new ModelPropertySelectedListener(this);
 		
 		// If the flyout hasn't been created yet create it
 		if(_propertiesFlyout == null){
@@ -61,6 +57,10 @@ public class PropertyMappingCreator {
 		propertyMappingComponenetParent.validate();
 		propertyMappingComponenetParent.repaint();
 		
+		// Create property selection listeners
+		_model1PropertySelectionListener = new ModelPropertySelectedListener(this, _propertyMappingComponent.getProperty1Componenet());
+		_model2PropertySelectionListener = new ModelPropertySelectedListener(this, _propertyMappingComponent.getProperty2Componenet());
+		
 		// Select the next property
 		this.selectNextProperty();
 	}
@@ -72,13 +72,13 @@ public class PropertyMappingCreator {
 	private void selectNextProperty(){
 		// If we haven't selected a property from the first
 		// list the properties for selection
-		if(_model1Listener.getSelectedProperty() == null){
-			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1Listener, FlyoutPosition.Left);
+		if(_model1PropertySelectionListener.getSelectedProperty() == null){
+			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1PropertySelectionListener, FlyoutPosition.Left);
 		}
-		// Otherwise if we havent selected a property from the
+		// Otherwise if we haven't selected a property from the
 		// second model list the properties for selection
-		else if(_model2Listener.getSelectedProperty() == null){
-			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2Listener, FlyoutPosition.Right);
+		else if(_model2PropertySelectionListener.getSelectedProperty() == null){
+			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2PropertySelectionListener, FlyoutPosition.Right);
 		}
 		// Otherwise if both properties have been selected create the merged property
 		// and add it to the merged model
@@ -90,7 +90,8 @@ public class PropertyMappingCreator {
 			_propertiesFlyout.getPropertiesTable().setPropertySelectionListener(null);
 			
 			// Add the new mapping to the merged model
-			_mergedModel.addProperty(new MergedModelProperty(_model1Listener.getSelectedProperty(), _model2Listener.getSelectedProperty()));
+			_mergedModel.addProperty(new MergedModelProperty(_model1PropertySelectionListener.getSelectedProperty(),
+					_model2PropertySelectionListener.getSelectedProperty()));
 		}
 		
 	}
@@ -113,11 +114,15 @@ public class PropertyMappingCreator {
 		// Mapping creator
 		private PropertyMappingCreator _mappingCreator;
 		
+		// Property component
+		private PropertyComponent _propertyComponenet;
+		
 		// Selected Property
 		private IModelProperty _selectedProperty;
 		
-		public ModelPropertySelectedListener(PropertyMappingCreator mappingCreator){
+		public ModelPropertySelectedListener(PropertyMappingCreator mappingCreator, PropertyComponent propertyComponent){
 			_mappingCreator = mappingCreator;
+			_propertyComponenet = propertyComponent;
 		}
 		
 		/*
@@ -136,6 +141,8 @@ public class PropertyMappingCreator {
 		@Override
 		public void propertyEvent(IModelProperty property) {
 			_selectedProperty = property;
+			
+			_propertyComponenet.loadProperty(property);
 			
 			// Select the next property
 			_mappingCreator.selectNextProperty();

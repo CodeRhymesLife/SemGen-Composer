@@ -14,21 +14,38 @@ import java.util.ArrayList;
 
 
 public class PropertyMappingComponent extends JPanel {
+	// Property components
+	private PropertyComponent _property1;
+	private PropertyComponent _property2;
 	/**
 	 * Create the panel.
 	 */
 	public PropertyMappingComponent() {
 		
-		PropertyComponent propertyComponent = new PropertyComponent();
-		propertyComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
-		add(propertyComponent);
+		_property1 = new PropertyComponent();
+		_property1.setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(_property1);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
 		add(panel);
 		
-		PropertyComponent propertyComponent_1 = new PropertyComponent();
-		propertyComponent_1.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		add(propertyComponent_1);
+		_property2 = new PropertyComponent();
+		_property2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		add(_property2);
+	}
+	
+	/*
+	 * Get the component for property 1
+	 */
+	public PropertyComponent getProperty1Componenet(){
+		return _property1;
+	}
+	
+	/*
+	 * Get the component for property 2
+	 */
+	public PropertyComponent getProperty2Componenet(){
+		return _property2;
 	}
 }

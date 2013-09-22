@@ -114,11 +114,16 @@ public class PropertyMappingsPanel extends JPanel {
 		for(Iterator<IModelProperty> i = _model.getProperties().iterator(); i.hasNext(); ) {
 			IModelProperty property = i.next();
 			
-			// If this is a merged property add a component for it
-			if(property instanceof MergedModelProperty){
-				PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
-				_propertiesPanel.add(propertyMappingComponent);
-			}
+			// We should only have merged properties
+			assert(property instanceof MergedModelProperty);
+			MergedModelProperty mergedModelProperty = (MergedModelProperty)property;
+			
+			// Create a component to show the mapping
+			PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
+			propertyMappingComponent.getProperty1Componenet().loadProperty(mergedModelProperty.getProperty1());
+			propertyMappingComponent.getProperty2Componenet().loadProperty(mergedModelProperty.getProperty2());
+			
+			_propertiesPanel.add(propertyMappingComponent);
 		}
 		
 		_propertiesPanel.validate();
