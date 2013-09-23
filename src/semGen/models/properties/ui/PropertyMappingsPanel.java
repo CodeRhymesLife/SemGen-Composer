@@ -108,7 +108,11 @@ public class PropertyMappingsPanel extends JPanel {
 		assert(_model != null);
 		_model = model;
 		
+		// Set the model name label
 		_lblModelName.setText(_model.getName());
+		
+		// Clear the properties panel
+		_propertiesPanel.removeAll();
 		
 		// Add a property mapping component for each property
 		for(Iterator<IModelProperty> i = _model.getProperties().iterator(); i.hasNext(); ) {
