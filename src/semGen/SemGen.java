@@ -102,12 +102,12 @@ public class SemGen {
 			// TODO: Add error handling
 			return;
 		
-		String name = String.format("%s %s", model1.getName(), model2.getName());
+		String newModelName = String.format("%s + %s", model1.getName(), model2.getName());
 		
 		// Get auto mapped properties
 		ArrayList<IModelProperty> autoMappedProperties = getAutoMappedProperties(model1, model2);
 		
-		_repository.addModel(new MergedModel(name, autoMappedProperties, model1, model2));
+		_repository.addModel(new MergedModel(newModelName, autoMappedProperties, model1, model2));
 	}
 	
 	/*
