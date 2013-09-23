@@ -21,6 +21,7 @@ import semGen.models.Model;
 import semGen.ui.ComposerJFrame;
 import ui.FlyoutComponent;
 import ui.FlyoutPosition;
+import ui.ObjectActionListener;
 
 
 /*
@@ -274,11 +275,11 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 			if(SemGen.isMergeable(flyoutModel, mergeableModel))
 				// When this button is clicked it will merge the two model
 				_mergeableModelButtonsListPanel.add(createActionButton(mergeableModel.getName(),
-						new ModelActionListener(mergeableModel) {
+						new ObjectActionListener<Model>(mergeableModel) {
 							
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								SemGen.getInstance().Merge(thisFlyout._currentModelBox.getModel(), this.getSavedModel());
+								SemGen.getInstance().Merge(thisFlyout._currentModelBox.getModel(), this.getObject());	
 							}
 						}));
 		}
