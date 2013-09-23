@@ -1,7 +1,6 @@
 package ui;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -12,6 +11,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import semGen.ui.ComposerJFrame;
 
 
 public class FlyoutComponent extends JPanel {
@@ -69,6 +70,10 @@ public class FlyoutComponent extends JPanel {
 	 * Show this flyout around the given component
 	 */
 	public void showAroundComponent(Component component, FlyoutPosition direction){
+		// Refresh composer jframe so all objects have a chance to resize
+		// Fix for: https://github.com/rcjames1004/SemGen-Composer/issues/18
+		ComposerJFrame.refresh();
+		
 		this.setVisible(false);
 		
 		// Ensure the triangle is facing in the correct direction

@@ -59,6 +59,15 @@ public class ComposerJFrame extends JFrame {
 	}
 	
 	/*
+	 * Refreshes the composer's content pane
+	 */
+	public static void refresh(){
+		Container contentPane = getInstance().getContentPane();
+		contentPane.validate();
+		contentPane.repaint();
+	}
+	
+	/*
 	 * Get the add model button
 	 */
 	public AddModelButton getAddModelButton(){
