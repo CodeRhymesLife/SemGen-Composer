@@ -195,6 +195,16 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 			}
 		}));
 		
+		// Clone
+		_commandButtonPanel.add(createActionButton("Clone",
+		new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SemGen.getInstance().Clone(thisFlyout._currentModelBox.getModel());
+			}
+		}));
+		
 		// Encode
 		_commandButtonPanel.add(createActionButton("Encode",
 		new ActionListener() {

@@ -81,6 +81,13 @@ public class SemGen {
 	}
 	
 	/*
+	 * Clone the given model
+	 */
+	public void Clone(Model model){
+		throw new UnsupportedOperationException("Clone");
+	}
+	
+	/*
 	 * Encode the given model
 	 */
 	public void Encode(Model model){
