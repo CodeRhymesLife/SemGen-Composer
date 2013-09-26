@@ -28,6 +28,9 @@ import ui.ObjectActionListener;
  * Flyout for models
  */
 public class ModelFlyout extends FlyoutComponent implements MouseListener {
+	// Flyout title
+	private static final String Title = "Model Actions";
+	
 	// Shows command buttons
 	private JPanel _commandButtonPanel;
 	
@@ -41,6 +44,8 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 	private ModelBox _currentModelBox;
 	
 	public ModelFlyout(){
+		super(Title);
+		
 		Container composerPane = ComposerJFrame.getInstance().getContentPane();
 		
 		// Add to composer pane
@@ -309,6 +314,10 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 		button.setContentAreaFilled(false);
 		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		// Add space between buttons
+		final int buttonMargin = 2;
+		button.setBorder(BorderFactory.createEmptyBorder(buttonMargin, buttonMargin, buttonMargin, buttonMargin));
 		
 		button.addActionListener(listener);
 		return button;

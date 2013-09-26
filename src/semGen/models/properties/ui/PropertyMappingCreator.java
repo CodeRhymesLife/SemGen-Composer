@@ -106,6 +106,9 @@ public class PropertyMappingCreator {
 		// Listen for the property selection event
 		_propertiesFlyout.getPropertiesTable().setPropertySelectionListener(listener);
 		
+		// Update the flyout's title
+		_propertiesFlyout.setTitle(String.format("%s Properties", model.getName()));
+		
 		// Show the flyout around the first property component
 		_propertiesFlyout.showAroundComponent(_propertyMappingComponent, position);
 	}
@@ -152,7 +155,7 @@ public class PropertyMappingCreator {
 	/*
 	 * Flyout for property mappings
 	 */
-	private class PropertyMappingsFlyout extends FlyoutComponent{
+	private class PropertyMappingsFlyout extends FlyoutComponent{		
 		// Lists properties
 		private ModelPropertyListPanel _propertyList;
 		

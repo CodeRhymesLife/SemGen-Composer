@@ -2,27 +2,42 @@ package ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import semGen.ui.ComposerJFrame;
 
 
 public class FlyoutComponent extends JPanel {
+	private JLabel _title;
+	private RoundedCornerJPanel _titleAndContentContainer;
 	private JPanel _contentPanel;
 	private TriangleComponent _triangle;
 	
-	/**
-	 * Create the panel.
-	 */
-	public FlyoutComponent() {
+	// Offset of the content panel within the content panel container
+	private static final int ContentPanelOffset = 20;
+	
+	// Content panel container border arc
+	private static final int ContentPanelContainerBorderArc = 10;
+	
+	public FlyoutComponent(){
+		this(null);
+	}
+	
+	public FlyoutComponent(String title) {
 		// Absolute positioning
 		this.setLayout(null);
 		
@@ -33,7 +48,12 @@ public class FlyoutComponent extends JPanel {
 		_triangle = new TriangleComponent();
 		this.add(_triangle);
 		
+		this.addTitleAndContentContainer();
+		this.addTitle();
 		this.addContentPanel();
+		
+		// Set the title
+		this.setTitle(title);
 		
 		this.setSize(this.getPreferredSize());
 		
@@ -58,12 +78,24 @@ public class FlyoutComponent extends JPanel {
 	 */
 	@Override
 	public Dimension getPreferredSize(){
-		int triangleBuffer = this.getContentPanelOffset() * 2;
+		int triangleBuffer = this.getTitleAndContentContainerOffset() * 2;
 		
 		// Provide enought room for the triangle to move around all sides
 		// of the content panel
-		return new Dimension(_contentPanel.getWidth() + triangleBuffer,
-				_contentPanel.getHeight() + triangleBuffer);
+		return new Dimension(_titleAndContentContainer.getWidth() + triangleBuffer,
+				_titleAndContentContainer.getHeight() + triangleBuffer);
+	}
+	
+	/*
+	 * Set the title's value. If null then the title is hidden.
+	 */
+	public void setTitle(String title){
+		if(title == null)
+			_title.setVisible(false);
+		else{
+			_title.setText(title);
+			_title.setVisible(true);
+		}
 	}
 	
 	/*
@@ -80,7 +112,7 @@ public class FlyoutComponent extends JPanel {
 		_triangle.setDirection(direction);
 		
 		// Set the content panel's size
-		_contentPanel.setSize(_contentPanel.getPreferredSize());
+		_titleAndContentContainer.setSize(_titleAndContentContainer.getPreferredSize());
 
 		// Set the flyout's size
 		this.setSize(this.getPreferredSize());
@@ -164,24 +196,57 @@ public class FlyoutComponent extends JPanel {
 	/*
 	 * The content panel's offset within the flyout
 	 */
-	private int getContentPanelOffset(){
+	private int getTitleAndContentContainerOffset(){
 		return TriangleComponent.Height;
 	}
 	
 	/*
-	 * Add content panel to 
+	 * Add the title and content panel container
+	 */
+	private void addTitleAndContentContainer(){
+		// Create content panel container
+		_titleAndContentContainer = new RoundedCornerJPanel(ContentPanelContainerBorderArc);
+		_titleAndContentContainer.setLayout(new BoxLayout(_titleAndContentContainer, BoxLayout.Y_AXIS));
+		_titleAndContentContainer.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		_titleAndContentContainer.setBackground(Color.WHITE);
+		
+		// Give the triangle enough room to move around the outside of the content panel
+		_titleAndContentContainer.setLocation(new Point(this.getTitleAndContentContainerOffset(), this.getTitleAndContentContainerOffset()));
+		
+		// Add the content panel container
+		this.add(_titleAndContentContainer);
+	}
+	
+	/*
+	 * Add the title
+	 */
+	private void addTitle(){
+		// Create title component
+		_title = new JLabel();
+		_title.setFont(new Font("Calibri", Font.PLAIN, 18));
+		_title.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// Add space between the container and the title
+		_title.setBorder(BorderFactory.createEmptyBorder(10, 10, 0 /* Content panel has top padding */, 10));
+		_title.setOpaque(false);
+		
+		_titleAndContentContainer.add(_title);
+	}
+	
+	/*
+	 * Add content panel
 	 */
 	private void addContentPanel(){
 		// Create content panel
 		_contentPanel = new JPanel();
-		_contentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		_contentPanel.setBackground(Color.WHITE);
-
-		// Give the triangle enough room to move around the outsize of the content panel
-		_contentPanel.setLocation(new Point(this.getContentPanelOffset(), this.getContentPanelOffset()));
+		_contentPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		// Add content panel
-		this.add(_contentPanel);
+		// Add space between the container and the content panel
+		_contentPanel.setBorder(BorderFactory.createEmptyBorder(ContentPanelOffset, ContentPanelOffset, ContentPanelOffset, ContentPanelOffset));
+		_contentPanel.setOpaque(false);
+		
+		// Add the content panel to its container
+		_titleAndContentContainer.add(_contentPanel);
 	}
 	
 	/*

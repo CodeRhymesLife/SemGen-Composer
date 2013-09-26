@@ -11,12 +11,13 @@ import javax.swing.SwingUtilities;
 import semGen.SemGemConstants;
 import semGen.models.Model;
 import ui.ImageComponent;
+import ui.RoundedCornerJPanel;
 
 
 /*
  * Part of Model ui that you move and click
  */
-public class ModelBox extends JPanel {
+public class ModelBox extends RoundedCornerJPanel {
 	private static final int Width = 150;
 	private static final int Height = 100;
 	private static final int BorderArc = 20;
@@ -28,6 +29,7 @@ public class ModelBox extends JPanel {
 	private ImageComponent _grip;
 	
 	public ModelBox(){
+		super(BorderArc);
 		setupUI();			
 	}
 
@@ -48,19 +50,7 @@ public class ModelBox extends JPanel {
 	public Model getModel(){
 		return ((ModelComponent)SwingUtilities.getAncestorOfClass(ModelComponent.class, this)).getModel();
 	}
-	
-	/*
-	 * Draw a rounded rectangle
-	 * 
-	 * (non-Javadoc)
-	 * @see javax.swing.JComponent#paintBorder(java.awt.Graphics)
-	 */
-	@Override
-    protected void paintBorder(Graphics g) {
-         g.setColor(getForeground());
-         g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, BorderArc, BorderArc);
-    }
-	
+
 	/*
 	 * Setup the ui
 	 */

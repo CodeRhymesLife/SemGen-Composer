@@ -25,9 +25,10 @@ import javax.swing.border.LineBorder;
 import semGen.models.MergedModel;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
+import ui.RoundedCornerJPanel;
 
 
-public class PropertyMappingsPanel extends JPanel {
+public class PropertyMappingsPanel extends RoundedCornerJPanel {
 	public static final int Height = 500;
 	public static final int Width = 600;
 	private static final int BorderArc = 20;
@@ -41,6 +42,8 @@ public class PropertyMappingsPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public PropertyMappingsPanel() {
+		super(BorderArc);
+		
 		setBackground(Color.WHITE);
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -133,18 +136,6 @@ public class PropertyMappingsPanel extends JPanel {
 		_propertiesPanel.validate();
 		_propertiesPanel.repaint();
 	}
-	
-	/*
-	 * Draw a rounded rectangle
-	 * 
-	 * (non-Javadoc)
-	 * @see javax.swing.JComponent#paintBorder(java.awt.Graphics)
-	 */
-	@Override
-    protected void paintBorder(Graphics g) {
-         g.setColor(getForeground());
-         g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, BorderArc, BorderArc);
-    }
 
 	/*
 	 * Add UI for a new property mapping
