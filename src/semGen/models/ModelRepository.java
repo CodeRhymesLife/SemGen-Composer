@@ -42,20 +42,8 @@ public class ModelRepository {
 	/*
 	 * Tells whether the given model is in the repository
 	 */
-	public boolean hasModel(String modelName){
-		// Check to see if this model is in
-		// the repository
-		// TODO: This is slow, lookout for perf issues
-		for(Iterator<Model> i = _models.iterator(); i.hasNext(); ) {
-			Model model = i.next();
-			
-			// Do we have this model?
-			if(model.getName().equals(modelName))
-				return true;
-		}
-		
-		// We didnt find the model
-		return false;
+	public boolean hasModel(String name){
+		return getModel(name) != null;
 	}
 	
 	/*
@@ -81,6 +69,23 @@ public class ModelRepository {
 		
 		InformListenersAboutModelAction(ModelRepositoryAction.ModelRemoved, model);
 		return true;
+	}
+	
+	/*
+	 * Gets the model by its name
+	 */
+	public Model getModel(String name){
+		// Check to see if this model is in
+		// the repository. If it is return it
+		// TODO: This is slow, lookout for perf issues
+		for(Iterator<Model> i = _models.iterator(); i.hasNext(); ) {
+			Model model = i.next();
+			
+			// Do we have this model?
+			if(model.getName().equals(name))
+				return model;
+		}
+		return null;
 	}
 	
 	/*

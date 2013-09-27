@@ -1,9 +1,13 @@
 package semGen.models.ui;
 import java.awt.Graphics;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,10 +27,13 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.TransferHandler;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.Icon;
 
+import semGen.SemGen;
 import semGen.models.Model;
+import semGen.models.ModelRepository;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -81,6 +88,18 @@ public class ModelComponent extends JPanel {
 		
 		setBounds(new Rectangle(
                 getLocation(), getPreferredSize()));
+		
+		// Create a MergeModelTransferHandler used to merge models
+		// via drag and drop
+	    setTransferHandler(new MergeModelTransferHandler());
+		
+		// Since JPanel does not normally support drag-and-drop, we need an
+	    // event handler to detect a drag and start the transfer.
+	    _modelBox.addMouseMotionListener(new MouseMotionAdapter() {
+	      public void mouseDragged(MouseEvent e) {
+	        getTransferHandler().exportAsDrag(ModelComponent.this, e, TransferHandler.COPY);
+	      }
+	    });
 	}
 	
 	/*
@@ -93,5 +112,72 @@ public class ModelComponent extends JPanel {
 	@Override
 	public Dimension getPreferredSize(){
 		return new Dimension(_modelBox.getWidth(), _modelBox.getHeight() + _lblTitle.getHeight() + 50);
+	}
+	
+	/*
+	 * Handles merging models via drag and drop
+	 */
+	public class MergeModelTransferHandler extends TransferHandler {
+	    /**
+	     * We only support importing strings.
+	     */
+	    @Override
+	    public boolean canImport(TransferHandler.TransferSupport info) {
+	        // Check for String flavor
+	        if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+	            return false;
+	        }
+	        return true;
+	    }
+
+	    /**
+	     * Get the model name of the source model being dragged
+	     */
+	    @Override
+	    protected Transferable createTransferable(JComponent c) {
+	    	ModelComponent modelComponent = (ModelComponent)c;
+	        return new StringSelection(modelComponent.getModel().getName());
+	    }
+	    
+	    /**
+	     * We support copy.
+	     */
+	    @Override
+	    public int getSourceActions(JComponent c) {
+	        return TransferHandler.COPY;
+	    }
+	    
+	    /**
+	     * Perform the actual import.  We only support drop.
+	     * Gets the source model and merges it with the model it's
+	     * dropped on
+	     */
+	    @Override
+	    public boolean importData(TransferHandler.TransferSupport info) {
+	        if (!info.isDrop()) {
+	            return false;
+	        }
+
+	        // Get the model name that is being dropped.
+	        Transferable transferable = info.getTransferable();
+	        String sourceModelName;
+	        try {
+	        	sourceModelName = (String)transferable.getTransferData(DataFlavor.stringFlavor);
+	        }
+	        catch (Exception e) { return false; }
+	        
+	        // Get the source model
+	        Model sourceModel = SemGen.getInstance().getModelRepository().getModel(sourceModelName);
+	        
+	        // If the model doesn't exist return false
+	        if(sourceModel == null)
+	        	return false;
+	        
+	        // Get the destination model component
+	        ModelComponent destinationModelComponent = (ModelComponent)info.getComponent();
+	        
+	        SemGen.getInstance().Merge(sourceModel, destinationModelComponent.getModel());
+	        return true;
+	    }
 	}
 }

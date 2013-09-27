@@ -182,6 +182,28 @@ public class ModelRepositoryTest {
 	}
 	
 	@Test
+	public void getModel_NullName_VerifyNullModelReturned(){
+		assertNull("Verify null is returned when getModel is called with null",
+				_repository.getModel(null));
+	}
+	
+	@Test
+	public void getModel_ModelDoesntExist_VerifyNullModelReturned(){
+		assertNull("Verify null is returned when getModel is called with a non-existent model name",
+				_repository.getModel("some model that doesnt exist"));
+	}
+	
+	@Test
+	public void getModel_ModelExists_VerifyModelReturned(){
+		// Add model
+		_repository.addModel(_model);
+		
+		assertSame("Veirfy getModel retrieved the model correctly",
+				_model,
+				_repository.getModel(_model.getName()));
+	}
+	
+	@Test
 	public void addModelRepositoryActionListener_Null_VerifyFalse() {
 		assertFalse("Verify null listeners are not added to repository",
 				_repository.addModelRepositoryActionListener(null));
