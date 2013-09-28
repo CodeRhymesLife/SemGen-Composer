@@ -8,7 +8,6 @@ import semGen.SemGen;
 import semGen.models.Model;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.ModelProperty;
-import semGen.ui.AddModelButtonActionListener;
 import semGen.ui.ComposerJFrame;
 
 /**
@@ -33,26 +32,6 @@ public class Program {
 		ComposerJFrame frame = ComposerJFrame.getInstance();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		// Listen for the new model file chosen action
-		frame.getAddModelButton().setAddModelButtonActionListener(new AddModelButtonActionListener() {
-			
-			/*
-			 * Listen for new model files and add them to SemGen
-			 * 
-			 * (non-Javadoc)
-			 * @see AddModelButtonActionListener#modelFileChosen(java.io.File)
-			 */
-			@Override
-			public void modelFileChosen(File file) {
-				try{
-					SemGen.getInstance().addModelFromFile(file);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
 		
 		// Show frame
 		frame.setVisible(true);

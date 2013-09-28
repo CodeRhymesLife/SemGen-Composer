@@ -21,6 +21,7 @@ import semGen.models.Model;
 import semGen.ui.ComposerJFrame;
 import ui.FlyoutComponent;
 import ui.FlyoutPosition;
+import ui.FlyoutUtility;
 import ui.ObjectActionListener;
 
 
@@ -307,18 +308,7 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 	 * the button is clicked
 	 */
 	private JButton createActionButton(String title, ActionListener listener){
-		JButton button = new JButton(title);
-		
-		// Setup ui
-		button.setHorizontalAlignment(SwingConstants.CENTER);
-		button.setContentAreaFilled(false);
-		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		// Add space between buttons
-		final int buttonMargin = 2;
-		button.setBorder(BorderFactory.createEmptyBorder(buttonMargin, buttonMargin, buttonMargin, buttonMargin));
-		
+		JButton button = FlyoutUtility.createFlyoutButtonForBoxLayoutPanel(title);	
 		button.addActionListener(listener);
 		return button;
 	}

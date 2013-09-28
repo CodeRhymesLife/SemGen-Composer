@@ -121,7 +121,7 @@ public class FlyoutComponent extends JPanel {
 		this.setFlyoutLocationAroundComponent(component, direction);
 		
 		// Set the triangle's location within the flyout
-		this.setTriangleLocation(direction);
+		this.setTriangleLocation(component, direction);
 		
 		this.setBounds(new Rectangle(
 				this.getLocation(), this.getPreferredSize()));
@@ -133,30 +133,55 @@ public class FlyoutComponent extends JPanel {
 	 * Properly places the flyout around the given component
 	 */
 	private void setFlyoutLocationAroundComponent(Component component, FlyoutPosition direction){
-		// Get the component's position relative to the flyout's position
+		// Get component position relative to flyout parent
 		Point componentPosition = SwingUtilities.convertPoint(component.getParent(), component.getLocation(), this.getParent());
+		
 		Dimension componentSize = component.getSize();
 		
 		Dimension flyoutSize = this.getSize();
-		Point newFlyoutPosition = new Point();
 		
-		// Update the new flyout position based on the direction
+		// Get the preferred flyout position based on the direction
+		Point preferredFlyoutPosition = new Point();
 		switch(direction){
 			case Left:
-				newFlyoutPosition.x = componentPosition.x - flyoutSize.width;
-				newFlyoutPosition.y = componentPosition.y + componentSize.height / 2 - flyoutSize.height / 2;
+				preferredFlyoutPosition.x = componentPosition.x - flyoutSize.width;
+				preferredFlyoutPosition.y = componentPosition.y + componentSize.height / 2 - flyoutSize.height / 2;
 				break;
 			case Right:
-				newFlyoutPosition.x = componentPosition.x + componentSize.width;
-				newFlyoutPosition.y = componentPosition.y + componentSize.height / 2 - flyoutSize.height / 2;
+				preferredFlyoutPosition.x = componentPosition.x + componentSize.width;
+				preferredFlyoutPosition.y = componentPosition.y + componentSize.height / 2 - flyoutSize.height / 2;
 				break;
 			case Top:
-				newFlyoutPosition.x = componentPosition.x + componentSize.width / 2 - flyoutSize.width / 2;
-				newFlyoutPosition.y = componentPosition.y - flyoutSize.height;
+				preferredFlyoutPosition.x = componentPosition.x + componentSize.width / 2 - flyoutSize.width / 2;
+				preferredFlyoutPosition.y = componentPosition.y - flyoutSize.height;
 				break;
 			case Bottom:
-				newFlyoutPosition.x = componentPosition.x + componentSize.width / 2 - flyoutSize.width / 2;
-				newFlyoutPosition.y = componentPosition.y + componentSize.height;
+				preferredFlyoutPosition.x = componentPosition.x + componentSize.width / 2 - flyoutSize.width / 2;
+				preferredFlyoutPosition.y = componentPosition.y + componentSize.height;
+				break;
+		}
+		
+		// Get the actual flyout position.
+		//
+		// Check to see if the preferred flyout position is outside of its parent's boundaries.
+		// If it is outside of the parent's boundaries skoot it over
+		Point newFlyoutPosition = new Point();
+		switch(direction){
+			case Left:
+			case Right:
+				newFlyoutPosition.x = preferredFlyoutPosition.x;
+				
+				int lowerBoundY = 0;
+				int upperBoundY = this.getParent().getHeight();
+				newFlyoutPosition.y = Math.min(upperBoundY, Math.max(lowerBoundY, preferredFlyoutPosition.y));
+				break;
+			case Top:
+			case Bottom:
+				newFlyoutPosition.y = preferredFlyoutPosition.y;
+				
+				int lowerBoundX = 0;
+				int upperBoundX = this.getParent().getWidth();
+				newFlyoutPosition.x = Math.min(upperBoundX, Math.max(lowerBoundX, preferredFlyoutPosition.x));
 				break;
 		}
 		
@@ -167,26 +192,56 @@ public class FlyoutComponent extends JPanel {
 	/*
 	 * Set the triangle's location based on the flyout's position
 	 */
-	private void setTriangleLocation(FlyoutPosition direction){
+	private void setTriangleLocation(Component component, FlyoutPosition direction){
+		// Get component position relative to triangle parent
+		Point componentPosition = SwingUtilities.convertPoint(component.getParent(), component.getLocation(), _triangle.getParent());
+		
+		Dimension componentSize = component.getSize();
+		
 		Dimension flyoutSize = this.getSize();
-		Point newTrianglePosition = new Point();
 
+		// Get the preferred triangle position
+		Point preferredTrianglePosition = new Point();
 		switch(direction){
 			case Left:
-				newTrianglePosition.x = flyoutSize.width - _triangle.getWidth();
-				newTrianglePosition.y = flyoutSize.height / 2 - _triangle.getHeight() / 2;
+				preferredTrianglePosition.x = flyoutSize.width - _triangle.getWidth();
+				preferredTrianglePosition.y = componentPosition.y + componentSize.height / 2 - _triangle.getHeight() / 2;
 				break;
 			case Right:
-				newTrianglePosition.x = 0;
-				newTrianglePosition.y = flyoutSize.height / 2  - _triangle.getHeight() / 2;
+				preferredTrianglePosition.x = 0;
+				preferredTrianglePosition.y = componentPosition.y + componentSize.height / 2 - _triangle.getHeight() / 2;
 				break;
 			case Top:
-				newTrianglePosition.x = flyoutSize.width / 2  - _triangle.getWidth() / 2;
-				newTrianglePosition.y = flyoutSize.height - _triangle.getHeight();
+				preferredTrianglePosition.x = componentPosition.x + componentSize.width / 2 - _triangle.getWidth() / 2;
+				preferredTrianglePosition.y = flyoutSize.height - _triangle.getHeight();
 				break;
 			case Bottom:
-				newTrianglePosition.x = flyoutSize.width / 2 - _triangle.getWidth() / 2;
-				newTrianglePosition.y = 0;
+				preferredTrianglePosition.x = componentPosition.x + componentSize.width / 2 - _triangle.getWidth() / 2;
+				preferredTrianglePosition.y = 0;
+				break;
+		}
+		
+		// Get the actual triangle position.
+		//
+		// Check to see if the preferred triangle position is outside of its parent's (flyout) boundaries.
+		// If it is outside of the parent's boundaries skoot it over
+		Point newTrianglePosition = new Point();
+		switch(direction){
+			case Left:
+			case Right:
+				newTrianglePosition.x = preferredTrianglePosition.x;
+				
+				int lowerBoundY = ContentPanelContainerBorderArc + getTitleAndContentContainerOffset();
+				int upperBoundY = this.getParent().getHeight() - ContentPanelContainerBorderArc - getTitleAndContentContainerOffset();
+				newTrianglePosition.y = Math.min(upperBoundY, Math.max(lowerBoundY, preferredTrianglePosition.y));
+				break;
+			case Top:
+			case Bottom:
+				newTrianglePosition.y = preferredTrianglePosition.y;
+				
+				int lowerBoundX = ContentPanelContainerBorderArc + getTitleAndContentContainerOffset();
+				int upperBoundX = this.getParent().getWidth() - ContentPanelContainerBorderArc- getTitleAndContentContainerOffset();
+				newTrianglePosition.x = Math.min(upperBoundX, Math.max(lowerBoundX, preferredTrianglePosition.x));
 				break;
 		}
 		

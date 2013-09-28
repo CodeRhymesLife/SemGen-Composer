@@ -85,7 +85,7 @@ public class ComposerJFrame extends JFrame {
 	 * Create the add model button and add it to the panel
 	 */
 	private void addAddModelButton(){
-		_addModelButton = new AddModelButton(this);
+		_addModelButton = new AddModelButton();
 		_addModelButton.setVerticalAlignment(SwingConstants.TOP);
 		this.getContentPane().add(_addModelButton);
 	}

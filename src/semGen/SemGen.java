@@ -122,7 +122,7 @@ public class SemGen {
 	 * If parsing errors are encountered this function will
 	 * throw specific exceptions
 	 */
-	public Model addModelFromFile(File file) throws Exception {
+	public Model addModelFromFile(File file) {
 		// Get the file name minus the ext
 		String modelName = FilenameUtils.getBaseName(file.getName());
 		

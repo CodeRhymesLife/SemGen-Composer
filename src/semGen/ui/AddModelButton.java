@@ -20,11 +20,12 @@ import javax.swing.SwingConstants;
 
 import semGen.SemGemConstants;
 import semGen.models.ui.ModelFileChooser;
+import ui.FlyoutPosition;
 
 /*
  * Button used to add models to the composer
  */
-public class AddModelButton extends JButton implements ActionListener {
+public class AddModelButton extends JButton {
 	// Image path
 	public final static String GreenPlusPath = SemGemConstants.ImagesDir + "GreenPlus.png";
 	
@@ -34,29 +35,34 @@ public class AddModelButton extends JButton implements ActionListener {
 	// Border color
 	public final static Color BorderColor = Color.BLACK;
 	
-	// Height
-	public final static int Height = 50;
+	// Flyout that provides selection options
+	private AddButtonFlyout _flyout;
 	
-	// Width
-	public final static int Width = 120;
-	
-	// Parent window for the file chooser
-	private Component _fileChooserParent;
-	
-	// Used to choose model files
-	private JFileChooser _fileChooser;
-	
-	// Listens for file chosen action
-	private AddModelButtonActionListener _fileChosenListener;
-	
-	public AddModelButton(Component fileChooserParent){
+	public AddModelButton(){
 		super(Caption);
 		setupUI();
 		
-		createFileChooser(fileChooserParent);
+		// Create flyout
+		_flyout = new AddButtonFlyout();
 		
-		// Listen for click events
-		this.addActionListener(this);
+		// Show the flyout below us when we're clicked
+		this.addActionListener(new ActionListener() {
+			
+			/*
+			 * Show the flyout below the add button
+			 */
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddModelButton button = AddModelButton.this;
+				
+				// If we haven't added the flyout to its parent
+				// add it
+				if(button._flyout.getParent() == null)
+					ComposerJFrame.getInstance().getContentPane().add(button._flyout);
+				
+				button._flyout.showAroundComponent(button, FlyoutPosition.Bottom);
+			}
+		});
 	}
 	
 	/*
@@ -91,63 +97,14 @@ public class AddModelButton extends JButton implements ActionListener {
 		// Text width + image width
         int width = metrics.stringWidth(getText()) + plusImage.getIconWidth();
         
-        // Text height + image height
-        int height = metrics.getHeight() + plusImage.getIconHeight();
+        // Max height between the text and image
+        int height = Math.max(metrics.getHeight(), plusImage.getIconHeight()) + 1;
         
         // Set size
         Dimension newDimension =  new Dimension(width,height);
         setPreferredSize(newDimension);
         setBounds(new Rectangle(
                        getLocation(), getPreferredSize()));
-	}
-	
-	@Override
-	public Dimension getPreferredSize(){
-		return new Dimension(Width, Height);
-	}
-	
-	/*
-	 * Set the action listener that is called when
-	 * a model file is chosen.
-	 */
-	public void setAddModelButtonActionListener(AddModelButtonActionListener listener){
-		if(listener != null)
-			_fileChosenListener = listener;
-	}
-	
-	/*
-	 * Create the file chooser
-	 */
-	private void createFileChooser(Component parent){
-		if(parent == null)
-			throw new NullPointerException("parent");
-		
-		// Save the file chooser's parent so we can open
-		// the file chooser in the correct context
-		_fileChooserParent = parent;
-		
-		// Create the file chooser
-		_fileChooser = new ModelFileChooser();
-	}
-
-	/*
-	 * Called when the button is clicked. Opens file chooser.
-	 * TODO: Execute callback with file info
-	 * 
-	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		int returnVal = _fileChooser.showOpenDialog(_fileChooserParent);
-		
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = _fileChooser.getSelectedFile();
-            
-            // Inform our listener that a file has been chosen
-            if(_fileChosenListener != null)
-            	_fileChosenListener.modelFileChosen(file);
-        }
 	}
 }
 
