@@ -1,5 +1,6 @@
 package semGen.models.ui;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
@@ -66,5 +67,7 @@ public class ModelBox extends RoundedCornerJPanel {
 		// Create and add grip component
 		_grip = new ImageComponent(GripImagePath, 50, 30);
 		this.add(_grip);
+		
+		setCursor(new Cursor(Cursor.MOVE_CURSOR));
 	}
 }
