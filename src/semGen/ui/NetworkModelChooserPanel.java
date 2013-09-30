@@ -79,5 +79,14 @@ public class NetworkModelChooserPanel extends JPanel {
 	    category.add(new DefaultMutableTreeNode("Model 6"));
 	    category.add(new DefaultMutableTreeNode("Model 7"));
 	    category.add(new DefaultMutableTreeNode("Model 8"));
+	    
+	    // Add third category
+	    category = new DefaultMutableTreeNode("Category 3");
+	    root.add(category);
+	    
+	    category.add(new DefaultMutableTreeNode("Model 9"));
+	    category.add(new DefaultMutableTreeNode("Model 10"));
+	    category.add(new DefaultMutableTreeNode("Model 11"));
+	    category.add(new DefaultMutableTreeNode("Model 12"));
 	}
 }
