@@ -27,7 +27,7 @@ import semGen.models.ui.ModelComponent;
  */
 public class ComposerJFrame extends JFrame {
 	// Instance of singleton
-	private static final ComposerJFrame Instance = new ComposerJFrame(SemGen.getInstance());
+	private static final ComposerJFrame Instance = new ComposerJFrame();
 	
 	// Title for frame
 	private final static String Title = "SemGen Composer";
@@ -41,22 +41,9 @@ public class ComposerJFrame extends JFrame {
 	// Panel to choose network models from
 	private NetworkModelChooserPanel _networkModelChooserPanel;
 	
-	public ComposerJFrame(SemGen semGen){
+	public ComposerJFrame(){
 		// Set the title
 		super(Title);
-		
-		Container pane = getContentPane();
-		
-		// This panel accepts absolutely positioned elements
-		pane.setLayout(null);
-		
-		pane.setBackground(Color.WHITE);
-		
-		addAddModelButton();
-		addPropertyMappingsPanel();
-		addNetworkModelChooserPanel();
-		
-		listForSemGenChanges(semGen);
 	}
 	
 	public static ComposerJFrame getInstance(){
@@ -70,6 +57,25 @@ public class ComposerJFrame extends JFrame {
 		Container contentPane = getInstance().getContentPane();
 		contentPane.validate();
 		contentPane.repaint();
+	}
+	
+	/*
+	 * Initialize the composer
+	 */
+	public void initialize()
+	{
+		Container pane = getContentPane();
+		
+		// This panel accepts absolutely positioned elements
+		pane.setLayout(null);
+		
+		pane.setBackground(Color.WHITE);
+		
+		addAddModelButton();
+		addPropertyMappingsPanel();
+		addNetworkModelChooserPanel();
+		
+		listForSemGenChanges(SemGen.getInstance());
 	}
 	
 	/*

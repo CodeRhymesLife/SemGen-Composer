@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
@@ -28,7 +29,7 @@ import ui.ObjectActionListener;
 /*
  * Flyout for models
  */
-public class ModelFlyout extends FlyoutComponent implements MouseListener {
+public class ModelFlyout extends FlyoutComponent {
 	// Flyout title
 	private static final String Title = "Model Actions";
 	
@@ -65,8 +66,13 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 		// Show command buttons panel at first
 		this.showCommandButtonPanel();
 		
-		// Listen for mouse events on the composer content area
-		composerPane.addMouseListener(this);
+		// Close the flyout when the composer pane is clicked
+		composerPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+            	ModelFlyout.this.setVisible(false);
+            }
+		});
 	}
 	
 	/*
@@ -74,48 +80,20 @@ public class ModelFlyout extends FlyoutComponent implements MouseListener {
 	 */
 	public void RegisterModelBox(ModelBox modelBox){
 		// Listen for mouse events
-		modelBox.addMouseListener(this);
-	}
-	
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
-	
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-	
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-	
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-	
-	/*
-	 * If a model box was clicked we will show the flyout around that model box.
-	 * Otherwise make sure the flyout is closed
-	 * 
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		Component target = arg0.getComponent();
-		
-		// If this is a model box save it and open
-		// the flyout around it
-		if(target.getClass() == ModelBox.class)
-		{
-			this._currentModelBox = (ModelBox)target;
-			
-			// Ensure we're showing the command button panel
-			this.showCommandButtonPanel();
-			
-			// Show this flyout around the component
-			this.showAroundComponent(target, FlyoutPosition.Left);
-		}
-		
-		// Otherwise hide the flyout
-		else 
-			this.setVisible(false);
+		modelBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+            	Component target = event.getComponent();
+        		
+            	ModelFlyout.this._currentModelBox = (ModelBox)target;
+    			
+    			// Ensure we're showing the command button panel
+    			ModelFlyout.this.showCommandButtonPanel();
+    			
+    			// Show this flyout around the component
+    			ModelFlyout.this.showAroundComponent(target, FlyoutPosition.Left);
+            }
+		});
 	}
 	
 	/*

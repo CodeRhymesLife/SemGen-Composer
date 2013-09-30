@@ -97,7 +97,8 @@ public class ModelComponent extends JPanel {
 	    // event handler to detect a drag and start the transfer.
 	    _modelBox.addMouseMotionListener(new MouseMotionAdapter() {
 	      public void mouseDragged(MouseEvent e) {
-	        getTransferHandler().exportAsDrag(ModelComponent.this, e, TransferHandler.COPY);
+	    	  Flyout.setVisible(false);
+	    	  getTransferHandler().exportAsDrag(ModelComponent.this, e, TransferHandler.COPY);
 	      }
 	    });
 	}

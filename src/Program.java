@@ -30,6 +30,7 @@ public class Program {
 		
 		// Create our frame and set defaults
 		ComposerJFrame frame = ComposerJFrame.getInstance();
+		frame.initialize();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

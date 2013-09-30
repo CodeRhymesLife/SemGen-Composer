@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.BoxLayout;
@@ -69,6 +71,14 @@ public class AddButtonFlyout extends FlyoutComponent {
 			}
 		});
 		contentPanel.add(btnNetwork);
+		
+		// Close the flyout when the composer pane is clicked
+		ComposerJFrame.getInstance().getContentPane().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+            	AddButtonFlyout.this.setVisible(false);
+            }
+		});
 	}
 	
 	/*
