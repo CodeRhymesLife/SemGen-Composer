@@ -1,6 +1,7 @@
 package semGen.ui;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,9 @@ public class ComposerJFrame extends JFrame {
 	// Property mappings panel
 	private PropertyMappingsPanel _propertyMappingsPanel;
 	
+	// Panel to choose network models from
+	private NetworkModelChooserPanel _networkModelChooserPanel;
+	
 	public ComposerJFrame(SemGen semGen){
 		// Set the title
 		super(Title);
@@ -50,6 +54,7 @@ public class ComposerJFrame extends JFrame {
 		
 		addAddModelButton();
 		addPropertyMappingsPanel();
+		addNetworkModelChooserPanel();
 		
 		listForSemGenChanges(semGen);
 	}
@@ -82,6 +87,14 @@ public class ComposerJFrame extends JFrame {
 	}
 	
 	/*
+	 * Opens network model chooser panel
+	 */
+	public void chooseNetowrkModel(){
+		_networkModelChooserPanel.setSize(_networkModelChooserPanel.getPreferredSize());
+		_networkModelChooserPanel.setVisible(true);
+	}
+	
+	/*
 	 * Create the add model button and add it to the panel
 	 */
 	private void addAddModelButton(){
@@ -110,10 +123,21 @@ public class ComposerJFrame extends JFrame {
 	}
 	
 	/*
+	 * Add panel used to choose network models
+	 */
+	private void addNetworkModelChooserPanel(){
+		_networkModelChooserPanel = new NetworkModelChooserPanel();
+		
+		// Place panel in upper right corner
+		_networkModelChooserPanel.setLocation(new Point(0, 0));
+		_networkModelChooserPanel.setVisible(false);
+		this.getContentPane().add(_networkModelChooserPanel, 0);
+	}
+	
+	/*
 	 * Listen and handle changes in SemGen
 	 */
 	private void listForSemGenChanges(SemGen semGen){
-		final ComposerJFrame thisFrame = this;
 		semGen.getModelRepository().addModelRepositoryActionListener(new ModelRepositoryActionListener() {
 			
 			@Override
@@ -132,7 +156,7 @@ public class ComposerJFrame extends JFrame {
 						modelComponent.getPreferredSize()));
 				
 				// Repaint frame
-				Container pane = thisFrame.getContentPane();
+				Container pane = ComposerJFrame.this.getContentPane();
 				pane.add(modelComponent);
 				
 				// If a new merged model was added
@@ -147,6 +171,9 @@ public class ComposerJFrame extends JFrame {
 					_propertyMappingsPanel.setLocation(new Point(x, y));
 					_propertyMappingsPanel.setVisible(true);
 				}
+				
+				// Close network model chooser when a model is selected
+				_networkModelChooserPanel.setVisible(false);
 				
 				// Repaint
 				pane.validate();

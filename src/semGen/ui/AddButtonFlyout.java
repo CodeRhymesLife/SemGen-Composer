@@ -93,6 +93,6 @@ public class AddButtonFlyout extends FlyoutComponent {
 	 * from the network repository
 	 */
 	private void openNetworkModelChooser(){
-		throw new UnsupportedOperationException("Netowrk Model");
+		ComposerJFrame.getInstance().chooseNetowrkModel();
 	}
 }
