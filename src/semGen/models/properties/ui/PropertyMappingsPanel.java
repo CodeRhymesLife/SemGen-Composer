@@ -86,12 +86,11 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel {
 		this.setSize(new Dimension(Width, Height));
 		
 		// Add listeners
-		final PropertyMappingsPanel thisPanel = this;
 		btnAddNew.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				thisPanel.addProperty();
+				PropertyMappingsPanel.this.addProperty();
 			}
 		});
 	}
