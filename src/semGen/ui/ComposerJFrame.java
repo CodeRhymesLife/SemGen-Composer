@@ -4,11 +4,19 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.file.Files;
+import java.util.Enumeration;
 
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import semGen.SemGen;
 import semGen.models.MergedModel;
@@ -41,9 +49,43 @@ public class ComposerJFrame extends JFrame {
 	// Panel to choose network models from
 	private NetworkModelChooserPanel _networkModelChooserPanel;
 	
-	public ComposerJFrame(){
+	private ComposerJFrame(){
 		// Set the title
 		super(Title);
+		
+		// Listen for items dropped on the composer
+		this.getContentPane().setDropTarget(new DropTarget(){
+			
+			/**
+			 * Add dropped model files to SemGen
+			 */
+            @Override
+            public synchronized void drop(DropTargetDropEvent dtde) {
+            	// Extract transfer data.
+                File[] modelFilesToAdd = null;
+                try {
+                    Transferable t = dtde.getTransferable();
+                    
+                    // We only care about model files
+                    if(!t.isDataFlavorSupported(ModelFilesTransferable.getModelFilesDataFlavor()))
+                    	return;
+                    
+                    // Get the model files
+                    modelFilesToAdd = (File[])t.getTransferData(ModelFilesTransferable.getModelFilesDataFlavor());
+                } catch(UnsupportedFlavorException ufe) {
+                    System.out.println("UnsupportedFlavor: " + ufe.getMessage());
+                } catch(java.io.IOException ioe) {
+                    System.out.println("I/O error: " + ioe.getMessage());
+                }
+                
+                // Add models to SemGen
+                for(File modelFile : modelFilesToAdd){
+                    SemGen.getInstance().addModelFromFile(modelFile);
+                }
+                
+                super.drop(dtde);
+            }
+        });
 	}
 	
 	public static ComposerJFrame getInstance(){
@@ -190,9 +232,12 @@ public class ComposerJFrame extends JFrame {
 			// of models get them from the repository
 			private int numModels = 0;
 			private Point getModelPosition(ModelComponent component){
+				int row = numModels / 5 + 1;
+				int column = (numModels % 5);
+				
 				numModels++;
-				return new Point(50 + numModels * component.getWidth() + numModels * 60,
-						60 + component.getHeight());
+				return new Point((50 + component.getWidth() + 60) * (column + 1),
+						(60 + component.getHeight()) * row);
 			}
 		});
 	}

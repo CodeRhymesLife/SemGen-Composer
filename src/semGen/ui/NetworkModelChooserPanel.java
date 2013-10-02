@@ -13,8 +13,6 @@ import javax.swing.tree.TreeSelectionModel;
 import semGen.SemGen;
 
 public class NetworkModelChooserPanel extends JPanel {
-	private JTree _networkModelTree;
-
 	/**
 	 * Create the panel.
 	 */
@@ -23,35 +21,10 @@ public class NetworkModelChooserPanel extends JPanel {
 		        new DefaultMutableTreeNode("Network Models");
 		createDummyNodes(root);
 
-		_networkModelTree = new JTree(root);
+		NetworkModelChooserTree networkModelTree = new NetworkModelChooserTree(root);
 		
-		JScrollPane scrollPane = new JScrollPane(_networkModelTree);
+		JScrollPane scrollPane = new JScrollPane(networkModelTree);
 		add(scrollPane);
-		
-		_networkModelTree.getSelectionModel().setSelectionMode
-        (TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-		// Listen for when the selection changes.
-		_networkModelTree.addTreeSelectionListener(new TreeSelectionListener() {
-			
-			@Override
-			public void valueChanged(TreeSelectionEvent arg0) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-						NetworkModelChooserPanel.this._networkModelTree.getLastSelectedPathComponent();
-
-				// If nothing is selected return
-			    if (node == null)    
-			    	return;
-		
-			    // If this is a model add it to the composer
-			    Object nodeInfo = node.getUserObject();
-			    if (node.isLeaf()) {
-			        String modelName = (String)nodeInfo;
-			        File dummyModelFile = new File(modelName);
-			        SemGen.getInstance().addModelFromFile(dummyModelFile);
-			    }
-			}
-		});
 	}
 	
 	/*

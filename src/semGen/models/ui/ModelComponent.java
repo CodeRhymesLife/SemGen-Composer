@@ -118,7 +118,7 @@ public class ModelComponent extends JPanel {
 	/*
 	 * Handles merging models via drag and drop
 	 */
-	public class MergeModelTransferHandler extends TransferHandler {
+	private class MergeModelTransferHandler extends TransferHandler {
 	    /**
 	     * We only support importing strings.
 	     */
