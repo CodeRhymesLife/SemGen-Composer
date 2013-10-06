@@ -20,14 +20,17 @@ public class PropertyMappingCreator {
 	private static PropertyMappingsFlyout _propertiesFlyout;
 
 	// Component representing the property mapping
-	private PropertyMappingComponent _propertyMappingComponent;
+	private IncompletePropertyMappingComponent _incompletePropertyMappingComponent;
+	
+	// Property mappings panel
+	private PropertyMappingsPanel _propertyMappingsPanel;
 	
 	// Model to create property mapping for
 	private MergedModel _mergedModel;
 	
 	// Property selection listeners
-	private ModelPropertySelectedListener _model1PropertySelectionListener;
-	private ModelPropertySelectedListener _model2PropertySelectionListener;
+	private ModelPropertyListener _model1PropertySelectionListener;
+	private ModelPropertyListener _model2PropertySelectionListener;
 	
 	public PropertyMappingCreator(MergedModel mergedModel){
 		if(mergedModel == null)
@@ -47,19 +50,39 @@ public class PropertyMappingCreator {
 	/*
 	 * Create property mapping
 	 */
-	public void create(Container propertyMappingComponenetParent){
-		if(propertyMappingComponenetParent == null)
-			throw new NullPointerException("propertyMappingComponenetParent");
+	public void create(PropertyMappingsPanel propertyMappingsPanel){
+		if(propertyMappingsPanel == null)
+			throw new NullPointerException("propertyMappingsPanel");
+		
+		_propertyMappingsPanel = propertyMappingsPanel;
 		
 		// Create and add the property mapping component
-		_propertyMappingComponent = new PropertyMappingComponent();
-		propertyMappingComponenetParent.add(_propertyMappingComponent);
-		propertyMappingComponenetParent.validate();
-		propertyMappingComponenetParent.repaint();
+		_incompletePropertyMappingComponent = new IncompletePropertyMappingComponent();
+		propertyMappingsPanel.addPropertyComponent(_incompletePropertyMappingComponent);
 		
-		// Create property selection listeners
-		_model1PropertySelectionListener = new ModelPropertySelectedListener(this, _propertyMappingComponent.getProperty1Componenet());
-		_model2PropertySelectionListener = new ModelPropertySelectedListener(this, _propertyMappingComponent.getProperty2Componenet());
+		// Listen for a property selected from model 1
+		_model1PropertySelectionListener = new ModelPropertyListener() {
+			
+			@Override
+			public void propertyEvent(IModelProperty property) {
+				_incompletePropertyMappingComponent.getProperty1Component().setProperty(property);
+				
+				// Select the next property
+				PropertyMappingCreator.this.selectNextProperty();
+			}
+		};
+		
+		// Listen for a property selected from model 2
+		_model2PropertySelectionListener = new ModelPropertyListener() {
+			
+			@Override
+			public void propertyEvent(IModelProperty property) {
+				_incompletePropertyMappingComponent.getProperty2Component().setProperty(property);
+				
+				// Select the next property
+				PropertyMappingCreator.this.selectNextProperty();
+			}
+		};
 		
 		// Select the next property
 		this.selectNextProperty();
@@ -70,14 +93,14 @@ public class PropertyMappingCreator {
 	 * selected a new merged model property is created and added to the merged model
 	 */
 	private void selectNextProperty(){
-		// If we haven't selected a property from the first
-		// list the properties for selection
-		if(_model1PropertySelectionListener.getSelectedProperty() == null){
+		// If we haven't selected a property from the first model
+		// list the first model's properties for selection
+		if(!_incompletePropertyMappingComponent.getProperty1Component().hasProperty()){
 			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1PropertySelectionListener, FlyoutPosition.Left);
 		}
-		// Otherwise if we haven't selected a property from the
-		// second model list the properties for selection
-		else if(_model2PropertySelectionListener.getSelectedProperty() == null){
+		// Otherwise if we haven't selected a property from the second model
+		// list the second model's properties for selection
+		else if(!_incompletePropertyMappingComponent.getProperty2Component().hasProperty()){
 			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2PropertySelectionListener, FlyoutPosition.Right);
 		}
 		// Otherwise if both properties have been selected create the merged property
@@ -89,9 +112,14 @@ public class PropertyMappingCreator {
 			// Stop listening for the property selection event
 			_propertiesFlyout.getPropertiesTable().setPropertySelectionListener(null);
 			
+			// Remove the property incomplete mapping component
+			// now that it's complete. The property mappings panel will add its
+			// own component when we add the new merged property
+			_propertyMappingsPanel.removePropertyComponent(_incompletePropertyMappingComponent);
+			
 			// Add the new mapping to the merged model
-			_mergedModel.addProperty(new MergedModelProperty(_model1PropertySelectionListener.getSelectedProperty(),
-					_model2PropertySelectionListener.getSelectedProperty()));
+			_mergedModel.addProperty(new MergedModelProperty(_incompletePropertyMappingComponent.getProperty1Component().getProperty(),
+					_incompletePropertyMappingComponent.getProperty2Component().getProperty()));
 		}
 		
 	}
@@ -99,7 +127,7 @@ public class PropertyMappingCreator {
 	/*
 	 * Lists the properties in the given model for selection
 	 */
-	private void listPropertiesForSelection(Model model, ModelPropertySelectedListener listener, FlyoutPosition position){
+	private void listPropertiesForSelection(Model model, ModelPropertyListener listener, FlyoutPosition position){
 		ModelPropertiesTable propertiesTable = _propertiesFlyout.getPropertiesTable();
 		propertiesTable.setProperties(model.getProperties());
 		
@@ -110,46 +138,7 @@ public class PropertyMappingCreator {
 		_propertiesFlyout.setTitle(String.format("%s Properties", model.getName()));
 		
 		// Show the flyout around the first property component
-		_propertiesFlyout.showAroundComponent(_propertyMappingComponent, position);
-	}
-	
-	private class ModelPropertySelectedListener implements ModelPropertyListener{
-		// Mapping creator
-		private PropertyMappingCreator _mappingCreator;
-		
-		// Property component
-		private PropertyComponent _propertyComponenet;
-		
-		// Selected Property
-		private IModelProperty _selectedProperty;
-		
-		public ModelPropertySelectedListener(PropertyMappingCreator mappingCreator, PropertyComponent propertyComponent){
-			_mappingCreator = mappingCreator;
-			_propertyComponenet = propertyComponent;
-		}
-		
-		/*
-		 * Gets the selected property
-		 */
-		public IModelProperty getSelectedProperty(){
-			return _selectedProperty;
-		}
-		
-		/*
-		 * Called when a property has been selected from the table
-		 * 
-		 * (non-Javadoc)
-		 * @see semGen.models.properties.ModelPropertyListener#propertyEvent(semGen.models.properties.IModelProperty)
-		 */
-		@Override
-		public void propertyEvent(IModelProperty property) {
-			_selectedProperty = property;
-			
-			_propertyComponenet.loadProperty(property);
-			
-			// Select the next property
-			_mappingCreator.selectNextProperty();
-		}
+		_propertiesFlyout.showAroundComponent(_incompletePropertyMappingComponent, position);
 	}
 	
 	/*
@@ -169,6 +158,35 @@ public class PropertyMappingCreator {
 		 */
 		public ModelPropertiesTable getPropertiesTable(){
 			return _propertyList.getTable();
+		}
+	}
+	
+	/**
+	 * Represents a property mapping in progress
+	 * 
+	 * @author rjames
+	 *
+	 */
+	private class IncompletePropertyMappingComponent extends PropertyMappingComponent {
+		public IncompletePropertyMappingComponent(){
+			super();
+			
+			// Hide the combobox
+			_comboBoxPropertySelector.setVisible(false);
+		}
+		
+		/*
+		 * Get the component for property 1
+		 */
+		public PropertyComponent getProperty1Component(){
+			return _property1Component;
+		}
+
+		/*
+		 * Get the component for property 2
+		 */
+		public PropertyComponent getProperty2Component(){
+			return _property2Component;
 		}
 	}
 }

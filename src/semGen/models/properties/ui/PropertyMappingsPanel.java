@@ -23,12 +23,14 @@ import java.util.Iterator;
 import javax.swing.border.LineBorder;
 
 import semGen.models.MergedModel;
+import semGen.models.ModelListener;
+import semGen.models.ModelRepositoryActionListener;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
 import ui.RoundedCornerJPanel;
 
 
-public class PropertyMappingsPanel extends RoundedCornerJPanel {
+public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelListener {
 	public static final int Height = 500;
 	public static final int Width = 600;
 	private static final int BorderArc = 20;
@@ -38,6 +40,7 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel {
 	
 	// Current model
 	private MergedModel _model;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -90,9 +93,26 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PropertyMappingsPanel.this.addProperty();
+				PropertyMappingsPanel.this.createNewPropertyMapping();
 			}
 		});
+	}
+	
+	/**
+	 * Listens for properties added to the current model
+	 */
+	@Override
+	public void propertyAdded(IModelProperty property) {
+		addPropertyMappingComponentForMergedModelProperty(property);
+		refreshPropertiesPanel();
+	}
+
+	/**
+	 * Listens for properties removed from the current model
+	 */
+	@Override
+	public void propertyRemoved(IModelProperty property) {
+		throw new UnsupportedOperationException("Property Mappings Panel Property Removed");
 	}
 	
 	/*
@@ -102,13 +122,37 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel {
 		_btnDone.addActionListener(listener);
 	}
 	
+	/**
+	 * Add property component to properties panel
+	 * @param propertyComponent component to add
+	 */
+	public void addPropertyComponent(Component propertyComponent){
+		_propertiesPanel.add(propertyComponent);
+		refreshPropertiesPanel();
+	}
+	
+	/**
+	 * Remove property component from properties panel
+	 * @param propertyComponent component to remove
+	 */
+	public void removePropertyComponent(Component propertyComponent){
+		_propertiesPanel.remove(propertyComponent);
+		refreshPropertiesPanel();
+	}
+	
 	/*
 	 * Set a new model in the property mappings panel
 	 */
-	public void setModel(MergedModel model){
+	public void setModel(MergedModel model){	
+		assert(model != null);
+		
+		unsetCurrentModel();
+		
 		// Save the model
-		assert(_model != null);
 		_model = model;
+		
+		// Listen for property actions
+		_model.addModelListener(this);
 		
 		// Set the model name label
 		_lblModelName.setText(_model.getName());
@@ -116,31 +160,53 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel {
 		// Clear the properties panel
 		_propertiesPanel.removeAll();
 		
-		// Add a property mapping component for each property
+		// Add a property mapping component for each model property
 		for(Iterator<IModelProperty> i = _model.getProperties().iterator(); i.hasNext(); ) {
 			IModelProperty property = i.next();
-			
-			// We should only have merged properties
-			assert(property instanceof MergedModelProperty);
-			MergedModelProperty mergedModelProperty = (MergedModelProperty)property;
-			
-			// Create a component to show the mapping
-			PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent();
-			propertyMappingComponent.getProperty1Componenet().loadProperty(mergedModelProperty.getProperty1());
-			propertyMappingComponent.getProperty2Componenet().loadProperty(mergedModelProperty.getProperty2());
-			
-			_propertiesPanel.add(propertyMappingComponent);
+			addPropertyMappingComponentForMergedModelProperty(property);
 		}
-		
-		_propertiesPanel.validate();
-		_propertiesPanel.repaint();
 	}
 
-	/*
-	 * Add UI for a new property mapping
+	/**
+	 * Create a new property mapping
 	 */
-	private void addProperty(){
+	private void createNewPropertyMapping(){
 		PropertyMappingCreator mappingCreator = new PropertyMappingCreator(_model);
-		mappingCreator.create(_propertiesPanel);
+		mappingCreator.create(this);
+	}
+	
+	/**
+	 * Unset the current model if one exists
+	 */
+	private void unsetCurrentModel(){
+		if(_model == null)
+			return;
+		
+		_model.removeModelListener(this);
+	}
+	
+	/**
+	 * Add a property mapping component for the given merged model property
+	 * @param mergedModelProperty Merged model property to add property component for
+	 */
+	private void addPropertyMappingComponentForMergedModelProperty(IModelProperty property){
+		if(!(property instanceof MergedModelProperty))
+			// TODO: Add support for non-merged properties
+			return;
+		
+		MergedModelProperty mergedModelProperty = (MergedModelProperty)property;
+		
+		// Create a component to show the mapping
+		PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent(mergedModelProperty);
+		
+		addPropertyComponent(propertyMappingComponent);
+	}
+	
+	/**
+	 * Refresh the properties panel
+	 */
+	private void refreshPropertiesPanel(){
+		_propertiesPanel.validate();
+		_propertiesPanel.repaint();
 	}
 }

@@ -123,8 +123,10 @@ public class Model {
 			switch(action){
 				case PropertyAdded:
 					listener.propertyAdded(property);
+					break;
 				case PropertyRemoved:
 					listener.propertyRemoved(property);
+					break;
 			}
 		}
 	}
