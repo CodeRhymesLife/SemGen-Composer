@@ -26,12 +26,12 @@ public class MergedModelTest {
 	
 	@Test (expected = NullPointerException.class)
 	public void Constructor_NullSourceModel1_VerifyException() throws NullPointerException {
-		new MergedModel("model name", new ArrayList<IModelProperty>(), null, new Model("test model 2"));
+		new MergedModel("model name", null, new Model("test model 2"));
 	}
 
 	@Test (expected = NullPointerException.class)
 	public void Constructor_NullSourceModel2_VerifyException() throws NullPointerException {
-		new MergedModel("model name", new ArrayList<IModelProperty>(), new Model("test model 2"), null);
+		new MergedModel("model name", new Model("test model 2"), null);
 	}
 	
 	@Test

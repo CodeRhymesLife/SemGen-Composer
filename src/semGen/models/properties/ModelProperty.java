@@ -1,4 +1,7 @@
 package semGen.models.properties;
+
+import semGen.models.Model;
+
 /**
  * Property for models. Exposes information about
  * a property on a model
@@ -7,6 +10,9 @@ package semGen.models.properties;
  *
  */
 public class ModelProperty implements IModelProperty {
+	// Parent model
+	private final Model _parent;
+	
 	/*
 	 * Property name
 	 */
@@ -22,7 +28,10 @@ public class ModelProperty implements IModelProperty {
 	 */
 	private final String _equation;
 	
-	public ModelProperty(String name, String variableName, String equation){
+	public ModelProperty(Model parent, String name, String variableName, String equation){
+		if(parent == null)
+			throw new NullPointerException("parent");
+		
 		if(name == null)
 			throw new NullPointerException("name");
 		
@@ -32,9 +41,18 @@ public class ModelProperty implements IModelProperty {
 		if(equation == null)
 			throw new NullPointerException("equation");
 		
+		_parent = parent;
 		_name = name;
 		_variableName = variableName;
 		_equation = equation;
+	}
+	
+	/**
+	 * Gets the parent model
+	 */
+	@Override
+	public Model getParentModel() {
+		return _parent;
 	}
 	
 	/*

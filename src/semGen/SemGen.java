@@ -111,10 +111,12 @@ public class SemGen {
 		
 		String newModelName = String.format("%s + %s", model1.getName(), model2.getName());
 		
-		// Get auto mapped properties
-		ArrayList<IModelProperty> autoMappedProperties = getAutoMappedProperties(model1, model2);
+		MergedModel newMergedModel = new MergedModel(newModelName, model1, model2);
 		
-		_repository.addModel(new MergedModel(newModelName, autoMappedProperties, model1, model2));
+		// Add auto mapped properties
+		addAutoMappedProperties(newMergedModel, model1, model2);
+		
+		_repository.addModel(newMergedModel);
 	}
 	
 	/*
@@ -144,22 +146,20 @@ public class SemGen {
 	 * Creates dummy model with dummy properties
 	 */
 	private Model CreateDummyModel(String name){
-		ArrayList<IModelProperty> modelProperties = new ArrayList<IModelProperty>();
-		modelProperties.add(new ModelProperty("Property 1", "P1", "mx + 1"));
-		modelProperties.add(new ModelProperty("Property 2", "P2", "mx + 2"));
-		modelProperties.add(new ModelProperty("Property 3", "P3", "mx + 3"));
-		modelProperties.add(new ModelProperty("Property 4", "P4", "mx + 4"));
-		modelProperties.add(new ModelProperty("Property 5", "P5", "mx + 5"));
+		Model dummyModel = new Model(name);
+		dummyModel.addProperty(new ModelProperty(dummyModel, "Property 1", "P1", "mx + 1"));
+		dummyModel.addProperty(new ModelProperty(dummyModel, "Property 2", "P2", "mx + 2"));
+		dummyModel.addProperty(new ModelProperty(dummyModel, "Property 3", "P3", "mx + 3"));
+		dummyModel.addProperty(new ModelProperty(dummyModel, "Property 4", "P4", "mx + 4"));
+		dummyModel.addProperty(new ModelProperty(dummyModel, "Property 5", "P5", "mx + 5"));
 		
-		return new Model(name, modelProperties);
+		return dummyModel;
 	}
 	
 	/*
-	 * Get list of automapped properties to add to new merged models
+	 * Add automapped properties to the merged model
 	 */
-	private ArrayList<IModelProperty> getAutoMappedProperties(Model model1, Model model2){
-		ArrayList<IModelProperty> mergedProperties = new ArrayList<IModelProperty>();
-		
+	private void addAutoMappedProperties(MergedModel mergedModel, Model model1, Model model2){
 		// Test code
 		// TODO: Write real logic
 		// TODO: Add unit tests
@@ -167,9 +167,7 @@ public class SemGen {
 		ArrayList<IModelProperty> model2Properties = model2.getProperties();
 		int maxPropertiesToMap = Math.min(2, Math.min(model1Properties.size(), model2Properties.size()));
 		for(int i = 0; i < maxPropertiesToMap; i++){
-			mergedProperties.add(new MergedModelProperty(model1Properties.get(i), model2Properties.get(i)));
+			mergedModel.addProperty(new MergedModelProperty(model1Properties.get(i), model2Properties.get(i)));
 		}
-		
-		return mergedProperties;
 	}
 }

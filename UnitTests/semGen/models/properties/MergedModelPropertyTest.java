@@ -6,15 +6,16 @@ import java.security.InvalidParameterException;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.models.Model;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
 import semGen.models.properties.ModelProperty;
 
 
 public class MergedModelPropertyTest {
-	private static IModelProperty _property1;
-	private static IModelProperty _property2;
-	
+	private IModelProperty _property1;
+	private IModelProperty _property2;
+
 	private static MergedModelProperty _mergedModelProperty;
 	
 	/*
@@ -22,8 +23,8 @@ public class MergedModelPropertyTest {
 	 */
 	@Before
 	public void setUp() {
-		_property1 = new ModelProperty("prop 1 test name", "prop 1 test var name", "prop 1 test equation");
-		_property2 = new ModelProperty("prop 2 test name", "prop 2 test var name", "prop 2 test equation");
+		_property1 = new ModelProperty(new Model("parent model 1"), "prop 1 test name", "prop 1 test var name", "prop 1 test equation");
+		_property2 = new ModelProperty(new Model("parent model 2"), "prop 2 test name", "prop 2 test var name", "prop 2 test equation");
 		
 		_mergedModelProperty = new MergedModelProperty(_property1, _property2);
 	}
@@ -87,17 +88,49 @@ public class MergedModelPropertyTest {
 	}
 	
 	@Test
+	public void getParentModel_NoSourceProperty_VerifyNull() {
+		assertNull("Verify getParentModel returns null when no source property is set",
+				_mergedModelProperty.getParentModel());
+	}
+	
+	@Test
+	public void getParentModel_SetSourcePropertyToProperty1_VerifyProperty1ParentRetrieved() {
+		_mergedModelProperty.setSourceProperty(_property1);
+		
+		assertEquals("Verify getParentModel returns property 1's parent when property 1 is the source property",
+				_property1.getParentModel(),
+				_mergedModelProperty.getParentModel());
+	}
+	
+	@Test
+	public void getParentModel_SetSourcePropertyToProperty2_VerifyProperty2ParentRetrieved() {
+		_mergedModelProperty.setSourceProperty(_property2);
+		
+		assertEquals("Verify getParentModel returns property 2's parent when property 2 is the source property",
+				_property2.getParentModel(),
+				_mergedModelProperty.getParentModel());
+	}
+	
+	@Test
 	public void getName_NoSourceProperty_VerifyNull() {
 		assertNull("Verify getName returns null when no source property is set",
 				_mergedModelProperty.getName());
 	}
 	
 	@Test
-	public void getName_SetSourceProperty_VerifySourcePropertyValueRetrieved() {
+	public void getName_SetSourcePropertyToProperty1_VerifySourcePropertyValueRetrieved() {
 		_mergedModelProperty.setSourceProperty(_property1);
 		
 		assertEquals("Verify getName returns the source propery's vlaue",
 				_property1.getName(), _mergedModelProperty.getName());
+	}
+	
+	@Test
+	public void getName_SetSourcePropertyToProperty2_VerifySourcePropertyValueRetrieved() {
+		_mergedModelProperty.setSourceProperty(_property2);
+		
+		assertEquals("Verify getName returns the source propery's vlaue",
+				_property2.getName(), _mergedModelProperty.getName());
 	}
 	
 	@Test
@@ -107,11 +140,19 @@ public class MergedModelPropertyTest {
 	}
 	
 	@Test
-	public void getVariableName_SetSourceProperty_VerifySourcePropertyValueRetrieved() {
+	public void getVariableName_SetSourcePropertyToProperty1_VerifySourcePropertyValueRetrieved() {
 		_mergedModelProperty.setSourceProperty(_property1);
 		
 		assertEquals("Verify getVariableName returns the source propery's vlaue",
 				_property1.getVariableName(), _mergedModelProperty.getVariableName());
+	}
+	
+	@Test
+	public void getVariableName_SetSourcePropertyToProperty2_VerifySourcePropertyValueRetrieved() {
+		_mergedModelProperty.setSourceProperty(_property2);
+		
+		assertEquals("Verify getVariableName returns the source propery's vlaue",
+				_property2.getVariableName(), _mergedModelProperty.getVariableName());
 	}
 	
 	@Test
@@ -121,10 +162,18 @@ public class MergedModelPropertyTest {
 	}
 	
 	@Test
-	public void getEquation_SetSourceProperty_VerifySourcePropertyValueRetrieved() {
+	public void getEquation_SetSourcePropertyToProperty1_VerifySourcePropertyValueRetrieved() {
 		_mergedModelProperty.setSourceProperty(_property1);
 		
 		assertEquals("Verify getEquation returns the source propery's vlaue",
 				_property1.getEquation(), _mergedModelProperty.getEquation());
+	}
+	
+	@Test
+	public void getEquation_SetSourcePropertyToProperty2_VerifySourcePropertyValueRetrieved() {
+		_mergedModelProperty.setSourceProperty(_property2);
+		
+		assertEquals("Verify getEquation returns the source propery's vlaue",
+				_property2.getEquation(), _mergedModelProperty.getEquation());
 	}
 }

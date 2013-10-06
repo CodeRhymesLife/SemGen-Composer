@@ -9,37 +9,28 @@ import org.junit.Test;
 import semGen.models.Model;
 import semGen.models.ModelListener;
 import semGen.models.properties.IModelProperty;
+import semGen.models.properties.MergedModelProperty;
 import semGen.models.properties.ModelProperty;
 
 
 public class ModelTest {
-	private String _name;
-	private ArrayList<IModelProperty> _properties;
+	private static final String _name = "model name";
 	private TestModelListener _actionListener;
+	private ModelProperty _defaultProperty;
 	private Model _model;
 	
 	@Before
 	public void setUp() throws Exception {
-		_name = "test model name";
-		_properties = new ArrayList<IModelProperty>();
-		_properties.add(new ModelProperty("test name", "test var name", "test equation"));
 		_actionListener = new TestModelListener();
 		
-		_model = new Model(_name, _properties);
+		_model = new Model(_name);
+		_defaultProperty = new ModelProperty(_model, "test name", "test var name", "test equation");
+		_model.addProperty(_defaultProperty);
 	}
 
 	@Test (expected = NullPointerException.class)
 	public void Constructor_NullName_VerifyExceptionThrow() {
-		new Model(null, _properties);
-	}
-	
-	@Test
-	public void Constructor_NullProperties_VerifyNoExceptionThrow() {
-		new Model(_name);
-		new Model(_name, null);
-		
-		assertTrue("Verify passing in null properties doesnt throw an exception",
-				true);
+		new Model(null);
 	}
 	
 	@Test
@@ -62,7 +53,7 @@ public class ModelTest {
 				_model.getProperties().size());
 		
 		assertEquals("Verify model in repository",
-				_properties.get(0),
+				_defaultProperty,
 				_model.getProperties().get(0));
 	}
 	
@@ -90,13 +81,29 @@ public class ModelTest {
 	@Test
 	public void addProperty_AlreadyInModel_VerifyFalse() {
 		assertFalse("Verify properties that are already in the model are not added again",
-				_model.addProperty(_properties.get(0)));
+				_model.addProperty(_defaultProperty));
 	}
 	
 	@Test
 	public void addProperty_NewProperty_VerifyTrue() {
 		assertTrue("Verify a new property is added to the model successfully",
-				_model.addProperty(new ModelProperty("test", "test", "test")));
+				_model.addProperty(new ModelProperty(_model, "test", "test", "test")));
+	}
+	
+	@Test
+	public void addProperty_NewModelPropertyWithDifferentParentModel_VerifyFalse() {
+		assertFalse("Verify a new ModelProperty is not added to the model if it has a different parent model",
+				_model.addProperty(new ModelProperty(new Model("different parent model"), "test", "test", "test")));
+	}
+	
+	@Test
+	public void addProperty_NewMergedModelPropertyWithDifferentParentModel_VerifyTrue() {
+		MergedModelProperty mergedModelProperty = new MergedModelProperty(
+				new ModelProperty(new Model("different parent model1"), "test", "test", "test"),
+				new ModelProperty(new Model("different parent model 2"), "test", "test", "test"));
+		
+		assertTrue("Verify a new MergedModelProperty is added to the model if it has a different parent model",
+				_model.addProperty(mergedModelProperty));
 	}
 	
 	@Test
@@ -117,7 +124,7 @@ public class ModelTest {
 		_model.addModelListener(_actionListener);
 		
 		// Add property
-		IModelProperty property = new ModelProperty("test", "test", "test");
+		IModelProperty property = new ModelProperty(_model, "test", "test", "test");
 		_model.addProperty(property);
 		
 		// Verify listener received a callback
@@ -129,7 +136,7 @@ public class ModelTest {
 	@Test
 	public void addModelListener_ValidListener_VerifyListenerCalledWhenPropertyRemoved() {
 		// Add property
-		IModelProperty property = new ModelProperty("test", "test", "test");
+		IModelProperty property = new ModelProperty(_model, "test", "test", "test");
 		_model.addProperty(property);
 		
 		// Add listener
@@ -174,7 +181,7 @@ public class ModelTest {
 		_model.removeModelListener(_actionListener);
 		
 		// Add property
-		IModelProperty property = new ModelProperty("test", "test", "test");
+		IModelProperty property = new ModelProperty(_model, "test", "test", "test");
 		_model.addProperty(property);
 		
 		// Verify listener not called with property

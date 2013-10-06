@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import semGen.models.properties.IModelProperty;
+import semGen.models.properties.ModelProperty;
 
 /**
  * Holds information about a model.
@@ -26,20 +27,12 @@ public class Model {
 	private ArrayList<ModelListener> _listeners;
 	
 	public Model(String name){
-		this(name, null);
-	}
-	
-	public Model(String name, Collection<IModelProperty> properties){
 		if(name == null)
 			throw new NullPointerException("name");
 		
 		_name = name;
 		_properties = new ArrayList<>();
 		_listeners = new ArrayList<>();
-		
-		// Save properties if there are any
-		if(properties != null)
-			_properties.addAll(properties);
 	}
 	
 	/*
@@ -73,6 +66,12 @@ public class Model {
 		if(property == null ||
 		_properties.contains(property) ||
 		!_properties.add(property))
+			return false;
+		
+		// If this is a ModelProperty and it's parent is not this
+		// model do not add it
+		if(property instanceof ModelProperty &&
+		property.getParentModel() != this)
 			return false;
 		
 		InformListenersAboutModelAction(ModelAction.PropertyAdded, property);

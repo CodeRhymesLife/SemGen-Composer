@@ -1,6 +1,8 @@
 package semGen.models.properties;
 import java.security.InvalidParameterException;
 
+import semGen.models.Model;
+
 /**
  * Property for merged models. When a model is
  * merged properties from each model must be mapped and
@@ -66,7 +68,17 @@ public class MergedModelProperty implements IModelProperty {
 		return _property2;
 	}
 	
+	/**
+	 * Gets the source property's parent model
+	 */
+	@Override
+	public Model getParentModel() {
+		return _sourceProperty == null ? null : _sourceProperty.getParentModel();
+	}
+	
 	/* 
+	 * Gets the source property's name
+	 * 
 	 * (non-Javadoc)
 	 * @see IModelProperty#getName()
 	 */
@@ -75,7 +87,9 @@ public class MergedModelProperty implements IModelProperty {
 		return _sourceProperty == null ? null : _sourceProperty.getName();
 	}
 
-	/* (non-Javadoc)
+	/* Gets the source property's variable name
+	 * 
+	 * (non-Javadoc)
 	 * @see IModelProperty#getVariableName()
 	 */
 	@Override
@@ -83,12 +97,13 @@ public class MergedModelProperty implements IModelProperty {
 		return _sourceProperty == null ? null : _sourceProperty.getVariableName();
 	}
 
-	/* (non-Javadoc)
+	/* Gets the source property's equation
+	 * 
+	 * (non-Javadoc)
 	 * @see IModelProperty#getEquation()
 	 */
 	@Override
 	public String getEquation() {
 		return _sourceProperty == null ? null : _sourceProperty.getEquation();
 	}
-
 }
