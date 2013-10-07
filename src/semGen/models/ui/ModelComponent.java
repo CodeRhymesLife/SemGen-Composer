@@ -74,8 +74,10 @@ public class ModelComponent extends JPanel {
 		
 		setBackground(Color.WHITE);
 		
+		String name = model != null ? model.getName() : "Model Name";
+		
 		// Create and add label
-		_lblTitle = new JLabel(model.getName());
+		_lblTitle = new JLabel(name);
 		add(_lblTitle);
 
 		_modelBox = new ModelBox();
