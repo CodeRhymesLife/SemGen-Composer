@@ -336,7 +336,15 @@ public class FlyoutComponent extends JPanel {
 		 */
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			g.drawPolygon(getTrianglePolygon());
+			Polygon triangle = getTrianglePolygon();
+			
+			// First draw a solid triangle
+			g.setColor(this.getBackground());
+			g.fillPolygon(triangle);
+			
+			// Now draw a border around the triangle
+			g.setColor(Color.BLACK);
+			g.drawPolygon(triangle);
 		}
 		
 		/*

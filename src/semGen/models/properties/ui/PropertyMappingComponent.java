@@ -69,6 +69,7 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 		PropertyMappingComboBoxRenderer renderer = new PropertyMappingComboBoxRenderer();
 		_comboBoxPropertySelector.setRenderer(renderer);
 		_comboBoxPropertySelector.setMaximumRowCount(3);
+		_comboBoxPropertySelector.addActionListener(this);
 		add(_comboBoxPropertySelector);
 		
 		JPanel panelRightSeparator = new JPanel();

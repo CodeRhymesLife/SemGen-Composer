@@ -3,10 +3,12 @@ import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
+import java.awt.AWTEvent;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
 
@@ -15,8 +17,11 @@ import java.awt.Component;
 import javax.swing.JButton;
 
 import java.awt.Color;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -96,6 +101,8 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 				PropertyMappingsPanel.this.createNewPropertyMapping();
 			}
 		});
+		
+		swallowAllMouseEvents();
 	}
 	
 	/**
@@ -208,5 +215,44 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	private void refreshPropertiesPanel(){
 		_propertiesPanel.validate();
 		_propertiesPanel.repaint();
+	}
+	
+	private void swallowAllMouseEvents(){
+		// Swallow all mouse events
+				// Hover was causing an underlying button to repaint on top of this control
+				// so the temp, very ugly, hacky, quick solution is to swallow all mouse
+				// events on this panel
+				this.addMouseListener(new MouseListener() {
+					
+					@Override
+					public void mouseReleased(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mousePressed(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 	}
 }

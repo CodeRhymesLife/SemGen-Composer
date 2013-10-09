@@ -23,7 +23,7 @@ import semGen.models.MergedModel;
 import semGen.models.Model;
 import semGen.models.ModelRepositoryActionListener;
 import semGen.models.properties.ui.PropertyMappingsPanel;
-import semGen.models.ui.ModelComponent;
+import ui.FlyoutComponent;
 
 /**
  * 
@@ -40,8 +40,7 @@ public class ComposerJFrame extends JFrame {
 	// Title for frame
 	private final static String Title = "SemGen Composer";
 	
-	// Add model button
-	private AddModelButton _addModelButton;
+	private ComposerModelComponentPanel _modelComponentPanel;
 	
 	// Property mappings panel
 	private PropertyMappingsPanel _propertyMappingsPanel;
@@ -113,18 +112,13 @@ public class ComposerJFrame extends JFrame {
 		
 		pane.setBackground(Color.WHITE);
 		
-		addAddModelButton();
 		addPropertyMappingsPanel();
 		addNetworkModelChooserPanel();
 		
+		// Add this panel last so we can draw it first
+		addModelComponentsPanel();
+		
 		listForSemGenChanges(SemGen.getInstance());
-	}
-	
-	/*
-	 * Get the add model button
-	 */
-	public AddModelButton getAddModelButton(){
-		return _addModelButton;
 	}
 	
 	/*
@@ -142,13 +136,49 @@ public class ComposerJFrame extends JFrame {
 		_networkModelChooserPanel.setVisible(true);
 	}
 	
-	/*
-	 * Create the add model button and add it to the panel
+	/**
+	 * Open the property mappings panel for the merged model
+	 * @param model model to open property mappings panel for
 	 */
-	private void addAddModelButton(){
-		_addModelButton = new AddModelButton();
-		_addModelButton.setVerticalAlignment(SwingConstants.TOP);
-		this.getContentPane().add(_addModelButton);
+	public void openPropertyMappingsPanel(MergedModel model){
+		if(model == null)
+			return;
+		
+		// Set the added model on the property mappings panel
+		_propertyMappingsPanel.setModel(model);
+		
+		// Align and show the panel
+		int x = (this.getContentPane().getWidth() - _propertyMappingsPanel.getWidth()) / 2;
+		int y = 100;
+		_propertyMappingsPanel.setLocation(new Point(x, y));
+		_propertyMappingsPanel.setVisible(true);
+		
+		ComposerJFrame.refresh();
+	}
+	
+	/**
+	 * Add flyout to the composer's content panel at the proper index
+	 * @param flyout flyout to add to the composer
+	 */
+	public static void addFlyout(FlyoutComponent flyout){
+		if(flyout == null)
+			return;
+		
+		// Draw the flyout on top of everything else
+		ComposerJFrame.getInstance().getContentPane().add(flyout, 1);
+	}
+	
+	private void addModelComponentsPanel(){
+		_modelComponentPanel = new ComposerModelComponentPanel();
+		
+		// Set the size of the component panel to the size of
+		// the composer jframe
+		Rectangle frameBounds = this.getBounds();
+		_modelComponentPanel.setBounds(new Rectangle(
+				_modelComponentPanel.getLocation(),
+				java.awt.Toolkit.getDefaultToolkit().getScreenSize()));
+		
+		this.getContentPane().add(_modelComponentPanel);
 	}
 	
 	/*
@@ -167,7 +197,9 @@ public class ComposerJFrame extends JFrame {
 			}
 		});
 		_propertyMappingsPanel.setVisible(false);
-		this.getContentPane().add(_propertyMappingsPanel);
+		
+		// Force the property mappings panel to draw over everything else
+		this.getContentPane().add(_propertyMappingsPanel, 0);
 	}
 	
 	/*
@@ -195,49 +227,12 @@ public class ComposerJFrame extends JFrame {
 			
 			@Override
 			public void modelAdded(Model model) {
-				// Place model component on frame
-				// this is all temp code and needs to be replaced with some kind
-				// of smart layout class/logic
-				ModelComponent modelComponent = new ModelComponent(model);
-				modelComponent.setLocation(this.getModelPosition(modelComponent));
-				modelComponent.setBounds(new Rectangle( modelComponent.getLocation(),
-						modelComponent.getPreferredSize()));
-				
-				// Repaint frame
-				Container pane = ComposerJFrame.this.getContentPane();
-				pane.add(modelComponent);
-				
-				// If a new merged model was added
-				// show it's property mappings
-				if(model instanceof MergedModel){
-					// Set the added model on the property mappings panel
-					_propertyMappingsPanel.setModel((MergedModel)model);
-					
-					// Align and show the panel
-					int x = (pane.getWidth() - _propertyMappingsPanel.getWidth()) / 2;
-					int y = 100;
-					_propertyMappingsPanel.setLocation(new Point(x, y));
-					_propertyMappingsPanel.setVisible(true);
-				}
+				ComposerJFrame.this._modelComponentPanel.addModel(model);
 				
 				// Close network model chooser when a model is selected
 				_networkModelChooserPanel.setVisible(false);
 				
-				// Repaint
-				pane.validate();
-				pane.repaint();
-			}
-			
-			// Temp code until we have a layout solution. If you really want the number
-			// of models get them from the repository
-			private int numModels = 0;
-			private Point getModelPosition(ModelComponent component){
-				int row = numModels / 5 + 1;
-				int column = (numModels % 5);
-				
-				numModels++;
-				return new Point((50 + component.getWidth() + 60) * (column + 1),
-						(60 + component.getHeight()) * row);
+				ComposerJFrame.refresh();
 			}
 		});
 	}

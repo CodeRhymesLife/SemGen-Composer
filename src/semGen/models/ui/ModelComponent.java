@@ -55,7 +55,7 @@ public class ModelComponent extends JPanel {
 	// on inner classes unless initialized with const
 	private static final ModelFlyout Flyout = new ModelFlyout();
 
-	// Model associated with this model componenet
+	// Model associated with this model component
 	private Model _model;
 	
 	// Title
@@ -72,7 +72,7 @@ public class ModelComponent extends JPanel {
 	public ModelComponent(Model model) {
 		_model = model;
 		
-		setBackground(Color.WHITE);
+		setOpaque(false);
 		
 		String name = model != null ? model.getName() : "Model Name";
 		

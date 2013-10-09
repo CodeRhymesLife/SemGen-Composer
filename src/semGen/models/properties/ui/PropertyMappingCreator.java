@@ -11,6 +11,7 @@ import semGen.models.properties.ModelPropertyListener;
 import semGen.ui.ComposerJFrame;
 import ui.FlyoutComponent;
 import ui.FlyoutPosition;
+import ui.FlyoutUtility;
 
 /*
  * Creates a property mapping
@@ -41,9 +42,7 @@ public class PropertyMappingCreator {
 		// If the flyout hasn't been created yet create it
 		if(_propertiesFlyout == null){
 			_propertiesFlyout = new PropertyMappingsFlyout();
-			Container flyoutParent = ComposerJFrame.getInstance().getContentPane();
-			flyoutParent.add(_propertiesFlyout);
-			flyoutParent.setComponentZOrder(_propertiesFlyout, 0);
+			ComposerJFrame.addFlyout(_propertiesFlyout);
 		}
 	}
 	

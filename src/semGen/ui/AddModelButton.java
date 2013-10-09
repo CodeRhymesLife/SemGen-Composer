@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import semGen.SemGemConstants;
 import semGen.models.ui.ModelFileChooser;
 import ui.FlyoutPosition;
+import ui.FlyoutUtility;
 
 /*
  * Button used to add models to the composer
@@ -58,7 +59,7 @@ public class AddModelButton extends JButton {
 				// If we haven't added the flyout to its parent
 				// add it
 				if(button._flyout.getParent() == null)
-					ComposerJFrame.getInstance().getContentPane().add(button._flyout);
+					ComposerJFrame.addFlyout(button._flyout);	
 				
 				button._flyout.showAroundComponent(button, FlyoutPosition.Bottom);
 			}
@@ -77,34 +78,8 @@ public class AddModelButton extends JButton {
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		this.setBorder(null);
 		
-		// Align everything from the left
-		this.setHorizontalAlignment(SwingConstants.LEFT);
-		
 		// Text shows to the right of the image
 	    this.setHorizontalTextPosition(SwingConstants.RIGHT);
-	    
-	    // set size
-	    sizeToFit();
-	}
-	
-	/*
-	 * Adjust size based on image and text
-	 */
-	private void sizeToFit(){
-		Icon plusImage = this.getIcon();
-		FontMetrics metrics = getFontMetrics(getFont()); 
-		
-		// Text width + image width
-        int width = metrics.stringWidth(getText()) + plusImage.getIconWidth();
-        
-        // Max height between the text and image
-        int height = Math.max(metrics.getHeight(), plusImage.getIconHeight()) + 1;
-        
-        // Set size
-        Dimension newDimension =  new Dimension(width,height);
-        setPreferredSize(newDimension);
-        setBounds(new Rectangle(
-                       getLocation(), getPreferredSize()));
 	}
 }
 

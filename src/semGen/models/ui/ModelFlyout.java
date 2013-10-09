@@ -48,10 +48,8 @@ public class ModelFlyout extends FlyoutComponent {
 	public ModelFlyout(){
 		super(Title);
 		
-		Container composerPane = ComposerJFrame.getInstance().getContentPane();
-		
 		// Add to composer pane
-		composerPane.add(this);		
+		ComposerJFrame.addFlyout(this);
 		
 		this.getContentPanel().setLayout(new BoxLayout(this.getContentPanel(), BoxLayout.Y_AXIS));
 		
@@ -67,7 +65,7 @@ public class ModelFlyout extends FlyoutComponent {
 		this.showCommandButtonPanel();
 		
 		// Close the flyout when the composer pane is clicked
-		composerPane.addMouseListener(new MouseAdapter() {
+		ComposerJFrame.getInstance().getContentPane().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent event) {
             	ModelFlyout.this.setVisible(false);
