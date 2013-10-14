@@ -117,7 +117,8 @@ public class PropertyMappingCreator {
 			_propertyMappingsPanel.removePropertyComponent(_incompletePropertyMappingComponent);
 			
 			// Add the new mapping to the merged model
-			_mergedModel.addProperty(new MergedModelProperty(_incompletePropertyMappingComponent.getProperty1Component().getProperty(),
+			_mergedModel.addProperty(new MergedModelProperty(_mergedModel,
+					_incompletePropertyMappingComponent.getProperty1Component().getProperty(),
 					_incompletePropertyMappingComponent.getProperty2Component().getProperty()));
 		}
 		
@@ -169,6 +170,8 @@ public class PropertyMappingCreator {
 	private class IncompletePropertyMappingComponent extends PropertyMappingComponent {
 		public IncompletePropertyMappingComponent(){
 			super();
+			
+			this.addPropertyComponents();
 			
 			// Hide the combobox
 			_comboBoxPropertySelector.setVisible(false);

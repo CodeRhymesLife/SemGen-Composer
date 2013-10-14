@@ -23,11 +23,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.border.LineBorder;
 
 import semGen.models.MergedModel;
+import semGen.models.Model;
 import semGen.models.ModelListener;
 import semGen.models.ModelRepositoryActionListener;
 import semGen.models.properties.IModelProperty;
@@ -45,6 +48,9 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	
 	// Current model
 	private MergedModel _model;
+	
+	// Maps models to model components
+	private Map<MergedModelProperty, PropertyMappingComponent> _propertyMappingComponents;
 	
 	/**
 	 * Create the panel.
@@ -103,6 +109,8 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		});
 		
 		swallowAllMouseEvents();
+		
+		_propertyMappingComponents = new HashMap<MergedModelProperty, PropertyMappingComponent>();
 	}
 	
 	/**
@@ -119,7 +127,8 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	 */
 	@Override
 	public void propertyRemoved(IModelProperty property) {
-		throw new UnsupportedOperationException("Property Mappings Panel Property Removed");
+		removePropertyMappingComponentForMergedModelProperty(property);
+		refreshPropertiesPanel();
 	}
 	
 	/*
@@ -207,6 +216,23 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		PropertyMappingComponent propertyMappingComponent = new PropertyMappingComponent(mergedModelProperty);
 		
 		addPropertyComponent(propertyMappingComponent);
+		_propertyMappingComponents.put(mergedModelProperty, propertyMappingComponent);
+	}
+	
+	/**
+	 * Add a property mapping component for the given merged model property
+	 * @param mergedModelProperty Merged model property to add property component for
+	 */
+	private void removePropertyMappingComponentForMergedModelProperty(IModelProperty property){
+		if(!(property instanceof MergedModelProperty))
+			// TODO: Add support for removing non-merged properties
+			return;
+		
+		MergedModelProperty mergedModelProperty = (MergedModelProperty)property;
+		
+		// Create a component to show the mapping
+		PropertyMappingComponent propertyMappingComponent = _propertyMappingComponents.remove(mergedModelProperty);
+		removePropertyComponent(propertyMappingComponent);
 	}
 	
 	/**

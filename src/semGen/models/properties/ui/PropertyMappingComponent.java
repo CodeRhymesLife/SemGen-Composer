@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import semGen.SemGemConstants;
+import semGen.models.Model;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
 import semGen.models.properties.ModelPropertyListener;
@@ -47,6 +48,26 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 	
 	public PropertyMappingComponent(MergedModelProperty mergedModelProperty) {
 		this();
+		
+		JButton deleteButton = new JButton();
+		deleteButton.setContentAreaFilled(false);
+		deleteButton.setBorder(null);
+		deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		ImageIcon redX = new ImageIcon(RedXPath);
+		// Resize image
+		{
+			Image img = redX.getImage();
+			Image resizedImage = img.getScaledInstance(CloseButtonWidth, CloseButtonHeight, java.awt.Image.SCALE_SMOOTH);
+			redX.setImage(resizedImage);
+			deleteButton.setIcon(redX);
+		}
+		add(deleteButton);	
+		
+		addPropertyComponents();
+		
+		// Add dummy object at the end to balance out the close button
+		Component deleteButtonBalancer = Box.createRigidArea(new Dimension(CloseButtonWidth, CloseButtonHeight));
+		add(deleteButtonBalancer);
 
 		// Save the merged model property
 		_mergedModelProperty = mergedModelProperty;	
@@ -65,24 +86,38 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 		if(mergedModelProperty.getSourceProperty() != null){
 			model.setSelectedItem(mergedModelProperty.getSourceProperty());
 		}
+		
+		// Remove this property when the close button is clicked
+		deleteButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PropertyMappingComponent.this._mergedModelProperty.getParentModel().removeProperty(PropertyMappingComponent.this._mergedModelProperty);
+			}
+		});
 	}
 	
 	protected PropertyMappingComponent() {
-		
-		JButton deleteButton = new JButton();
-		deleteButton.setContentAreaFilled(false);
-		deleteButton.setBorder(null);
-		deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ImageIcon redX = new ImageIcon(RedXPath);
-		// Resize image
-		{
-			Image img = redX.getImage();
-			Image resizedImage = img.getScaledInstance(CloseButtonWidth, CloseButtonHeight, java.awt.Image.SCALE_SMOOTH);
-			redX.setImage(resizedImage);
-			deleteButton.setIcon(redX);
-		}
-		add(deleteButton);	
-		
+		this.setOpaque(false);
+	}
+	
+	/**
+	 * Sets the selected property as the source property
+	 * on the merged model property
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+        JComboBox cb = (JComboBox)e.getSource();
+        Object selectedItem = cb.getSelectedItem();
+        
+        // If we selected a model property add it and remove
+        // the choose representation item
+        if(selectedItem instanceof IModelProperty){
+        	 _mergedModelProperty.setSourceProperty((IModelProperty)cb.getSelectedItem());
+        }
+    }
+	
+	protected void addPropertyComponents(){
 		_property1Component = new PropertyComponent();
 		_property1Component.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(_property1Component);
@@ -105,27 +140,7 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 		_property2Component = new PropertyComponent();
 		_property2Component.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(_property2Component);
-		
-		// Add dummy object at the end to balance out the close button
-		Component deleteButtonBalancer = Box.createRigidArea(new Dimension(CloseButtonWidth, CloseButtonHeight));
-		add(deleteButtonBalancer);
 	}
-	
-	/**
-	 * Sets the selected property as the source property
-	 * on the merged model property
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-        JComboBox cb = (JComboBox)e.getSource();
-        Object selectedItem = cb.getSelectedItem();
-        
-        // If we selected a model property add it and remove
-        // the choose representation item
-        if(selectedItem instanceof IModelProperty){
-        	 _mergedModelProperty.setSourceProperty((IModelProperty)cb.getSelectedItem());
-        }
-    }
 	
 	/**
 	 * Renders combobox elements

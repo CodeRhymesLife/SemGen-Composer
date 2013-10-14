@@ -97,16 +97,6 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void addProperty_NewMergedModelPropertyWithDifferentParentModel_VerifyTrue() {
-		MergedModelProperty mergedModelProperty = new MergedModelProperty(
-				new ModelProperty(new Model("different parent model1"), "test", "test", "test"),
-				new ModelProperty(new Model("different parent model 2"), "test", "test", "test"));
-		
-		assertTrue("Verify a new MergedModelProperty is added to the model if it has a different parent model",
-				_model.addProperty(mergedModelProperty));
-	}
-	
-	@Test
 	public void addModelListener_Null_VerifyFalse() {
 		assertFalse("Verify false is returned when addModelListener is called with null",
 				_model.addModelListener(null));

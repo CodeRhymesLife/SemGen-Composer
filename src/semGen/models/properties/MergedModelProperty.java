@@ -1,6 +1,7 @@
 package semGen.models.properties;
 import java.security.InvalidParameterException;
 
+import semGen.models.MergedModel;
 import semGen.models.Model;
 
 /**
@@ -14,20 +15,27 @@ import semGen.models.Model;
  */
 public class MergedModelProperty implements IModelProperty {
 
-	public IModelProperty _property1;
-	public IModelProperty _property2;
+	private IModelProperty _property1;
+	private IModelProperty _property2;
 
 	// Property used as the source to retrieve information
 	// aobut this merged property
-	public IModelProperty _sourceProperty;
+	private IModelProperty _sourceProperty;
 	
-	public MergedModelProperty(IModelProperty property1, IModelProperty property2){
+	// Parent model
+	private MergedModel _parentModel;
+	
+	public MergedModelProperty(MergedModel parent, IModelProperty property1, IModelProperty property2){
+		if(parent == null)
+			throw new NullPointerException("parent");
+		
 		if(property1 == null)
 			throw new NullPointerException("property1");
 		
 		if(property2 == null)
 			throw new NullPointerException("property2");
 		
+		_parentModel = parent;
 		_property1 = property1;
 		_property2 = property2;
 	}
@@ -73,7 +81,7 @@ public class MergedModelProperty implements IModelProperty {
 	 */
 	@Override
 	public Model getParentModel() {
-		return _sourceProperty == null ? null : _sourceProperty.getParentModel();
+		return _parentModel;
 	}
 	
 	/* 

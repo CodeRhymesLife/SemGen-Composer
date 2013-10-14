@@ -6,6 +6,7 @@ import java.security.InvalidParameterException;
 import org.junit.Before;
 import org.junit.Test;
 
+import semGen.models.MergedModel;
 import semGen.models.Model;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
@@ -13,6 +14,7 @@ import semGen.models.properties.ModelProperty;
 
 
 public class MergedModelPropertyTest {
+	private MergedModel _model;
 	private IModelProperty _property1;
 	private IModelProperty _property2;
 
@@ -23,20 +25,26 @@ public class MergedModelPropertyTest {
 	 */
 	@Before
 	public void setUp() {
+		_model = new MergedModel("test merged model", new Model("test model 1"), new Model("test model 2"));
 		_property1 = new ModelProperty(new Model("parent model 1"), "prop 1 test name", "prop 1 test var name", "prop 1 test equation");
 		_property2 = new ModelProperty(new Model("parent model 2"), "prop 2 test name", "prop 2 test var name", "prop 2 test equation");
 		
-		_mergedModelProperty = new MergedModelProperty(_property1, _property2);
+		_mergedModelProperty = new MergedModelProperty(_model, _property1, _property2);
+	}
+	
+	@Test (expected = NullPointerException.class)
+	public void MergedModelProperty_NullModel_VerifyException(){
+		new MergedModelProperty(null, _property1, _property2);
 	}
 	
 	@Test (expected = NullPointerException.class)
 	public void MergedModelProperty_NullProperty1_VerifyException(){
-		new MergedModelProperty(null, _property2);
+		new MergedModelProperty(_model, null, _property2);
 	}
 	
 	@Test (expected = NullPointerException.class)
 	public void MergedModelProperty_NullProperty2_VerifyException(){
-		new MergedModelProperty(_property1, null);
+		new MergedModelProperty(_model, _property1, null);
 	}
 
 	@Test
@@ -61,7 +69,7 @@ public class MergedModelPropertyTest {
 	
 	@Test (expected = InvalidParameterException.class)
 	public void setSourceProperty_SetInalidSourceProperty_VerifyExceptionThrown() {
-		MergedModelProperty invalidPropertyToSetAsSource = new MergedModelProperty(_property1, _property2);
+		MergedModelProperty invalidPropertyToSetAsSource = new MergedModelProperty(_model, _property1, _property2);
 		_mergedModelProperty.setSourceProperty(invalidPropertyToSetAsSource);
 	}
 
@@ -88,26 +96,9 @@ public class MergedModelPropertyTest {
 	}
 	
 	@Test
-	public void getParentModel_NoSourceProperty_VerifyNull() {
-		assertNull("Verify getParentModel returns null when no source property is set",
-				_mergedModelProperty.getParentModel());
-	}
-	
-	@Test
-	public void getParentModel_SetSourcePropertyToProperty1_VerifyProperty1ParentRetrieved() {
-		_mergedModelProperty.setSourceProperty(_property1);
-		
-		assertEquals("Verify getParentModel returns property 1's parent when property 1 is the source property",
-				_property1.getParentModel(),
-				_mergedModelProperty.getParentModel());
-	}
-	
-	@Test
-	public void getParentModel_SetSourcePropertyToProperty2_VerifyProperty2ParentRetrieved() {
-		_mergedModelProperty.setSourceProperty(_property2);
-		
-		assertEquals("Verify getParentModel returns property 2's parent when property 2 is the source property",
-				_property2.getParentModel(),
+	public void getParentModel_GetModelSetInConstructor_VerifyParentModelCorrect() {
+		assertEquals("Verify the parent model is the model that was set in the constructor",
+				_model,
 				_mergedModelProperty.getParentModel());
 	}
 	

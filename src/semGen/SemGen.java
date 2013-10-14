@@ -167,7 +167,7 @@ public class SemGen {
 		ArrayList<IModelProperty> model2Properties = model2.getProperties();
 		int maxPropertiesToMap = Math.min(2, Math.min(model1Properties.size(), model2Properties.size()));
 		for(int i = 0; i < maxPropertiesToMap; i++){
-			mergedModel.addProperty(new MergedModelProperty(model1Properties.get(i), model2Properties.get(i)));
+			mergedModel.addProperty(new MergedModelProperty(mergedModel, model1Properties.get(i), model2Properties.get(i)));
 		}
 	}
 }
