@@ -1,6 +1,7 @@
 package semGen.ui;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -25,5 +26,7 @@ public class DeleteButton extends JButton {
 			redX.setImage(resizedImage);
 			setIcon(redX);
 		}
+		
+		setPreferredSize(new Dimension(width, height));
 	}
 }

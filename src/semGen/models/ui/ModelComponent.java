@@ -43,6 +43,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 
@@ -79,17 +80,18 @@ public class ModelComponent extends JPanel implements IModelComponent {
 		String name = model != null ? model.getName() : "Model Name";
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
+		_btnDelete = new DeleteButton(15, 15);
+		_btnDelete.setHorizontalAlignment(SwingConstants.LEFT);
+		_btnDelete.setBounds(new Rectangle(new Point(0, 0), _btnDelete.getPreferredSize())); // align left
+		_btnDelete.setVisible(false);
+		
 		JPanel deleteButtonContainer = new JPanel();
-		deleteButtonContainer.setPreferredSize(new Dimension(15, 15));
+		deleteButtonContainer.setPreferredSize(_btnDelete.getPreferredSize());
 		deleteButtonContainer.setSize(deleteButtonContainer.getPreferredSize());
 		deleteButtonContainer.setOpaque(false);
 		add(deleteButtonContainer);
-		
-		_btnDelete = new DeleteButton(deleteButtonContainer.getWidth(), deleteButtonContainer.getHeight());
-		_btnDelete.setHorizontalAlignment(SwingConstants.LEFT);
-		_btnDelete.setBounds(0, 0, deleteButtonContainer.getWidth(), deleteButtonContainer.getHeight());
-		_btnDelete.setVisible(false);
 		deleteButtonContainer.setLayout(null);
+		
 		deleteButtonContainer.add(_btnDelete);
 		
 		// Create and add label
