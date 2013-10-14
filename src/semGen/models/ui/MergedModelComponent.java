@@ -15,17 +15,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-public class MergedModelComponent extends JPanel {
+public class MergedModelComponent extends JPanel implements IModelComponent {
 
 	private static final int HorizontalGapBetweenSourceModels = 80;
 	private static final int VerticalGapBetweenSourceModelsAndMergedModel = 20;
 	private static final int MergeBarThickness = 2;
 	private JButton _btnEdit;
 	
+	// Model associated with this model component
+	private MergedModel _model;
+	
 	/**
 	 * Create the panel.
 	 */
 	public MergedModelComponent(MergedModel mergedModel) {
+		_model = mergedModel;
+		
 		setOpaque(false);
 		setLayout(null);
 		
@@ -85,5 +90,13 @@ public class MergedModelComponent extends JPanel {
 	 */
 	public void addEditActionListener(ActionListener editButtonActionListener){
 		_btnEdit.addActionListener(editButtonActionListener);
+	}
+
+	/**
+	 * Returns the merged model associated with this component
+	 */
+	@Override
+	public Model getModel() {
+		return _model;
 	}
 }

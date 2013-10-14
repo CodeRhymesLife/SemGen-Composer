@@ -48,7 +48,7 @@ import java.awt.Shape;
 /*
  * Represents model on composer
  */
-public class ModelComponent extends JPanel {
+public class ModelComponent extends JPanel implements IModelComponent {
 
 	// Flyout for all models
 	// Decalred here because static vars cant be decalred
