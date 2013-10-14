@@ -1,10 +1,14 @@
 package semGen.models.properties.ui;
+import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
+import semGen.SemGemConstants;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
 import semGen.models.properties.ModelPropertyListener;
@@ -15,7 +19,9 @@ import ui.FlyoutPosition;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -33,11 +39,17 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 	private MergedModelProperty _mergedModelProperty;
 	private static final String ChooseRepresentationString = "Choose Representation";
 	
+	// Image path
+	private final static String RedXPath = SemGemConstants.ImagesDir + "red-x.png";
+	
+	private final static int CloseButtonWidth = 20;
+	private final static int CloseButtonHeight = 20;
+	
 	public PropertyMappingComponent(MergedModelProperty mergedModelProperty) {
 		this();
 
 		// Save the merged model property
-		_mergedModelProperty = mergedModelProperty;
+		_mergedModelProperty = mergedModelProperty;	
 		
 		// Set the properties on the property components
 		_property1Component.setProperty(mergedModelProperty.getProperty1());
@@ -56,6 +68,20 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 	}
 	
 	protected PropertyMappingComponent() {
+		
+		JButton deleteButton = new JButton();
+		deleteButton.setContentAreaFilled(false);
+		deleteButton.setBorder(null);
+		deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		ImageIcon redX = new ImageIcon(RedXPath);
+		// Resize image
+		{
+			Image img = redX.getImage();
+			Image resizedImage = img.getScaledInstance(CloseButtonWidth, CloseButtonHeight, java.awt.Image.SCALE_SMOOTH);
+			redX.setImage(resizedImage);
+			deleteButton.setIcon(redX);
+		}
+		add(deleteButton);	
 		
 		_property1Component = new PropertyComponent();
 		_property1Component.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -79,6 +105,10 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 		_property2Component = new PropertyComponent();
 		_property2Component.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(_property2Component);
+		
+		// Add dummy object at the end to balance out the close button
+		Component deleteButtonBalancer = Box.createRigidArea(new Dimension(CloseButtonWidth, CloseButtonHeight));
+		add(deleteButtonBalancer);
 	}
 	
 	/**

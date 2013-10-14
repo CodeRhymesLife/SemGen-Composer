@@ -36,8 +36,8 @@ import ui.RoundedCornerJPanel;
 
 
 public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelListener {
-	public static final int Height = 500;
-	public static final int Width = 600;
+	public static final int Height = 700;
+	public static final int Width = 800;
 	private static final int BorderArc = 20;
 	private JButton _btnDone;
 	private JLabel _lblModelName;
