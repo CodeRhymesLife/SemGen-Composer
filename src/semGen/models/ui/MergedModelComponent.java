@@ -24,6 +24,9 @@ public class MergedModelComponent extends JPanel implements IModelComponent {
 	
 	// Model associated with this model component
 	private MergedModel _model;
+	private ModelComponent _modelComponentForMergedModel;
+	private ModelComponent _modelComponentForModel1;
+	private ModelComponent _modelComponentForModel2;
 	
 	/**
 	 * Create the panel.
@@ -43,22 +46,22 @@ public class MergedModelComponent extends JPanel implements IModelComponent {
 			model2 = mergedModel.getSourceModel2();
 		}
 		
-		ModelComponent modelComponentForModel1 = new ModelComponent(model1);
-		modelComponentForModel1.setLocation(0, 0);
-		add(modelComponentForModel1);
+		_modelComponentForModel1 = new ModelComponent(model1);
+		_modelComponentForModel1.setLocation(0, 0);
+		add(_modelComponentForModel1);
 		
-		ModelComponent modelComponentForModel2 = new ModelComponent(model2);
-		modelComponentForModel2.setLocation(modelComponentForModel1.getWidth() + HorizontalGapBetweenSourceModels, 0);
-		add(modelComponentForModel2);
+		_modelComponentForModel2 = new ModelComponent(model2);
+		_modelComponentForModel2.setLocation(_modelComponentForModel1.getWidth() + HorizontalGapBetweenSourceModels, 0);
+		add(_modelComponentForModel2);
 		
 		// I expect them to be the same, but y not...
-		int maxSourceModelHeight = Math.max(modelComponentForModel1.getHeight(), modelComponentForModel2.getHeight());
-		int sourceModelComponentsCombinedWidth = modelComponentForModel1.getWidth() + HorizontalGapBetweenSourceModels + modelComponentForModel2.getWidth();
+		int maxSourceModelHeight = Math.max(_modelComponentForModel1.getHeight(), _modelComponentForModel2.getHeight());
+		int sourceModelComponentsCombinedWidth = _modelComponentForModel1.getWidth() + HorizontalGapBetweenSourceModels + _modelComponentForModel2.getWidth();
 		
-		ModelComponent modelComponentForMergedModel = new ModelComponent(mergedModel);
-		modelComponentForMergedModel.setLocation((sourceModelComponentsCombinedWidth - modelComponentForMergedModel.getWidth())/ 2,
+		_modelComponentForMergedModel = new ModelComponent(mergedModel);
+		_modelComponentForMergedModel.setLocation((sourceModelComponentsCombinedWidth - _modelComponentForMergedModel.getWidth())/ 2,
 				maxSourceModelHeight + VerticalGapBetweenSourceModelsAndMergedModel);
-		add(modelComponentForMergedModel);
+		add(_modelComponentForMergedModel);
 		
 		_btnEdit = new JButton("Edit");
 		_btnEdit.setSize(_btnEdit.getPreferredSize());
@@ -69,19 +72,17 @@ public class MergedModelComponent extends JPanel implements IModelComponent {
 		JPanel horizontalMergeBar = new JPanel();
 		horizontalMergeBar.setBackground(Color.BLACK);
 		horizontalMergeBar.setSize(HorizontalGapBetweenSourceModels, MergeBarThickness);
-		horizontalMergeBar.setLocation(modelComponentForModel1.getLocation().x + modelComponentForModel1.getWidth(),
+		horizontalMergeBar.setLocation(_modelComponentForModel1.getLocation().x + _modelComponentForModel1.getWidth(),
 				(maxSourceModelHeight - horizontalMergeBar.getHeight()) / 2);
 		add(horizontalMergeBar);
 		
 		JPanel verticalMergeBar = new JPanel();
 		verticalMergeBar.setBackground(Color.BLACK);
-		verticalMergeBar.setSize(MergeBarThickness, modelComponentForMergedModel.getLocation().y - horizontalMergeBar.getLocation().y);
+		verticalMergeBar.setSize(MergeBarThickness, _modelComponentForMergedModel.getLocation().y - horizontalMergeBar.getLocation().y);
 		verticalMergeBar.setLocation((sourceModelComponentsCombinedWidth - verticalMergeBar.getWidth()) / 2, horizontalMergeBar.getLocation().y);
 		add(verticalMergeBar);
 		
-		int width = Math.max(sourceModelComponentsCombinedWidth, modelComponentForMergedModel.getWidth());
-		int height = maxSourceModelHeight +	VerticalGapBetweenSourceModelsAndMergedModel + modelComponentForMergedModel.getHeight();
-		this.setPreferredSize(new Dimension(width, height));
+		refreshSize();
 	}
 	
 	/**
@@ -98,5 +99,26 @@ public class MergedModelComponent extends JPanel implements IModelComponent {
 	@Override
 	public Model getModel() {
 		return _model;
+	}
+
+	/**
+	 * Add delete listener to merged model
+	 */
+	@Override
+	public void addDeleteActionListener(ActionListener deleteListener) {
+		_modelComponentForMergedModel.addDeleteActionListener(deleteListener);
+		refreshSize();
+	}
+	
+	/**
+	 * Refresh the size of this component
+	 */
+	private void refreshSize(){
+		int maxSourceModelHeight = Math.max(_modelComponentForModel1.getHeight(), _modelComponentForModel2.getHeight());
+		int sourceModelComponentsCombinedWidth = _modelComponentForModel1.getWidth() + HorizontalGapBetweenSourceModels + _modelComponentForModel2.getWidth();
+		
+		int width = Math.max(sourceModelComponentsCombinedWidth, _modelComponentForMergedModel.getWidth());
+		int height = maxSourceModelHeight +	VerticalGapBetweenSourceModelsAndMergedModel + _modelComponentForMergedModel.getHeight();
+		this.setPreferredSize(new Dimension(width, height));
 	}
 }

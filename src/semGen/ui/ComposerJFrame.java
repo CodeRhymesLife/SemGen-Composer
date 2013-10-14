@@ -222,7 +222,8 @@ public class ComposerJFrame extends JFrame {
 			
 			@Override
 			public void modelRemoved(Model model) {
-				throw new UnsupportedOperationException("Composer remove model");
+				ComposerJFrame.this._modelComponentPanel.removeModel(model);
+				ComposerJFrame.refresh();
 			}
 			
 			@Override

@@ -2,12 +2,14 @@ package semGen.ui;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import semGen.SemGen;
 import semGen.models.MergedModel;
 import semGen.models.Model;
 import semGen.models.ui.IModelComponent;
@@ -106,6 +108,15 @@ class ComposerModelComponentPanel extends JPanel {
 		// Otherwise create a normal model component
 		else
 			modelComponent = new ModelComponent(model);
+		
+		// Add delete listener
+		modelComponent.addDeleteActionListener(new ObjectActionListener<Model>(model) {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				SemGen.getInstance().getModelRepository().removeModel(this.getObject());
+			}
+		});
 		
 		// Add the component to the container
 		_jPanelcomponentContainer.add((Component)modelComponent);

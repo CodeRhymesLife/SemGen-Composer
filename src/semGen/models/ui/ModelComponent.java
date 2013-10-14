@@ -34,6 +34,7 @@ import javax.swing.Icon;
 import semGen.SemGen;
 import semGen.models.Model;
 import semGen.models.ModelRepository;
+import semGen.ui.DeleteButton;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -63,6 +64,7 @@ public class ModelComponent extends JPanel implements IModelComponent {
 	
 	// Box representing model
 	private ModelBox _modelBox;
+	private JButton _btnDelete;
 	
 	/**
 	 * Create the panel.
@@ -75,9 +77,24 @@ public class ModelComponent extends JPanel implements IModelComponent {
 		setOpaque(false);
 		
 		String name = model != null ? model.getName() : "Model Name";
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
+		JPanel deleteButtonContainer = new JPanel();
+		deleteButtonContainer.setPreferredSize(new Dimension(15, 15));
+		deleteButtonContainer.setSize(deleteButtonContainer.getPreferredSize());
+		deleteButtonContainer.setOpaque(false);
+		add(deleteButtonContainer);
+		
+		_btnDelete = new DeleteButton(deleteButtonContainer.getWidth(), deleteButtonContainer.getHeight());
+		_btnDelete.setHorizontalAlignment(SwingConstants.LEFT);
+		_btnDelete.setBounds(0, 0, deleteButtonContainer.getWidth(), deleteButtonContainer.getHeight());
+		_btnDelete.setVisible(false);
+		deleteButtonContainer.setLayout(null);
+		deleteButtonContainer.add(_btnDelete);
 		
 		// Create and add label
 		_lblTitle = new JLabel(name);
+		_lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(_lblTitle);
 
 		_modelBox = new ModelBox();
@@ -112,9 +129,13 @@ public class ModelComponent extends JPanel implements IModelComponent {
 		return _model;
 	}
 	
+	/**
+	 * Add action listener to delete button
+	 */
 	@Override
-	public Dimension getPreferredSize(){
-		return new Dimension(_modelBox.getWidth(), _modelBox.getHeight() + _lblTitle.getHeight() + 50);
+	public void addDeleteActionListener(ActionListener deleteListener) {
+		_btnDelete.addActionListener(deleteListener);
+		_btnDelete.setVisible(true);
 	}
 	
 	/*

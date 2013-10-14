@@ -8,12 +8,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import semGen.SemGemConstants;
 import semGen.models.Model;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
 import semGen.models.properties.ModelPropertyListener;
 import semGen.ui.ComposerJFrame;
+import semGen.ui.DeleteButton;
 import ui.FlyoutComponent;
 import ui.FlyoutPosition;
 
@@ -40,27 +40,13 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 	private MergedModelProperty _mergedModelProperty;
 	private static final String ChooseRepresentationString = "Choose Representation";
 	
-	// Image path
-	private final static String RedXPath = SemGemConstants.ImagesDir + "red-x.png";
-	
 	private final static int CloseButtonWidth = 20;
 	private final static int CloseButtonHeight = 20;
 	
 	public PropertyMappingComponent(MergedModelProperty mergedModelProperty) {
 		this();
 		
-		JButton deleteButton = new JButton();
-		deleteButton.setContentAreaFilled(false);
-		deleteButton.setBorder(null);
-		deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ImageIcon redX = new ImageIcon(RedXPath);
-		// Resize image
-		{
-			Image img = redX.getImage();
-			Image resizedImage = img.getScaledInstance(CloseButtonWidth, CloseButtonHeight, java.awt.Image.SCALE_SMOOTH);
-			redX.setImage(resizedImage);
-			deleteButton.setIcon(redX);
-		}
+		DeleteButton deleteButton = new DeleteButton(CloseButtonWidth, CloseButtonHeight);
 		add(deleteButton);	
 		
 		addPropertyComponents();

@@ -1,5 +1,7 @@
 package semGen.models.ui;
 
+import java.awt.event.ActionListener;
+
 import semGen.models.Model;
 
 public interface IModelComponent {
@@ -8,4 +10,10 @@ public interface IModelComponent {
 	 * @return model
 	 */
 	public Model getModel();
+	
+	/**
+	 * Add a delete action listener
+	 * @param deleteListener delete listener
+	 */
+	public void addDeleteActionListener(ActionListener deleteListener);
 }
