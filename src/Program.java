@@ -36,26 +36,5 @@ public class Program {
 		
 		// Show frame
 		frame.setVisible(true);
-		
-		// Test code. Add dummy models
-		// TODO: Remove before launch.
-		Model firstDummyModel = new Model("First Model");
-		addDummyPropertiesToModel(firstDummyModel, 100);
-		SemGen.getInstance().getModelRepository().addModel(firstDummyModel);
-		
-		Model secondDummyModel = new Model("Second Model");
-		addDummyPropertiesToModel(secondDummyModel, 100);
-		SemGen.getInstance().getModelRepository().addModel(secondDummyModel);
-	}
-
-	/*
-	 * Gets dummy properties to add.
-	 * 
-	 * TODO: Remove this code before ship
-	 */
-	private static void addDummyPropertiesToModel(Model model, int num){
-		for(int i = 0; i < num; i++){
-			model.addProperty(new ModelProperty(model, "Property " + i, "Var" + i, "mx + " + i));
-		}
 	}
 }

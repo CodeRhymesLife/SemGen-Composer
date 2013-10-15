@@ -36,6 +36,13 @@ public class NetworkModelChooserPanel extends JPanel {
 		DefaultMutableTreeNode category = null;
 	    
 		// Add first category
+	    category = new DefaultMutableTreeNode("Examples");
+	    root.add(category);
+	    
+	    category.add(new DefaultMutableTreeNode("Baroreceptor"));
+	    category.add(new DefaultMutableTreeNode("CardiovascularDynamics"));
+		
+		// Add first category
 	    category = new DefaultMutableTreeNode("Category 1");
 	    root.add(category);
 	    

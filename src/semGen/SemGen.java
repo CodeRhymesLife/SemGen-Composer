@@ -133,10 +133,25 @@ public class SemGen {
 		if(_repository.hasModel(modelName))
 			return null;
 		
-		// For now assume that this is a valid model
-		// and just get the name
-		// TODO: Validate model and create object from model contents
-		Model newModel = CreateDummyModel(modelName);
+		Model newModel = null;
+		if(modelName.toLowerCase().equals("baroreceptor")){
+			newModel = new Model(modelName);
+			newModel.addProperty(new ModelProperty(newModel, "Heart Rate", "HR", "HR = h1 + h2^2 + a3"));
+			newModel.addProperty(new ModelProperty(newModel, "Aortic Blood Pressure", "Pao", "Pao = 93"));
+		}
+		else if(modelName.toLowerCase().equals("cardiovasculardynamics")){
+			newModel = new Model(modelName);
+			newModel.addProperty(new ModelProperty(newModel, "heart rate", "hrate", "hrate = 77"));
+			newModel.addProperty(new ModelProperty(newModel, "aortic pressure", "P", "P = (V - V0) / C"));
+		}
+		else
+		{
+			// For now assume that this is a valid model
+			// and just get the name
+			// TODO: Validate model and create object from model contents
+			newModel = CreateDummyModel(modelName);
+		}
+		
 		
 		// Add to repository
 		return _repository.addModel(newModel);
