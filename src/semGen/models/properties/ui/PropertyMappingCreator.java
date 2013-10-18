@@ -2,6 +2,7 @@ package semGen.models.properties.ui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import semGen.models.MergedModel;
@@ -111,12 +112,12 @@ public class PropertyMappingCreator {
 		// If we haven't selected a property from the first model
 		// list the first model's properties for selection
 		if(!_incompletePropertyMappingComponent.getProperty1Component().hasProperty()){
-			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1PropertySelectionListener, _incompletePropertyMappingComponent.getProperty1Component(), FlyoutPosition.Right);
+			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1PropertySelectionListener, _incompletePropertyMappingComponent.getProperty1Component(), FlyoutPosition.Bottom);
 		}
 		// Otherwise if we haven't selected a property from the second model
 		// list the second model's properties for selection
 		else if(!_incompletePropertyMappingComponent.getProperty2Component().hasProperty()){
-			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2PropertySelectionListener, _incompletePropertyMappingComponent.getProperty2Component(), FlyoutPosition.Left);
+			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2PropertySelectionListener, _incompletePropertyMappingComponent.getProperty2Component(), FlyoutPosition.Bottom);
 		}
 		// Otherwise if both properties have been selected create the merged property
 		// and add it to the merged model
@@ -167,7 +168,9 @@ public class PropertyMappingCreator {
 		private ModelPropertyListPanel _propertyList;
 		
 		public PropertyMappingsFlyout(){
-			_propertyList = new ModelPropertyListPanel();			
+			_propertyList = new ModelPropertyListPanel();
+			_propertyList.setPreferredSize(new Dimension(600, 200));
+			_propertyList.setSize(_propertyList.getPreferredSize());
 			this.getContentPanel().add(_propertyList);
 		}
 		

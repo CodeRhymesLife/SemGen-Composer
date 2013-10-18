@@ -35,6 +35,7 @@ public class ModelPropertyListPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		panelFilterContainer = new JPanel();
+		panelFilterContainer.setOpaque(false);
 		add(panelFilterContainer);
 		panelFilterContainer.setLayout(new BoxLayout(panelFilterContainer, BoxLayout.X_AXIS));
 		
