@@ -35,12 +35,14 @@ import semGen.models.ModelListener;
 import semGen.models.ModelRepositoryActionListener;
 import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
+import semGen.ui.ComposerJFrame;
 import ui.RoundedCornerJPanel;
 
 
 public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelListener {
-	public static final int Height = 700;
-	public static final int Width = 800;
+	private static final String PropertyMappingInProgressValidationMessage = "Property Mapping In Progress";
+	public static final int Height = 600;
+	public static final int Width = 1000;
 	private static final int BorderArc = 20;
 	private JButton _btnDone;
 	private JLabel _lblModelName;
@@ -51,6 +53,10 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	
 	// Maps models to model components
 	private Map<MergedModelProperty, PropertyMappingComponent> _propertyMappingComponents;
+	
+	// Currently in progress property mappings creator
+	private PropertyMappingCreator _mappingCreator;
+	private JLabel _lblValidationMessage;
 	
 	/**
 	 * Create the panel.
@@ -74,6 +80,12 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		_propertiesPanel = new JPanel();
 		_propertiesPanel.setBackground(Color.WHITE);
 		add(_propertiesPanel);
+		
+		_lblValidationMessage = new JLabel("");
+		_lblValidationMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+		_lblValidationMessage.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		_lblValidationMessage.setForeground(Color.RED);
+		add(_lblValidationMessage);
 		
 		Component aboveButtonGap = Box.createRigidArea(new Dimension(0,20));
 		add(aboveButtonGap);
@@ -156,10 +168,11 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		refreshPropertiesPanel();
 	}
 	
-	/*
-	 * Set a new model in the property mappings panel
+	/**
+	 * Open the property mapping panel with the given model
+	 * @param model model to open panel with
 	 */
-	public void setModel(MergedModel model){	
+	public void open(MergedModel model){	
 		assert(model != null);
 		
 		unsetCurrentModel();
@@ -181,14 +194,46 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 			IModelProperty property = i.next();
 			addPropertyMappingComponentForMergedModelProperty(property);
 		}
+		
+		setVisible(true);
+	}
+	
+	/**
+	 * Close the panel
+	 * @return true if close was successfull. False otherwise.
+	 */
+	public boolean close(){
+		if(!propertyMappingInProgressValidation())
+			return false;
+		
+		setVisible(false);
+		return true;
 	}
 
+	/**
+	 * Tells whether a property mapping is in progress and shows
+	 * a validation message if there is one
+	 * @return True if property mapping is not in progress. False otherwise.
+	 */
+	private boolean propertyMappingInProgressValidation(){
+		if(_mappingCreator == null || !_mappingCreator.getIsCreateInProgress()){
+			showValidationMessage("");
+			return true;
+		}
+		
+		showValidationMessage(PropertyMappingInProgressValidationMessage);
+		return false;
+	}
+	
 	/**
 	 * Create a new property mapping
 	 */
 	private void createNewPropertyMapping(){
-		PropertyMappingCreator mappingCreator = new PropertyMappingCreator(_model);
-		mappingCreator.create(this);
+		if(!propertyMappingInProgressValidation())
+			return;
+		
+		_mappingCreator = new PropertyMappingCreator(_model);
+		_mappingCreator.create(this);
 	}
 	
 	/**
@@ -243,42 +288,51 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		_propertiesPanel.repaint();
 	}
 	
+	/**
+	 * Show a validation message
+	 * @param message message to show
+	 */
+	private void showValidationMessage(String message){
+		_lblValidationMessage.setText(message);
+		ComposerJFrame.refresh();
+	}
+	
 	private void swallowAllMouseEvents(){
 		// Swallow all mouse events
-				// Hover was causing an underlying button to repaint on top of this control
-				// so the temp, very ugly, hacky, quick solution is to swallow all mouse
-				// events on this panel
-				this.addMouseListener(new MouseListener() {
-					
-					@Override
-					public void mouseReleased(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void mousePressed(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void mouseExited(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void mouseEntered(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
+		// Hover was causing an underlying button to repaint on top of this control
+		// so the temp, very ugly, hacky, quick solution is to swallow all mouse
+		// events on this panel
+		this.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }

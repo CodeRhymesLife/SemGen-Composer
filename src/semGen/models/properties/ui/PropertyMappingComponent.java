@@ -23,6 +23,8 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -42,6 +44,17 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
 	
 	private final static int CloseButtonWidth = 20;
 	private final static int CloseButtonHeight = 20;
+	
+	private static final int PropertyComponentHeight = 50;
+	private static final int PropertyComponentWidth = 200;
+	
+	private final static int PropertySelectorContainerWidth = 450;
+	private final static int PropertySelectorContainerHeight = PropertyComponentHeight;
+	
+	private static final int MergeBarThickness = 2;
+	
+	private final static int ComboBoxWidth = 250;
+	private final static int ComboBoxHeight = 20;
 	
 	public PropertyMappingComponent(MergedModelProperty mergedModelProperty) {
 		this();
@@ -103,27 +116,60 @@ public class PropertyMappingComponent extends JPanel implements ActionListener {
         }
     }
 	
+	/**
+	 * Get component for property 1
+	 * @return component for property 1
+	 */
+	public Component getProperty1Component(){
+		return _property1Component;
+	}
+	
+	/**
+	 * Get component for property 2
+	 * @return component for property 2
+	 */
+	public Component getProperty2Component(){
+		return _property2Component;
+	}
+	
+	/**
+	 * Add property components
+	 * 
+	 * Note: I hate all of the sizing code. Its here because I needed to get
+	 * this done in a short amount of time. Will clean up later.
+	 */
 	protected void addPropertyComponents(){
 		_property1Component = new PropertyComponent();
+		_property1Component.setPreferredSize(new Dimension(PropertyComponentWidth, PropertyComponentHeight));
+		_property1Component.setSize(getPreferredSize());
 		_property1Component.setAlignmentX(Component.LEFT_ALIGNMENT);
 		add(_property1Component);
 		
-		JPanel panelLeftSeparator = new JPanel();
-		panelLeftSeparator.setBackground(Color.BLACK);
-		add(panelLeftSeparator);
+		JPanel propertySelectorContainer = new JPanel();
+		propertySelectorContainer.setLayout(null);
+		propertySelectorContainer.setOpaque(false);
+		propertySelectorContainer.setPreferredSize(new Dimension(PropertySelectorContainerWidth, PropertySelectorContainerHeight));
+		propertySelectorContainer.setSize(propertySelectorContainer.getPreferredSize());
+		add(propertySelectorContainer);
 		
 		_comboBoxPropertySelector = new JComboBox(new DefaultComboBoxModel());
 		PropertyMappingComboBoxRenderer renderer = new PropertyMappingComboBoxRenderer();
 		_comboBoxPropertySelector.setRenderer(renderer);
 		_comboBoxPropertySelector.setMaximumRowCount(3);
 		_comboBoxPropertySelector.addActionListener(this);
-		add(_comboBoxPropertySelector);
-		
-		JPanel panelRightSeparator = new JPanel();
-		panelRightSeparator.setBackground(Color.BLACK);
-		add(panelRightSeparator);
+		_comboBoxPropertySelector.setBounds(new Rectangle(new Point((PropertySelectorContainerWidth - ComboBoxWidth) / 2, (PropertyComponentHeight / 2 - ComboBoxHeight) / 2),
+				new Dimension(ComboBoxWidth, ComboBoxHeight)));
+		propertySelectorContainer.add(_comboBoxPropertySelector);
+
+		JPanel propertyMergeBar = new JPanel();
+		propertyMergeBar.setBounds(new Rectangle(new Point(0, (PropertyComponentHeight / 2 - MergeBarThickness) / 2),
+				new Dimension(PropertySelectorContainerWidth, MergeBarThickness)));
+		propertyMergeBar.setBackground(Color.BLACK);
+		propertySelectorContainer.add(propertyMergeBar);
 		
 		_property2Component = new PropertyComponent();
+		_property2Component.setPreferredSize(new Dimension(PropertyComponentWidth, PropertyComponentHeight));
+		_property2Component.setSize(getPreferredSize());
 		_property2Component.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		add(_property2Component);
 	}

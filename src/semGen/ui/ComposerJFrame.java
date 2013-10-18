@@ -144,14 +144,13 @@ public class ComposerJFrame extends JFrame {
 		if(model == null)
 			return;
 		
-		// Set the added model on the property mappings panel
-		_propertyMappingsPanel.setModel(model);
-		
 		// Align and show the panel
 		int x = (this.getContentPane().getWidth() - _propertyMappingsPanel.getWidth()) / 2;
 		int y = 100;
 		_propertyMappingsPanel.setLocation(new Point(x, y));
-		_propertyMappingsPanel.setVisible(true);
+		
+		// Set the added model on the property mappings panel
+		_propertyMappingsPanel.open(model);
 		
 		ComposerJFrame.refresh();
 	}
@@ -193,10 +192,10 @@ public class ComposerJFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				_propertyMappingsPanel.setVisible(false);
+				_propertyMappingsPanel.close();
 			}
 		});
-		_propertyMappingsPanel.setVisible(false);
+		_propertyMappingsPanel.close();
 		
 		// Force the property mappings panel to draw over everything else
 		this.getContentPane().add(_propertyMappingsPanel, 0);

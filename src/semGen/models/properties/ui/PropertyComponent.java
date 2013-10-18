@@ -1,8 +1,11 @@
 package semGen.models.properties.ui;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
@@ -16,7 +19,7 @@ import semGen.models.properties.ModelPropertyListener;
 
 public class PropertyComponent extends JPanel {
 	private JLabel _lblEquationValue;
-	private JLabel _lblPropertyValue;
+	private JLabel _propertyNameComponent;
 
 	// Model property associated with this property component
 	private IModelProperty _modelProperty;
@@ -25,28 +28,33 @@ public class PropertyComponent extends JPanel {
 	 * Create the panel.
 	 */
 	public PropertyComponent() {
-		setMinimumSize(new Dimension(150, 60));
-		setMaximumSize(new Dimension(150, 60));
-		setBorder(new LineBorder(new Color(0, 0, 0)));
+		
+		setOpaque(false);
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JPanel panelPropertyNameContainer = new JPanel();
+		PropertyNameContainerComponent panelPropertyNameContainer = new PropertyNameContainerComponent();
+		panelPropertyNameContainer.setOpaque(false);
 		add(panelPropertyNameContainer);
 		
-		JLabel lblPropertyNameTitle = new JLabel("Property Name:");
-		panelPropertyNameContainer.add(lblPropertyNameTitle);
-		
-		_lblPropertyValue = new JLabel("?");
-		panelPropertyNameContainer.add(_lblPropertyValue);
+		_propertyNameComponent = new JLabel("?");
+		_propertyNameComponent.setVerticalAlignment(SwingConstants.CENTER);
+		panelPropertyNameContainer.add(_propertyNameComponent);
 		
 		JPanel panelEquationContainer = new JPanel();
+		panelEquationContainer.setOpaque(false);
 		add(panelEquationContainer);
-		
-		JLabel lblEquationTitle = new JLabel("Equation");
-		panelEquationContainer.add(lblEquationTitle);
 		
 		_lblEquationValue = new JLabel("?");
 		panelEquationContainer.add(_lblEquationValue);
+	}
+	
+	/**
+	 * Get the property name component
+	 * @return property name component
+	 */
+	public Component getPropertyNameComponent(){
+		return _propertyNameComponent;
 	}
 	
 	/**
@@ -73,8 +81,22 @@ public class PropertyComponent extends JPanel {
 		
 		// Update the ui
 		if(_modelProperty != null){
-			_lblPropertyValue.setText(_modelProperty.getName());
+			_propertyNameComponent.setText(_modelProperty.getName());
 			_lblEquationValue.setText(_modelProperty.getEquation());
 		}
+		
+		setSize(getPreferredSize());
+	}
+	
+	private class PropertyNameContainerComponent extends JPanel{
+		
+		/**
+		 * Draw an oval
+		 */
+		@Override
+	    protected void paintBorder(Graphics g) {
+	         g.setColor(getForeground());
+	         g.drawOval(0, 0, getWidth(), getHeight());
+	    }
 	}
 }

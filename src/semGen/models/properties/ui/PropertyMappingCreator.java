@@ -1,5 +1,6 @@
 package semGen.models.properties.ui;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
 
@@ -33,6 +34,9 @@ public class PropertyMappingCreator {
 	private ModelPropertyListener _model1PropertySelectionListener;
 	private ModelPropertyListener _model2PropertySelectionListener;
 	
+	// True if a create is in progress. False otherwise.
+	private boolean _createInProgress;
+	
 	public PropertyMappingCreator(MergedModel mergedModel){
 		if(mergedModel == null)
 			throw new NullPointerException("mergedModel");
@@ -44,6 +48,16 @@ public class PropertyMappingCreator {
 			_propertiesFlyout = new PropertyMappingsFlyout();
 			ComposerJFrame.addFlyout(_propertiesFlyout);
 		}
+		
+		_createInProgress = false;
+	}
+	
+	/**
+	 * Tells whether a create is in progress
+	 * @return True if a create is in progress. False otherwise.
+	 */
+	public boolean getIsCreateInProgress(){
+		return _createInProgress;
 	}
 	
 	/*
@@ -52,6 +66,8 @@ public class PropertyMappingCreator {
 	public void create(PropertyMappingsPanel propertyMappingsPanel){
 		if(propertyMappingsPanel == null)
 			throw new NullPointerException("propertyMappingsPanel");
+		
+		_createInProgress = true;
 		
 		_propertyMappingsPanel = propertyMappingsPanel;
 		
@@ -95,12 +111,12 @@ public class PropertyMappingCreator {
 		// If we haven't selected a property from the first model
 		// list the first model's properties for selection
 		if(!_incompletePropertyMappingComponent.getProperty1Component().hasProperty()){
-			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1PropertySelectionListener, FlyoutPosition.Left);
+			listPropertiesForSelection(_mergedModel.getSourceModel1(), _model1PropertySelectionListener, _incompletePropertyMappingComponent.getProperty1Component(), FlyoutPosition.Right);
 		}
 		// Otherwise if we haven't selected a property from the second model
 		// list the second model's properties for selection
 		else if(!_incompletePropertyMappingComponent.getProperty2Component().hasProperty()){
-			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2PropertySelectionListener, FlyoutPosition.Right);
+			listPropertiesForSelection(_mergedModel.getSourceModel2(), _model2PropertySelectionListener, _incompletePropertyMappingComponent.getProperty2Component(), FlyoutPosition.Left);
 		}
 		// Otherwise if both properties have been selected create the merged property
 		// and add it to the merged model
@@ -116,6 +132,8 @@ public class PropertyMappingCreator {
 			// own component when we add the new merged property
 			_propertyMappingsPanel.removePropertyComponent(_incompletePropertyMappingComponent);
 			
+			_createInProgress = false;
+			
 			// Add the new mapping to the merged model
 			_mergedModel.addProperty(new MergedModelProperty(_mergedModel,
 					_incompletePropertyMappingComponent.getProperty1Component().getProperty(),
@@ -127,7 +145,7 @@ public class PropertyMappingCreator {
 	/*
 	 * Lists the properties in the given model for selection
 	 */
-	private void listPropertiesForSelection(Model model, ModelPropertyListener listener, FlyoutPosition position){
+	private void listPropertiesForSelection(Model model, ModelPropertyListener listener, Component propertyComponent, FlyoutPosition position){
 		ModelPropertiesTable propertiesTable = _propertiesFlyout.getPropertiesTable();
 		propertiesTable.setProperties(model.getProperties());
 		
@@ -138,7 +156,7 @@ public class PropertyMappingCreator {
 		_propertiesFlyout.setTitle(String.format("%s Properties", model.getName()));
 		
 		// Show the flyout around the first property component
-		_propertiesFlyout.showAroundComponent(_incompletePropertyMappingComponent, position);
+		_propertiesFlyout.showAroundComponent(propertyComponent, position);
 	}
 	
 	/*
