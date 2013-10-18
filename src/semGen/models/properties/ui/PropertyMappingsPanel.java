@@ -42,6 +42,7 @@ import javax.swing.SwingConstants;
 
 public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelListener {
 	private static final String PropertyMappingInProgressValidationMessage = "Property Mapping In Progress";
+	private static final String ResolvePropertyMappingsValidationMessage = "Resolve Property Mappings";
 	public static final int Height = 600;
 	public static final int Width = 1000;
 	private static final int BorderArc = 20;
@@ -233,6 +234,19 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	public boolean close(){
 		if(!propertyMappingInProgressValidation())
 			return false;
+		
+		// If there are any unresolved properties
+		// show a validation message
+		if(_model != null)
+			for(IModelProperty property : _model.getProperties()){
+				if(property instanceof MergedModelProperty){
+					MergedModelProperty mergedProperty = (MergedModelProperty)property;
+					if(mergedProperty.getSourceProperty() == null){
+						showValidationMessage(ResolvePropertyMappingsValidationMessage);
+						return false;
+					}
+				}
+			}
 		
 		setVisible(false);
 		return true;
