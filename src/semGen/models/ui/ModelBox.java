@@ -31,7 +31,9 @@ public class ModelBox extends RoundedCornerJPanel {
 	
 	public ModelBox(){
 		super(BorderArc);
-		setupUI();			
+		setupUI();
+		this.setSize(getPreferredSize());
+		this.setMaximumSize(getPreferredSize());
 	}
 
 	
@@ -61,8 +63,6 @@ public class ModelBox extends RoundedCornerJPanel {
 		
 		// Set layout so grip is centered
 		this.setLayout(new GridBagLayout());
-		
-		this.setSize(getPreferredSize());
 		
 		// Create and add grip component
 		_grip = new ImageComponent(GripImagePath, 50, 30);
