@@ -37,6 +37,7 @@ import semGen.models.properties.IModelProperty;
 import semGen.models.properties.MergedModelProperty;
 import semGen.ui.ComposerJFrame;
 import ui.RoundedCornerJPanel;
+import javax.swing.SwingConstants;
 
 
 public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelListener {
@@ -57,6 +58,8 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	// Currently in progress property mappings creator
 	private PropertyMappingCreator _mappingCreator;
 	private JLabel _lblValidationMessage;
+	private JLabel _lblSourceModel1Name;
+	private JLabel _lblModel2Name;
 	
 	/**
 	 * Create the panel.
@@ -76,6 +79,29 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		JLabel lblPropertyMappings = new JLabel("Property Mappings");
 		lblPropertyMappings.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lblPropertyMappings);
+		
+		JPanel modelNameContainer = new JPanel();
+		modelNameContainer.setOpaque(false);
+		modelNameContainer.setPreferredSize(new Dimension(Width, 70));
+		modelNameContainer.setSize(modelNameContainer.getPreferredSize());
+		add(modelNameContainer);
+		modelNameContainer.setLayout(new BoxLayout(modelNameContainer, BoxLayout.X_AXIS));
+		
+		_lblSourceModel1Name = new JLabel("Model 1 name");
+		_lblSourceModel1Name.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		_lblSourceModel1Name.setHorizontalAlignment(SwingConstants.CENTER);
+		_lblSourceModel1Name.setVerticalAlignment(SwingConstants.TOP);
+		_lblSourceModel1Name.setMaximumSize(new Dimension(Width, 40));
+		_lblSourceModel1Name.setMinimumSize(new Dimension(Width, 40));
+		modelNameContainer.add(_lblSourceModel1Name);
+		
+		_lblModel2Name = new JLabel("Model 2 name");
+		_lblModel2Name.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		_lblModel2Name.setHorizontalAlignment(SwingConstants.CENTER);
+		_lblModel2Name.setVerticalAlignment(SwingConstants.TOP);
+		_lblModel2Name.setMinimumSize(new Dimension(Width, 40));
+		_lblModel2Name.setMaximumSize(new Dimension(Width, 40));
+		modelNameContainer.add(_lblModel2Name);
 		
 		_propertiesPanel = new JPanel();
 		_propertiesPanel.setBackground(Color.WHITE);
@@ -183,8 +209,10 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 		// Listen for property actions
 		_model.addModelListener(this);
 		
-		// Set the model name label
+		// Set labels
 		_lblModelName.setText(_model.getName());
+		_lblSourceModel1Name.setText(model.getSourceModel1().getName());
+		_lblModel2Name.setText(model.getSourceModel2().getName());
 		
 		// Clear the properties panel
 		_propertiesPanel.removeAll();
