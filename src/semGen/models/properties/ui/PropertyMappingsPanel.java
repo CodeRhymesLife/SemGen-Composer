@@ -284,6 +284,7 @@ public class PropertyMappingsPanel extends RoundedCornerJPanel implements ModelL
 	 * Refresh the properties panel
 	 */
 	private void refreshPropertiesPanel(){
+		showValidationMessage("");
 		_propertiesPanel.validate();
 		_propertiesPanel.repaint();
 	}
