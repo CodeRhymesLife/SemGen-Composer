@@ -3,6 +3,8 @@ package semGen.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,11 +112,34 @@ class ComposerModelComponentPanel extends JPanel {
 			modelComponent = new ModelComponent(model);
 		
 		// Add delete listener
-		modelComponent.addDeleteActionListener(new ObjectActionListener<Model>(model) {
-			
+		modelComponent.addDeleteActionListener(new ObjectMouseListener<Model>(model) {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				SemGen.getInstance().getModelRepository().removeModel(this.getObject());
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 		
@@ -123,5 +148,18 @@ class ComposerModelComponentPanel extends JPanel {
 		
 		// Save model component
 		_modelComponents.put(model, modelComponent);
+	}
+	
+	private abstract class ObjectMouseListener<T> implements MouseListener{
+		
+		private T _obj;
+		
+		public ObjectMouseListener(T obj){
+			_obj = obj;
+		}
+		
+		public T getObject(){
+			return _obj;
+		}
 	}
 }

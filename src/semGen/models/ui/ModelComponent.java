@@ -65,7 +65,7 @@ public class ModelComponent extends JPanel implements IModelComponent {
 	
 	// Box representing model
 	private ModelBox _modelBox;
-	private JButton _btnDelete;
+	private JLabel _lblDelete;
 	
 	/**
 	 * Create the panel.
@@ -80,19 +80,21 @@ public class ModelComponent extends JPanel implements IModelComponent {
 		String name = model != null ? model.getName() : "Model Name";
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		_btnDelete = new DeleteButton(15, 15);
-		_btnDelete.setHorizontalAlignment(SwingConstants.LEFT);
-		_btnDelete.setBounds(new Rectangle(new Point(0, 0), _btnDelete.getPreferredSize())); // align left
-		_btnDelete.setVisible(false);
+		_lblDelete = new JLabel("X");
+		_lblDelete.setForeground(Color.RED);
+		_lblDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		_lblDelete.setHorizontalAlignment(SwingConstants.LEFT);
+		_lblDelete.setBounds(new Rectangle(new Point(0, 0), _lblDelete.getPreferredSize())); // align left
+		_lblDelete.setVisible(false);
 		
 		JPanel deleteButtonContainer = new JPanel();
-		deleteButtonContainer.setPreferredSize(_btnDelete.getPreferredSize());
+		deleteButtonContainer.setPreferredSize(_lblDelete.getPreferredSize());
 		deleteButtonContainer.setSize(deleteButtonContainer.getPreferredSize());
 		deleteButtonContainer.setOpaque(false);
 		add(deleteButtonContainer);
 		deleteButtonContainer.setLayout(null);
 		
-		deleteButtonContainer.add(_btnDelete);
+		deleteButtonContainer.add(_lblDelete);
 		
 		// Create and add label
 		_lblTitle = new JLabel(name);
@@ -135,9 +137,9 @@ public class ModelComponent extends JPanel implements IModelComponent {
 	 * Add action listener to delete button
 	 */
 	@Override
-	public void addDeleteActionListener(ActionListener deleteListener) {
-		_btnDelete.addActionListener(deleteListener);
-		_btnDelete.setVisible(true);
+	public void addDeleteActionListener(MouseListener deleteListener) {
+		_lblDelete.addMouseListener(deleteListener);
+		_lblDelete.setVisible(true);
 	}
 	
 	/*

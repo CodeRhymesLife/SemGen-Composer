@@ -1,6 +1,7 @@
 package semGen.models.ui;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import semGen.models.Model;
 
@@ -15,5 +16,5 @@ public interface IModelComponent {
 	 * Add a delete action listener
 	 * @param deleteListener delete listener
 	 */
-	public void addDeleteActionListener(ActionListener deleteListener);
+	public void addDeleteActionListener(MouseListener deleteListener);
 }
