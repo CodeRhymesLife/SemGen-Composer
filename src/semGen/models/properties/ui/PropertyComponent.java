@@ -96,7 +96,9 @@ public class PropertyComponent extends JPanel {
 		@Override
 	    protected void paintBorder(Graphics g) {
 	         g.setColor(getForeground());
-	         g.drawOval(0, 0, getWidth(), getHeight());
+	         
+	         // Before -1 added the border was cut off at the bottom
+	         g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 	    }
 	}
 }
