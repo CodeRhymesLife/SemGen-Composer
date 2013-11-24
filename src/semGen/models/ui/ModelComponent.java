@@ -86,7 +86,6 @@ public class ModelComponent extends JPanel implements IModelComponent {
 		_lblDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		_lblDelete.setHorizontalAlignment(SwingConstants.LEFT);
 		_lblDelete.setBounds(new Rectangle(new Point(0, 0), _lblDelete.getPreferredSize())); // align left
-		_lblDelete.setVisible(false);
 		
 		JPanel deleteButtonContainer = new JPanel();
 		deleteButtonContainer.setPreferredSize(_lblDelete.getPreferredSize());
@@ -94,13 +93,6 @@ public class ModelComponent extends JPanel implements IModelComponent {
 		deleteButtonContainer.setOpaque(false);
 		add(deleteButtonContainer);
 		deleteButtonContainer.setLayout(null);
-		
-		// Close flyout when delete button clicked
-		addDeleteActionListener(new MouseAdapter() { 
-			public void mousePressed(MouseEvent me) { 
-				Flyout.setVisible(false);
-			} 
-	    });
 		
 		deleteButtonContainer.add(_lblDelete);
 		
@@ -132,6 +124,13 @@ public class ModelComponent extends JPanel implements IModelComponent {
 	    	  getTransferHandler().exportAsDrag(ModelComponent.this, e, TransferHandler.COPY);
 	      }
 	    });
+	    
+	    // Close flyout when delete button clicked
+ 		addDeleteActionListener(new MouseAdapter() { 
+ 			public void mousePressed(MouseEvent me) { 
+ 				Flyout.setVisible(false);
+ 			} 
+ 	    });
 	}
 	
 	/*
@@ -147,7 +146,13 @@ public class ModelComponent extends JPanel implements IModelComponent {
 	@Override
 	public void addDeleteActionListener(MouseListener deleteListener) {
 		_lblDelete.addMouseListener(deleteListener);
-		_lblDelete.setVisible(true);
+	}
+	
+	/**
+	 * Hide delete button
+	 */
+	public void hideDeleteButton(){
+		_lblDelete.setVisible(false);
 	}
 	
 	/*

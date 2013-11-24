@@ -49,10 +49,12 @@ public class MergedModelComponent extends JPanel implements IModelComponent {
 		}
 		
 		_modelComponentForModel1 = new ModelComponent(model1);
+		_modelComponentForModel1.hideDeleteButton();
 		_modelComponentForModel1.setLocation(0, 0);
 		add(_modelComponentForModel1);
 		
 		_modelComponentForModel2 = new ModelComponent(model2);
+		_modelComponentForModel2.hideDeleteButton();
 		_modelComponentForModel2.setLocation(_modelComponentForModel1.getWidth() + HorizontalGapBetweenSourceModels, 0);
 		add(_modelComponentForModel2);
 		
