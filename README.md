@@ -8,7 +8,7 @@ I developed it while volunteering for Dr. Maxwell Neal, Post-doctoral Research F
 
 ## Get Started
 <ol>
-  <li>Install [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-standard-431/keplersr1)</li>
+  <li>Install Eclipse (http://www.eclipse.org/downloads/packages/eclipse-standard-431/keplersr1)</li>
   <li>Clone this repository</li>
   <li>Add cloned repository directory to a workspace in eclipse</li>
   <li>Run!</li>
@@ -30,6 +30,6 @@ I developed it while volunteering for Dr. Maxwell Neal, Post-doctoral Research F
 
 ## Future Plans
 <ul>
-  <li>Fix https://github.com/rcjames1004/SemGen-Composer/issues</li>
+  <li>Fix bugs (https://github.com/rcjames1004/SemGen-Composer/issues)</li>
   <li>Incorporate with SemGen</li>
 </ul>
