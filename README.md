@@ -1,8 +1,6 @@
 # SemGen-Composer
 
-SemGen-Composer is an open source Java drag and drop user interface for [SemGen](http://sbp.bhi.washington.edu/projects/semgen)
-that enables users to efficiently create, edit, merge, and save biosimulation models.
-I developed it while volunteering for Dr. Maxwell Neal, Post-doctoral Research Fellow at the University of Washington in the Biomedical and Health Informatics (BHI) department.
+SemGen-Composer is an open source Java application built for [SemGen](http://sbp.bhi.washington.edu/projects/semgen) - an experimental software tool for automating the modular composition and decomposition of biosimulation models. The purpose of SemGen-Composer is to leverage the powerful functions of SemGen through an intuitive drag and drop user interface. I developed this application while volunteering for Dr. Maxwell Neal, Post-doctoral Research Fellow at the University of Washington in the Biomedical and Health Informatics (BHI) department.
 
 <img src="https://github.com/rcjames1004/SemGen-Composer/raw/master/readme%20resources/model%20flyout.png">
 
