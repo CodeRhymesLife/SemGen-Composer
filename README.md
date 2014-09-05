@@ -26,6 +26,35 @@ SemGen-Composer is an open source Java application built for [SemGen](http://sbp
   <img src="https://github.com/rcjames1004/SemGen-Composer/raw/master/readme%20resources/property%20mappings%20panel.png" />
 </ul>
 
+## High Level Code Structure
+
+### Model
+<ul>
+  <li>[SemGen](https://github.com/rcjames1004/SemGen-Composer/blob/master/src/semGen/SemGen.java) - A singleton class representing the Sem Gen engine. Contains all the models and exposes public APIs for Annotating, Encoding, Extracting, and Merging (only Merge iimplemented)</li>
+  <li>[Models](https://github.com/rcjames1004/SemGen-Composer/tree/master/src/semGen/models) - This folder contains the classes for Models, their properties, and listeners for model and model property changes</li>
+  <li>Most of this code has corresponding unit tests to validate that it works properly.</li>
+</ul>
+
+### View
+<ul>
+  <li>
+    The view layer listens for events from the model layer and creates appropriate elements
+    <ul>
+      <li>In this way the view is separate from the model</li>
+      <li>Allows elements in the view layer to be swapped out without effecting the model</li>
+    </ul>
+  </li>
+  <li>
+    All view components are contains “ui” folders
+    <ul>
+      <li>For example, here are all of the [model ui components](https://github.com/rcjames1004/SemGen-Composer/tree/master/src/semGen/models/ui)</li>
+    </ul>
+  </li>
+  <li>I also added some [standalone ui components](https://github.com/rcjames1004/SemGen-Composer/tree/master/src/ui) that can be reused in other java projects</li>
+  <li>I didn't have time to write unit tests for the view layer. Hopefully coming soon :)</li>
+</ul>
+
+
 ## Future Plans
 <ul>
   <li>Fix bugs (https://github.com/rcjames1004/SemGen-Composer/issues)</li>
