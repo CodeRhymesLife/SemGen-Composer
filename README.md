@@ -45,7 +45,7 @@ SemGen-Composer is an open source Java application built for [SemGen](http://sbp
     </ul>
   </li>
   <li>
-    All view components are contains “ui” folders
+    All view components are contained “ui” folders
     <ul>
       <li>For example, here are all of the [model ui components](https://github.com/rcjames1004/SemGen-Composer/tree/master/src/semGen/models/ui)</li>
     </ul>
