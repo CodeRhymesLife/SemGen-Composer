@@ -1,3 +1,7 @@
+## Success!
+
+The SemGen-Composer has been integrated with [SemGen](http://sbp.bhi.washington.edu/projects/semgen)! I was able to integrate it over a period of a few months during the first year of my PhD program at the University of Washington. Quite a bit was upgraded during the integration, such as the name (the composer is now referred to as the "stage"); however, many of the core concepts remain. Check out on the executable version on the [SemGen website](http://sbp.bhi.washington.edu/projects/semgen) and/or the code on [github](https://github.com/thompsct/SemGen/tree/master/cfg/stage).
+
 # SemGen-Composer
 
 SemGen-Composer is an open source Java application built for [SemGen](http://sbp.bhi.washington.edu/projects/semgen) - an experimental software tool for automating the modular composition and decomposition of biosimulation models. The purpose of SemGen-Composer is to leverage the powerful functions of SemGen through an intuitive drag and drop user interface. I developed this application while volunteering for Dr. Maxwell Neal, Post-doctoral Research Fellow at the University of Washington in the Biomedical and Health Informatics (BHI) department.
